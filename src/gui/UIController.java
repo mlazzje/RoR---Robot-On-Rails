@@ -23,10 +23,10 @@ public class UIController implements Observer {
 		rorFrame.setVisible(true);
 		rorFrame.setResizable(false);
 	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO mettre a jour la positions des robots et toutes les infos
-		
 	}
 	
 	public void setAlgMove(Integer algId)
