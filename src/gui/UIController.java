@@ -12,7 +12,7 @@ public class UIController implements Observer {
 	
 	public UIController()
 	{
-		rorFrame=new RoRFrame(this,"Robot On Rails - Simulateur automatisé des stocks");		
+		rorFrame=new RoRFrame(this,"Robot On Rails - Simulateur automatis√© des stocks");		
 		rorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		rorFrame.setPreferredSize(new Dimension(1280, 800));
 		rorFrame.setLocation(0, 0);
