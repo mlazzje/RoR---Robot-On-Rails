@@ -91,6 +91,14 @@ public class Robot extends Observable {
 		//timer.schedule(tt, action.getDuration());
 
 	}
+	
+	public Action getNextAction()
+	{
+		if (actions != null && actions.size() > 0)
+			return actions.get(0);
+		else
+			return null;
+	}
 
 	private void addProduct(Product product) {
 		products.add(product);
