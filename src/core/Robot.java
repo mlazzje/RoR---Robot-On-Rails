@@ -30,6 +30,8 @@ public class Robot extends Observable {
 			tt = new TimerTask() {
 				public void run() {
 					// Robot.rail=((MoveAction)action).destinationRail;
+					Robot.this.consumption+=20*speed; //TODO vérifier le calcul
+					Robot.this.traveledDistance++;
 					Robot.this.setChanged();
 					Robot.this.notifyObservers();
 				}

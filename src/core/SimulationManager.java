@@ -90,8 +90,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// TODO to implement
 	}
 
-	public void setPause() {
+	public void setStop() {
 		status = 0;
+	}
+	
+	public void setPause() {
+		status = 2;
 	}
 
 	public void setPlay() {
