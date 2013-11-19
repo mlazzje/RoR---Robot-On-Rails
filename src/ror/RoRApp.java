@@ -7,6 +7,5 @@ public class RoRApp {
 
 	public static void main(String[] args) {
 		uiController = new UIController();
-
 	}
 }

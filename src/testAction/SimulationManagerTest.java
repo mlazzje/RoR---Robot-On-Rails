@@ -1,4 +1,4 @@
-package test;
+package testAction;
 
 import org.junit.After;
 import org.junit.AfterClass;

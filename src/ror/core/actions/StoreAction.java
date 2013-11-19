@@ -8,9 +8,10 @@ public class StoreAction extends Action {
 	private Drawer drawer;
 	private Product product;
 
-	public StoreAction(Integer duration, Drawer drawer) {
+	public StoreAction(Integer duration, Drawer drawer, Product product) {
 		super(duration);
-		this.drawer = drawer;
+		this.setDrawer(drawer);
+		this.setProduct(product);
 	}
 
 	public Drawer getDrawer() {

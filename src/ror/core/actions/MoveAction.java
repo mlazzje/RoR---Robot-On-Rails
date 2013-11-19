@@ -6,8 +6,10 @@ public class MoveAction extends Action {
 	private Rail previous;
 	private Rail next;
 
-	public MoveAction(Integer duration) {
+	public MoveAction(Integer duration, Rail previous, Rail next) {
 		super(duration);
+		this.setNext(next);
+		this.setPrevious(previous);
 	}
 
 	public Rail getPrevious() {

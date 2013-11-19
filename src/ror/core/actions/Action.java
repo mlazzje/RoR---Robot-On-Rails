@@ -7,7 +7,7 @@ public abstract class Action {
 	private Robot robot;
 	
 	public Action(Integer duration) {
-		this.duration = duration;
+		this.setDuration(duration);
 	}
 
 	public Integer getDuration() {
@@ -15,7 +15,10 @@ public abstract class Action {
 	}
 
 	public void setDuration(Integer duration) {
-		this.duration = duration;
+		if(duration != null && duration > 0)
+			this.duration = duration;
+		else
+			this.duration = 0;
 	}
 
 	public Robot getRobot() {
