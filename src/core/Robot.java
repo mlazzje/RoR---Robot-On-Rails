@@ -30,7 +30,8 @@ public class Robot extends Observable {
 			tt = new TimerTask() {
 				public void run() {
 					// Robot.rail=((MoveAction)action).destinationRail;
-					Robot.this.consumption+=20*speed; //TODO vérifier le calcul
+					Robot.this.consumption += 20 * speed; // TODO vérifier le
+															// calcul
 					Robot.this.traveledDistance++;
 					Robot.this.setChanged();
 					Robot.this.notifyObservers();
@@ -53,7 +54,8 @@ public class Robot extends Observable {
 			tt = new TimerTask() {
 				public void run() {
 					/*
-					 * DestockingAction destockingAction = ((DestockingAction)action);
+					 * DestockingAction destockingAction =
+					 * ((DestockingAction)action);
 					 * drawer=destockingAction.drawer;
 					 * this.addProduct(drawer.getProduct());
 					 * drawer.setProduct(null);
@@ -69,7 +71,6 @@ public class Robot extends Observable {
 					 * InputAction inputAction = ((InputAction)action);
 					 * this.addProduct(inputAction.getProduct());
 					 * inputAction.getInput().removeProduct(null);
-					 * 
 					 */
 					Robot.this.setChanged();
 					Robot.this.notifyObservers();
@@ -81,8 +82,8 @@ public class Robot extends Observable {
 					/*
 					 * OutputAction outputAction = ((OutputAction)action);
 					 * this.removeProduct(OutputAction.getProduct());
-					 * outputAction.getOutput().addProduct(OutputAction.getProduct());
-					 * 
+					 * outputAction
+					 * .getOutput().addProduct(OutputAction.getProduct());
 					 */
 					Robot.this.setChanged();
 					Robot.this.notifyObservers();
@@ -90,12 +91,11 @@ public class Robot extends Observable {
 			};
 		}
 
-		//timer.schedule(tt, action.getDuration());
+		// timer.schedule(tt, action.getDuration());
 
 	}
-	
-	public Action getNextAction()
-	{
+
+	public Action getNextAction() {
 		if (actions != null && actions.size() > 0)
 			return actions.get(0);
 		else

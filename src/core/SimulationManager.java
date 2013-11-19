@@ -2,8 +2,6 @@ package core;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -58,6 +56,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				SimulationManager.this.stockProducts.addAll(newProducts);
 				SimulationManager.this.orders.addAll(newOrders);
 
+			
 				// TODO appeler les algos
 
 				SimulationManager.this.updateIndicators();
@@ -86,6 +85,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		}
 	}
 
+	public RoRElement[][] getMap() {
+		return map;
+	}
+
 	public void updateIndicators() {
 		// TODO to implement
 	}
@@ -93,7 +96,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	public void setStop() {
 		status = 0;
 	}
-	
+
 	public void setPause() {
 		status = 2;
 	}
@@ -107,10 +110,24 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if (o instanceof Robot) {
+			Robot robot = (Robot) o;
 
-		// notify observers (UIController)
-		this.setChanged();
-		this.notifyObservers();
+			if (checkNextAction(robot, robot.getNextAction())) {
+				robot.executeAction(robot.getNextAction());
+			} else {
+
+				// TODO ajouter une action pause au robot
+				// robot.executeAction(new Action());
+				// peut être rajouter une action de type PauseAction avec comme
+				// parametre un autre robot
+				// dans ce cas la le robot execute sa prochaine action dès que
+				// l'autre à avancer.
+			}
+			// notify observers (UIController)
+			this.setChanged();
+			this.notifyObservers();
+		}
 	}
 
 	public void setiAlgStore(IAlgStore iAlgStore) {
@@ -151,4 +168,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		return robots;
 	}
 
+	private boolean checkNextAction(Robot robot, Action action) {
+		// TODO implement
+		if (action instanceof MoveAction) {
+			for (Robot r : robots) {
+				if(r!=robot)
+				{
+					//TODO implement
+				}
+			}
+		}
+		return false;
+	}
 }
