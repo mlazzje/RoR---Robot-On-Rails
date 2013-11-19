@@ -5,13 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ror.core.Product;
+import ror.core.Robot;
 import ror.core.actions.OutputAction;
 
 public class OutputActionTest {
 
 	@Test
 	public void test() {
-		OutputAction testAction = new OutputAction(0);
+		OutputAction testAction = new OutputAction(0, null);
+		Robot testRobot = new Robot(null);
 		Product testProduct = new Product();
 		
 		// Test de la durée
@@ -28,6 +30,12 @@ public class OutputActionTest {
 		
 		testAction.setDuration(null);
 		assertTrue(testAction.getDuration() == 0);
+		
+		// Test du robot
+		assertTrue(testAction.getRobot() == null);
+		testAction.setRobot(testRobot);
+		
+		assertTrue(testAction.getRobot() == testRobot);
 		
 		// Test du product
 		assertTrue(testAction.getProduct() == null);

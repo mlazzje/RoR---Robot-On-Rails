@@ -4,19 +4,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ror.core.Drawer;
 import ror.core.Product;
 import ror.core.Robot;
-import ror.core.actions.DestockingAction;
+import ror.core.actions.OutputAction;
+import ror.core.actions.PauseAction;
 
-public class DestockingActionTest {
+public class PauseActionTest {
 
 	@Test
 	public void test() {
-		DestockingAction testAction = new DestockingAction(0, null, null, null);
+		PauseAction testAction = new PauseAction(0, null, null);
 		Robot testRobot = new Robot(null);
-		Drawer testDrawer = new Drawer(null);
-		Product testProduct = new Product();
 		
 		// Test de la durée
 		assertTrue(testAction.getDuration() == 0);
@@ -39,17 +37,11 @@ public class DestockingActionTest {
 		
 		assertTrue(testAction.getRobot() == testRobot);
 		
-		// Test du drawer
-		assertTrue(testAction.getDrawer() == null);
-		testAction.setDrawer(testDrawer);
-		
-		assertTrue(testAction.getDrawer() == testDrawer);
-		
 		// Test du product
-		assertTrue(testAction.getProduct() == null);
-		testAction.setProduct(testProduct);
+		assertTrue(testAction.getWaitingRobot() == null);
+		testAction.setWaitingRobot(testRobot);
 		
-		assertTrue(testAction.getProduct() == testProduct);
+		assertTrue(testAction.getWaitingRobot() == testRobot);
 	}
 
 }

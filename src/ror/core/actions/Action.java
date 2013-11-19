@@ -6,8 +6,9 @@ public abstract class Action {
 	private Integer duration;
 	private Robot robot;
 	
-	public Action(Integer duration) {
+	public Action(Integer duration, Robot robot) {
 		this.setDuration(duration);
+		this.setRobot(robot);
 	}
 
 	public Integer getDuration() {

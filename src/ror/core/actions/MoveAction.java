@@ -1,13 +1,14 @@
 package ror.core.actions;
 
 import ror.core.Rail;
+import ror.core.Robot;
 
 public class MoveAction extends Action {
 	private Rail previous;
 	private Rail next;
 
-	public MoveAction(Integer duration, Rail previous, Rail next) {
-		super(duration);
+	public MoveAction(Integer duration, Robot robot, Rail previous, Rail next) {
+		super(duration, robot);
 		this.setNext(next);
 		this.setPrevious(previous);
 	}

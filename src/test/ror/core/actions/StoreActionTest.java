@@ -6,13 +6,15 @@ import org.junit.Test;
 
 import ror.core.Drawer;
 import ror.core.Product;
+import ror.core.Robot;
 import ror.core.actions.StoreAction;
 
 public class StoreActionTest {
 
 	@Test
 	public void test() {
-		StoreAction testAction = new StoreAction(0, null, null);
+		StoreAction testAction = new StoreAction(0, null, null, null);
+		Robot testRobot = new Robot(null);
 		Drawer testDrawer = new Drawer(null);
 		Product testProduct = new Product();
 		
@@ -30,6 +32,12 @@ public class StoreActionTest {
 		
 		testAction.setDuration(null);
 		assertTrue(testAction.getDuration() == 0);
+		
+		// Test du robot
+		assertTrue(testAction.getRobot() == null);
+		testAction.setRobot(testRobot);
+		
+		assertTrue(testAction.getRobot() == testRobot);
 		
 		// Test du drawer
 		assertTrue(testAction.getDrawer() == null);

@@ -2,14 +2,15 @@ package ror.core.actions;
 
 import ror.core.Drawer;
 import ror.core.Product;
+import ror.core.Robot;
 
 public class DestockingAction extends Action {
 
 	private Drawer drawer;
 	private Product product;
 
-	public DestockingAction(Integer duration, Drawer drawer, Product product) {
-		super(duration);
+	public DestockingAction(Integer duration, Robot robot, Drawer drawer, Product product) {
+		super(duration, robot);
 		this.setDrawer(drawer);
 		this.setProduct(product);
 	}
