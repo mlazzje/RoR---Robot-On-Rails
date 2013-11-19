@@ -89,7 +89,7 @@ public class UIController implements Observer {
 	}
 
 	public void startSimulation() {
-		simulationManager.runSimulation();
+		simulationManager.run();
 	}
 
 	public void setSpeed(Float speed) {

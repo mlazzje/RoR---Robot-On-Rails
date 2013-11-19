@@ -28,23 +28,34 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private long startTime; // TODO modifier le type de l'attribut dans le
 							// D.Classes
 
+	public SimulationManager()
+	{
+		this.map=new RoRElement[0][0];
+		this.robots = new ArrayList<Robot>();
+	}
+	
 	public Integer getUptime() {
 		return ((int) ((System.currentTimeMillis() - startTime) / 1000));
 	}
 
-	public void runSimulation() {
-		startTime = System.currentTimeMillis();
-		status = 1;
-		this.run();
-	}
-
+	
 	@Override
 	public void run() {
+		//add robots
+		for(int i=0;i<nbRobot;i++)
+			robots.add(new Robot(null)); //TODO ajouter le rail par defaut pour le robot
+		
+		this.stockProducts=new ArrayList<Product>();
+		this.orders=new ArrayList<Order>();
+		startTime = System.currentTimeMillis();
+		status = 1;
 		while (status != 0) {
+			System.out.print("simulation manager loop ");
+			System.out.println(status);
 			if (status == 1) // running
 			{
-				ArrayList<Order> newOrders = null;
-				ArrayList<Product> newProducts = null;
+				ArrayList<Order> newOrders = new ArrayList<Order>();
+				ArrayList<Product> newProducts = new ArrayList<Product>();
 				if (source) // random mode
 				{
 					// TODO ajouter les liaisons vers l'orderSource
