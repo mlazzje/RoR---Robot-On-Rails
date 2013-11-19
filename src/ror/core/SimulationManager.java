@@ -7,6 +7,7 @@ import java.util.Observer;
 
 import ror.core.actions.Action;
 import ror.core.actions.MoveAction;
+import ror.core.actions.PauseAction;
 import ror.core.algo.IAlgDestocking;
 import ror.core.algo.IAlgMove;
 import ror.core.algo.IAlgStore;
@@ -34,25 +35,24 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private long startTime; // TODO modifier le type de l'attribut dans le
 							// D.Classes
 
-	public SimulationManager()
-	{
-		this.map=new RoRElement[0][0];
+	public SimulationManager() {
+		this.map = new RoRElement[0][0];
 		this.robots = new ArrayList<Robot>();
 	}
-	
+
 	public Integer getUptime() {
 		return ((int) ((System.currentTimeMillis() - startTime) / 1000));
 	}
 
-	
 	@Override
 	public void run() {
-		//add robots
-		for(int i=0;i<nbRobot;i++)
-			robots.add(new Robot(null)); //TODO ajouter le rail par defaut pour le robot
-		
-		this.stockProducts=new ArrayList<Product>();
-		this.orders=new ArrayList<Order>();
+		// add robots
+		for (int i = 0; i < nbRobot; i++)
+			robots.add(new Robot(null)); // TODO ajouter le rail par defaut pour
+											// le robot
+
+		this.stockProducts = new ArrayList<Product>();
+		this.orders = new ArrayList<Order>();
 		startTime = System.currentTimeMillis();
 		status = 1;
 		while (status != 0) {
@@ -73,7 +73,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				SimulationManager.this.stockProducts.addAll(newProducts);
 				SimulationManager.this.orders.addAll(newOrders);
 
-			
 				// TODO appeler les algos
 
 				SimulationManager.this.updateIndicators();
@@ -126,25 +125,50 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg) { // called by a robot
 		if (o instanceof Robot) {
 			Robot robot = (Robot) o;
+			Robot blockingRobot = checkNextAction(robot,
+					robot.getCurrentAction());
 
-			if (checkNextAction(robot, robot.getNextAction())) {
-				robot.executeAction(robot.getNextAction());
-			} else {
-
-				// TODO ajouter une action pause au robot
-				// robot.executeAction(new Action());
-				// peut être rajouter une action de type PauseAction avec comme
-				// parametre un autre robot
-				// dans ce cas la le robot execute sa prochaine action dès que
-				// l'autre à avancer.
+			// if there is no robot on the next rail => allow robot to execute
+			// action
+			if (blockingRobot == null) {
+				robot.executeAction(robot.getCurrentAction());
 			}
+			// else add waiting action to robot
+			else {
+				robot.executeAction(new PauseAction(1, robot, blockingRobot));
+			}
+
+			// then unblocks all robots blocked by this robot
+			ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
+			for (Robot r : waitingRobots) {
+				r.stopSchedule();
+				r.removeCurrentAction();
+				r.executeAction(r.getCurrentAction()); //relaunch the actions of the ex-waiting robot
+			}
+			
 			// notify observers (UIController)
 			this.setChanged();
 			this.notifyObservers();
 		}
+	}
+
+	// retourne la liste des robots dont le mouvement est bloque par le robot en
+	// passé paramètre
+	private ArrayList<Robot> getWaitingRobots(Robot blockingRobot) {
+		ArrayList<Robot> waitingRobots = new ArrayList<Robot>();
+
+		for (Robot robot : robots) {
+			Action action = robot.getCurrentAction();
+			if (action instanceof PauseAction) {
+				PauseAction pauseAction = (PauseAction) action;
+				if (pauseAction.getWaitingRobot() == blockingRobot)
+					waitingRobots.add(robot);
+			}
+		}
+		return waitingRobots;
 	}
 
 	public void setiAlgStore(IAlgStore iAlgStore) {
@@ -185,16 +209,17 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		return robots;
 	}
 
-	private boolean checkNextAction(Robot robot, Action action) {
-		// TODO implement
+	private Robot checkNextAction(Robot robot, Action action) {
 		if (action instanceof MoveAction) {
+			MoveAction moveAction = (MoveAction) action;
 			for (Robot r : robots) {
-				if(r!=robot)
-				{
-					//TODO implement
+				if (r != robot) {
+					if (moveAction.getNext() == robot.getRail()) {
+						return robot;
+					}
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 }
