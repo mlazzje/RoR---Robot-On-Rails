@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import core.SimulationManager;
+import ror.core.SimulationManager;
 import junit.framework.TestCase;
 
 public class SimulationManagerTest extends TestCase {
