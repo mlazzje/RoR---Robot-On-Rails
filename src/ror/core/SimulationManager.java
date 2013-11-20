@@ -22,7 +22,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private RoRElement[][] map;
 	private ArrayList<Robot> robots;
 	private ArrayList<Order> orders;
-	private OrderSource orderSrouce;
+	private OrderSource orderSource;
 
 	// own attributes
 	private Float speed = (float) 0;
@@ -67,10 +67,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				ArrayList<Product> newProducts = new ArrayList<Product>();
 				if (source) // random mode
 				{
-					// TODO ajouter les liaisons vers l'orderSource
+					newOrders=SimulationManager.this.orderSource.getRandomOrders();
+					newProducts=SimulationManager.this.orderSource.getRandomProducts(newOrders, SimulationManager.this.stockProducts);
 				} else // scenario mode
 				{
-					// TODO ajouter les liaisons vers l'orderSource
+					newOrders=SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
+					newProducts=SimulationManager.this.orderSource.getScenartioProducts(SimulationManager.this.getUptime());
 				}
 				// add new orders to orders list
 				SimulationManager.this.orders.addAll(newOrders);
@@ -227,7 +229,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public void setFile(File file) {
 		source = true;
-		// TODO set file to orderSource
+		orderSource.setFile(file);
 	}
 
 	public void setSpeed(Float speed) {
