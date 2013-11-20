@@ -22,8 +22,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private RoRElement[][] map;
 	private ArrayList<Robot> robots;
 	private ArrayList<Order> orders;
-	private ArrayList<Product> stockProducts; // TODO ajouter la relation au
-												// D.Classes
 	private OrderSource orderSrouce;
 
 	// own attributes
@@ -34,6 +32,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private Integer coeff = 1000; // <==> 1 second
 	private long startTime; // TODO modifier le type de l'attribut dans le
 							// D.Classes
+
+	// new attributes //TODO ajouter dans le d.classe
+	private ArrayList<Product> stockProducts;
+	private Input input;
+	private Output output;
 
 	public SimulationManager() {
 		this.map = new RoRElement[0][0];
@@ -69,12 +72,27 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				{
 					// TODO ajouter les liaisons vers l'orderSource
 				}
-
-				SimulationManager.this.stockProducts.addAll(newProducts);
+				// add new orders to orders list
 				SimulationManager.this.orders.addAll(newOrders);
 
-				// TODO appeler les algos
+				// add new products to stockProducts list
+				SimulationManager.this.stockProducts.addAll(newProducts);
 
+				// get store and input actions for newProducts
+				ArrayList<Action> newActions = SimulationManager.this.iAlgStore
+						.getActions(newProducts, newOrders,
+								SimulationManager.this.map);
+
+				// get destocking and output actions for stockProducts
+				newActions.addAll(SimulationManager.this.iAlgDestocking
+						.getActions(newOrders, stockProducts,
+								SimulationManager.this.output));
+
+				// update robot actions lists
+				SimulationManager.this.iAlgMove.updateRobotsActions(newActions,
+						SimulationManager.this.robots);
+
+				// update statistic indicators
 				SimulationManager.this.updateIndicators();
 
 				// notify observers (UIController)
@@ -106,7 +124,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	public void updateIndicators() {
-		// TODO to implement
+		// TODO to implement and create indicators attributes
 	}
 
 	public void setStop() {
@@ -128,34 +146,54 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	public void update(Observable o, Object arg) { // called by a robot
 		if (o instanceof Robot) {
 			Robot robot = (Robot) o;
+
+			// save the last action of the robot
+			Action lastRobotAction = robot.getCurrentAction();
+
+			// going to the next action
+			robot.removeCurrentAction();
+
+			// search if the next action is blocked by another robot
 			Robot blockingRobot = checkNextAction(robot,
 					robot.getCurrentAction());
 
-			// if there is no robot on the next rail => allow robot to execute
-			// action
+			// if no robot on the next rail
 			if (blockingRobot == null) {
+
+				// execute next action
 				robot.executeAction(robot.getCurrentAction());
+
+				// get all robots waiting for the current robot to move
+				ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
+
+				// then unblocks all robots blocked by this robot
+				for (Robot r : waitingRobots) {
+
+					// cancel the scheduling task of blocked robot
+					r.stopSchedule();
+
+					// remove the PauseAction of the blocked robot
+					r.removeCurrentAction();
+
+					// then launch the next action
+					r.executeAction(r.getCurrentAction());
+				}
 			}
-			// else add waiting action to robot
+			// else add long waiting action to robot (to be sure that the task
+			// will
+			// be cancel by the robot his waiting)
 			else {
-				robot.executeAction(new PauseAction(1, robot, blockingRobot));
+				robot.executeAction(new PauseAction(100000, robot,
+						blockingRobot));
 			}
 
-			// then unblocks all robots blocked by this robot
-			ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
-			for (Robot r : waitingRobots) {
-				r.stopSchedule();
-				r.removeCurrentAction();
-				r.executeAction(r.getCurrentAction()); //relaunch the actions of the ex-waiting robot
-			}
-			
 			// notify observers (UIController)
 			this.setChanged();
 			this.notifyObservers();
 		}
 	}
 
-	// retourne la liste des robots dont le mouvement est bloque par le robot en
+	// retourne la liste des robots dont le mouvement est bloque par le robot
 	// passé paramètre
 	private ArrayList<Robot> getWaitingRobots(Robot blockingRobot) {
 		ArrayList<Robot> waitingRobots = new ArrayList<Robot>();

@@ -1,6 +1,5 @@
 package ror.core;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
@@ -43,13 +42,14 @@ public class Robot extends Observable {
 	}
 
 	public void executeAction(final Action action) {
-		// ajout de l'action dans la liste dans le cas où c'est une action de
-		// type PauseAction
+		// add action to the actions list if it no exist (only happens if we add
+		// a pause action)
 		if (action != this.actions.get(0))
 			this.actions.add(0, action);
 
 		// création d'un timer par action
 		if (action instanceof MoveAction) {
+			this.orderInProgress = null;
 			timerTask = new TimerTask() {
 				public void run() {
 					Robot.this.rail = ((MoveAction) action).getNext();
@@ -130,15 +130,9 @@ public class Robot extends Observable {
 			timer.schedule(timerTask, action.getDuration());
 
 		} else if (action instanceof PauseAction) {
-			final OutputAction outputAction = ((OutputAction) action);
-			// TODO this.orderInProgress=outputAction.getProduct().getOrder();
+			this.orderInProgress = null;
 			timerTask = new TimerTask() {
 				public void run() {
-
-					Robot.this.removeProduct(outputAction.getProduct());
-					// TODO
-					// outputAction.getOutput().addProduct(OutputAction.getProduct());
-
 					Robot.this.setChanged();
 					Robot.this.notifyObservers();
 				}
