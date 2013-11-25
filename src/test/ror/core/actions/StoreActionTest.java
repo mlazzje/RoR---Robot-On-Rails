@@ -15,10 +15,10 @@ public class StoreActionTest {
 	public void test() {
 		StoreAction testAction = new StoreAction(0, null, null, null);
 		Robot testRobot = new Robot(null);
-		Drawer testDrawer = new Drawer(null);
-		Product testProduct = new Product();
+		Drawer testDrawer = new Drawer(null, null);
+		Product testProduct = new Product(null);
 		
-		// Test de la durée
+		// Test de la durÃ©e
 		assertTrue(testAction.getDuration() == 0);
 		assertFalse(testAction.getDuration() == 10);
 		
