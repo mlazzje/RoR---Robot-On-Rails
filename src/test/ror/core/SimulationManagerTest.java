@@ -7,6 +7,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ror.core.SimulationManager;
+import ror.core.algo.AlgDestockingFifo;
+import ror.core.algo.AlgDestockingOrder;
+import ror.core.algo.AlgMoveAuto;
+import ror.core.algo.AlgMoveEco;
+import ror.core.algo.AlgMoveFast;
+import ror.core.algo.AlgStoreFIFO;
+import ror.core.algo.AlgStoreOrder;
 import junit.framework.TestCase;
 
 public class SimulationManagerTest extends TestCase {
@@ -35,20 +42,17 @@ public class SimulationManagerTest extends TestCase {
 
 	@Test
 	public void testGetUptime() {
-		simulationManager.getUptime();
-		if (simulationManager.getUptime() == null)
-			fail();
+		assertTrue(simulationManager.getUptime() >= 0);
 	}
 
 	@Test
 	public void testRun() {
 		simulationManager.setSpeed((float) 1);
-		
+
 		Thread t = new Thread(new Runnable() {
-	         public void run()
-	         {
-	        	 simulationManager.run();
-	         }
+			public void run() {
+				simulationManager.run();
+			}
 		});
 		t.start();
 		try {
@@ -73,28 +77,35 @@ public class SimulationManagerTest extends TestCase {
 
 	@Test
 	public void testGetMap() {
-		if(simulationManager.getMap()==null)
-			fail();
+		assertTrue(simulationManager.getMap() != null);
 	}
 
 	@Test
 	public void testUpdateIndicators() {
+		// TODO créer méthode updateIndicators dans SimulationManager
 		simulationManager.updateIndicators();
 	}
 
 	@Test
 	public void testSetStop() {
 		simulationManager.setStop();
+		assertTrue(simulationManager.getStatus() == 0);
 	}
 
 	@Test
 	public void testSetPause() {
 		simulationManager.setPause();
+		assertTrue(simulationManager.getStatus() == 2);
+		// TODO tester l'état du simulationManager avec la méthode getState de
+		// la classe Thread apres avoir attendu 1 seconde
 	}
 
 	@Test
 	public void testSetPlay() {
 		simulationManager.setPlay();
+		assertTrue(simulationManager.getStatus() == 1);
+		// TODO tester l'état du simulationManager avec la méthode getState de
+		// la classe Thread apres avoir attendu 1 seconde
 	}
 
 	@Test
@@ -104,48 +115,89 @@ public class SimulationManagerTest extends TestCase {
 
 	@Test
 	public void testSetiAlgStore() {
-		simulationManager.setiAlgStore(null);
+		AlgStoreFIFO algoFifo = new AlgStoreFIFO();
+		AlgStoreOrder algoOrder = new AlgStoreOrder();
+
+		simulationManager.setiAlgStore(algoFifo);
+		assertTrue(simulationManager.getiAlgStore() instanceof AlgStoreFIFO);
+
+		simulationManager.setiAlgStore(algoOrder);
+		assertTrue(simulationManager.getiAlgStore() instanceof AlgStoreOrder);
 	}
 
 	@Test
 	public void testSetiAlgMove() {
-		simulationManager.setiAlgMove(null);
+		AlgMoveAuto algoAuto = new AlgMoveAuto();
+		AlgMoveEco algoEco = new AlgMoveEco();
+		AlgMoveFast algoFast = new AlgMoveFast();		
+
+		simulationManager.setiAlgMove(algoAuto);
+		assertTrue(simulationManager.getiAlgMove() instanceof AlgMoveAuto);
+		
+		simulationManager.setiAlgMove(algoEco);
+		assertTrue(simulationManager.getiAlgMove() instanceof AlgMoveEco);
+		
+		simulationManager.setiAlgMove(algoFast);
+		assertTrue(simulationManager.getiAlgMove() instanceof AlgMoveFast);
 	}
 
 	@Test
 	public void testSetiAlgDestocking() {
-		simulationManager.setiAlgDestocking(null);
+		AlgDestockingFifo algoFifo = new AlgDestockingFifo();
+		AlgDestockingOrder algoOrder = new AlgDestockingOrder();
+		
+		simulationManager.setiAlgDestocking(algoFifo);
+		assertTrue(simulationManager.getiAlgDestocking() instanceof AlgDestockingFifo);
+		
+		simulationManager.setiAlgDestocking(algoOrder);
+		assertTrue(simulationManager.getiAlgDestocking() instanceof AlgDestockingOrder);
 	}
 
 	@Test
 	public void testSetRandomMode() {
 		simulationManager.setRandomMode();
+		assertFalse(simulationManager.getSource());
 	}
 
 	@Test
 	public void testSetFile() {
+		// TODO tester avec un fichier ordersource
 		simulationManager.setFile(null);
 	}
 
 	@Test
 	public void testSetSpeed() {
-		simulationManager.setSpeed(null);
+		simulationManager.setSpeed(1.0f);
+		assertTrue(simulationManager.getSpeed()==1.0f);
+		
+		simulationManager.setSpeed(10000.0f);
+		assertTrue(simulationManager.getSpeed()==10000.0f);
+		
+		simulationManager.setSpeed(-1.0f);
+		assertTrue(simulationManager.getSpeed()==0.0f);
 	}
 
 	@Test
 	public void testSetNbRobot() {
-		simulationManager.setNbRobot(null);
+		simulationManager.setNbRobot(0);
+		assertTrue(simulationManager.getNbRobot() == 0);
+		
+		simulationManager.setNbRobot(3);
+		assertTrue(simulationManager.getNbRobot() == 3);
+		
+		simulationManager.setNbRobot(-1);
+		assertTrue(simulationManager.getNbRobot() == 0);
 	}
 
 	@Test
 	public void testSetEndSimulation() {
 		simulationManager.setEndSimulation();
+		// TODO tester la fin de la simulation, si en mode aléatoire il n'y a de fin que quand l'utilisateur clique sur stop, sinon la fin de la simulation en mode importation de scenario est quand toutes les commandes immportées ont été expédiées
 	}
 
 	@Test
 	public void testGetRobots() {
-		if(simulationManager.getRobots()==null)
-			fail();
+		assertTrue(simulationManager.getRobots().size()>=0);
 	}
 
 }
