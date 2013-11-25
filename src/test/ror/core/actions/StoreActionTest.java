@@ -15,7 +15,7 @@ public class StoreActionTest {
 	public void test() {
 		StoreAction testAction = new StoreAction(0, null, null, null);
 		Robot testRobot = new Robot(null);
-		Drawer testDrawer = new Drawer(null);
+		Drawer testDrawer = new Drawer(null, null);
 		Product testProduct = new Product("");
 		
 		// Test de la durée
