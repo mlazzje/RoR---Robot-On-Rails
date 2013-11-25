@@ -2,31 +2,48 @@ package ror.core;
 
 public class Drawer {
 
-	// Properties
-	private Integer positionInColumn;
-	private Integer status; // 1 = Libre | 0 = Occupé
+    private Integer positionInColumn;
+    private Integer status;
+    private Column column;
+    private Product product;
 
-	// Setters and getters
-	protected Integer getPositionInColumn() {
-		return positionInColumn;
-	}
+    public Drawer(Column column, Integer positionInColumn) {
+	this.column = column;
+	this.positionInColumn = positionInColumn;
+	this.status = 1;
+	this.product = null;
+    }
 
-	protected void setPositionInColumn(Integer positionInColumn) {
-		this.positionInColumn = positionInColumn;
-	}
+    protected Integer getPositionInColumn() {
+	return positionInColumn;
+    }
 
-	protected Integer getStatus() {
-		return status;
-	}
+    protected void setPositionInColumn(Integer positionInColumn) {
+	this.positionInColumn = positionInColumn;
+    }
 
-	protected void setStatus(Integer status) {
-		this.status = status;
-	}
+    protected Integer getStatus() {
+	return status;
+    }
 
-	// Constructor
-	public Drawer(Integer positionInColumn) {
-		this.positionInColumn = positionInColumn;
-		this.status = 1;
-	}
+    protected void setStatus(Integer status) {
+	this.status = status;
+    }
+
+    public Column getColumn() {
+	return column;
+    }
+
+    public void setColumn(Column column) {
+	this.column = column;
+    }
+
+    public Product getProduct() {
+	return product;
+    }
+
+    public void setProduct(Product product) {
+	this.product = product;
+    }
 
 }

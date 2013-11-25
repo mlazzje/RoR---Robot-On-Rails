@@ -2,41 +2,37 @@ package ror.core;
 
 public abstract class RoRElement {
 
-	// Properties
-	protected Integer x;
-	protected Integer y;
-	protected RoRElementTypes type;
+    protected Integer x;
+    protected Integer y;
+    protected RoRElementTypes type;
 
-	// Setters and Getters
-	protected Integer getX() {
-		return x;
-	}
+    public RoRElement(RoRElementTypes type, Integer x, Integer y) {
+	this.type = type;
+	this.x = x;
+	this.y = y;
+    }
 
-	protected void setX(Integer x) {
-		this.x = x;
-	}
+    protected Integer getX() {
+	return x;
+    }
 
-	protected Integer getY() {
-		return y;
-	}
+    protected void setX(Integer x) {
+	this.x = x;
+    }
 
-	protected void setY(Integer y) {
-		this.y = y;
-	}
+    protected Integer getY() {
+	return y;
+    }
 
-	protected RoRElementTypes getType() {
-		return type;
-	}
+    protected void setY(Integer y) {
+	this.y = y;
+    }
 
-	protected void setType(RoRElementTypes type) {
-		this.type = type;
-	}
+    protected RoRElementTypes getType() {
+	return type;
+    }
 
-	// Constructor
-	public RoRElement(RoRElementTypes type, Integer x, Integer y) {
-		this.type = type;
-		this.x = x;
-		this.y = y;
-	}
-
+    protected void setType(RoRElementTypes type) {
+	this.type = type;
+    }
 }
