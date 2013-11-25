@@ -42,6 +42,35 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.map = new RoRElement[0][0];
 		this.robots = new ArrayList<Robot>();
 	}
+	
+	public Integer getStatus() {
+		return this.status;
+	}
+	
+	public boolean getSource()
+	{
+		return this.source;
+	}
+	
+	public Float getSpeed() {
+		return this.speed;
+	}
+	
+	public IAlgStore getiAlgStore() {
+		return this.iAlgStore;
+	}
+	
+	public IAlgMove getiAlgMove() {
+		return this.iAlgMove;
+	}
+	
+	public IAlgDestocking getiAlgDestocking() {
+		return this.iAlgDestocking;
+	}
+	
+	public Integer getNbRobot() {
+		return this.nbRobot;
+	}
 
 	public Integer getUptime() {
 		return ((int) ((System.currentTimeMillis() - startTime) / 1000));
@@ -233,11 +262,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	public void setSpeed(Float speed) {
-		this.speed = speed;
+		this.speed = (speed >= 0) ? speed : 0.0f;
 	}
 
 	public void setNbRobot(Integer nbRobot) {
-		this.nbRobot = nbRobot;
+		this.nbRobot = (nbRobot >= 0) ? nbRobot : 0;
 	}
 
 	public void setEndSimulation() {
@@ -246,7 +275,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	public ArrayList<Robot> getRobots() {
-		return robots;
+		return this.robots;
 	}
 
 	private Robot checkNextAction(Robot robot, Action action) {
