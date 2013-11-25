@@ -7,6 +7,7 @@ import org.junit.Test;
 import ror.core.Cabinet;
 import ror.core.Column;
 import ror.core.Drawer;
+import ror.core.Product;
 import ror.core.Rail;
 
 public class DrawerTest {
@@ -22,8 +23,15 @@ public class DrawerTest {
 		assertTrue(testDrawer.getColumn().equals(testDrawerColumn));
 		assertFalse(testDrawer.getColumn().getPositionInCabinet()!=testDrawerColumn.getPositionInCabinet());
 		
-		// Test PositionInColumn
-		//testDrawer.se
+		// Test Column
+		Column testDrawerColumn2 = new Column(testDrawerColumnCabinet, 0, 0, 0, testDrawerColumnRail);
+		testDrawer.setColumn(testDrawerColumn2);
+		assertTrue(testDrawer.getColumn().equals(testDrawerColumn2));
+		
+		// Test products
+		Product testDrawerProduct = new Product("Test");
+		testDrawer.setProduct(testDrawerProduct);
+		assertTrue(testDrawer.getProduct().equals(testDrawerProduct));
 	}
 
 }
