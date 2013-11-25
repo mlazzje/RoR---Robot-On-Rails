@@ -14,7 +14,7 @@ public class OutputActionTest {
 	public void test() {
 		OutputAction testAction = new OutputAction(0, null);
 		Robot testRobot = new Robot(null);
-		Product testProduct = new Product();
+		Product testProduct = new Product("");
 		
 		// Test de la durée
 		assertTrue(testAction.getDuration() == 0);

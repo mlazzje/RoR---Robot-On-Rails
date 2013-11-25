@@ -14,7 +14,7 @@ public class InputActionTest {
 	public void test() {
 		InputAction testAction = new InputAction(0, null);
 		Robot testRobot = new Robot(null);
-		Product testProduct = new Product();
+		Product testProduct = new Product("");
 		
 		// Test de la durée
 		assertTrue(testAction.getDuration() == 0);

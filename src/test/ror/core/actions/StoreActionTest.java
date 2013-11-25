@@ -16,7 +16,7 @@ public class StoreActionTest {
 		StoreAction testAction = new StoreAction(0, null, null, null);
 		Robot testRobot = new Robot(null);
 		Drawer testDrawer = new Drawer(null);
-		Product testProduct = new Product();
+		Product testProduct = new Product("");
 		
 		// Test de la durée
 		assertTrue(testAction.getDuration() == 0);

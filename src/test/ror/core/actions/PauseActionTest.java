@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import ror.core.Product;
 import ror.core.Robot;
-import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 
 public class PauseActionTest {

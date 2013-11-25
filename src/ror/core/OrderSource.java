@@ -23,7 +23,7 @@ public class OrderSource {
 			// one chance on productNamesInStock.size()*2 to add the product to
 			// newProducts
 			if (random(1, productNamesInStock.size() * 2) == 1) {
-				newProducts.add(new Product()); // TODO specify the product name
+				newProducts.add(new Product("Nom")); // TODO specify the product name
 												// in the constructor
 			}
 		}
