@@ -15,181 +15,187 @@ import ror.core.actions.StoreAction;
 
 public class Robot extends Observable {
 
-	private Integer traveledDistance = 0;
-	private Integer consumption = 0;
-	private ArrayList<Action> actions = null;
-	private Rail rail = null;
-	private Integer speed = 0;
-	private Boolean working = false;
-	private Order orderInProgress = null; // contient la commande en cours si il
-											// y'en a une
-	private Integer status = 0;
-	private ArrayList<Product> products = null;
-	private Timer timer = null;
-	private TimerTask timerTask;
+    private Integer traveledDistance = 0;
+    private Integer consumption = 0;
+    private ArrayList<Action> actions = null;
+    private Rail rail = null;
+    private Integer speed = 0;
+    private Boolean working = false;
+    private Order orderInProgress = null;
+    private Integer status = 0;
+    private ArrayList<Product> products = null;
+    private Timer timer = null;
+    private TimerTask timerTask;
 
-	public Robot(Rail initRail) {
-		timer = new Timer();
-		actions = new ArrayList<Action>();
-		rail = initRail;
-	}
+    public Robot(Rail initRail) {
+	timer = new Timer();
+	actions = new ArrayList<Action>();
+	rail = initRail;
+    }
 
-	public void stopSchedule() {
-		timerTask.cancel();
-		timer.cancel();
-		timer.purge();
-		timer = new Timer();
-	}
+    public void stopSchedule() {
+	timerTask.cancel();
+	timer.cancel();
+	timer.purge();
+	timer = new Timer();
+    }
 
-	public void executeAction(final Action action) {
-		// add action to the actions list if it no exist (only happens if we add
-		// a pause action)
-		if (action != this.actions.get(0))
-			this.actions.add(0, action);
+    public void executeAction(final Action action) {
+	// add action to the actions list if it no exist (only happens if we add
+	// a pause action)
+	if (action != this.actions.get(0))
+	    this.actions.add(0, action);
 
-		// création d'un timer par action
-		if (action instanceof MoveAction) {
-			this.orderInProgress = null;
-			timerTask = new TimerTask() {
-				public void run() {
-					Robot.this.rail = ((MoveAction) action).getNext();
-					Robot.this.consumption += 20 * speed; // TODO vérifier le
-															// calcul
-					Robot.this.traveledDistance++;
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
-
-		} else if (action instanceof StoreAction) {
-			final StoreAction storeAction = ((StoreAction) action);
-			// TODO this.orderInProgress=storeAction.getProduct().getOrder();
-
-			timerTask = new TimerTask() {
-				public void run() {
-
-					Drawer drawer = storeAction.getDrawer();
-					Robot.this.removeProduct(storeAction.getProduct());
-					// TODO drawer.setProduct(storeAction.getProduct());
-
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
-
-		} else if (action instanceof DestockingAction) {
-			final DestockingAction destockingAction = ((DestockingAction) action);
-			// TODO
-			// this.orderInProgress=destockingAction.getProduct().getOrder();
-
-			timerTask = new TimerTask() {
-				public void run() {
-					Drawer drawer = destockingAction.getDrawer();
-					// TODO Robot.this.addProduct(drawer.getProduct());
-					// TODO drawer.setProduct(null);
-
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
-
-		} else if (action instanceof InputAction) {
-			final InputAction inputAction = ((InputAction) action);
-			// TODO this.orderInProgress=inputAction.getProduct().getOrder();
-
-			timerTask = new TimerTask() {
-				public void run() {
-
-					Robot.this.addProduct(inputAction.getProduct());
-					// TODO
-					// inputAction.getInput().removeProduct(inputAction.getProduct());
-
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
-
-		} else if (action instanceof OutputAction) {
-			final OutputAction outputAction = ((OutputAction) action);
-			// TODO this.orderInProgress=outputAction.getProduct().getOrder();
-			timerTask = new TimerTask() {
-				public void run() {
-
-					Robot.this.removeProduct(outputAction.getProduct());
-					// TODO
-					// outputAction.getOutput().addProduct(OutputAction.getProduct());
-
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
-
-		} else if (action instanceof PauseAction) {
-			this.orderInProgress = null;
-			timerTask = new TimerTask() {
-				public void run() {
-					Robot.this.setChanged();
-					Robot.this.notifyObservers();
-				}
-			};
-			timer.schedule(timerTask, action.getDuration());
+	// création d'un timer par action
+	if (action instanceof MoveAction) {
+	    this.setOrderInProgress(null);
+	    timerTask = new TimerTask() {
+		public void run() {
+		    Robot.this.rail = ((MoveAction) action).getNext();
+		    Robot.this.consumption += 20 * speed; // TODO vérifier le
+							  // calcul
+		    Robot.this.traveledDistance++;
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
 		}
-	}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
 
-	public Action getCurrentAction() {
-		if (actions != null && actions.size() > 0)
-			return actions.get(0);
-		else
-			return null;
-	}
+	} else if (action instanceof StoreAction) {
+	    final StoreAction storeAction = ((StoreAction) action);
+	    this.setOrderInProgress(storeAction.getProduct().getOrder());
 
-	public void removeCurrentAction() {
-		if (actions != null && actions.size() > 0)
-			this.actions.remove(0);
-	}
+	    timerTask = new TimerTask() {
+		public void run() {
 
-	private void addProduct(Product product) {
-		products.add(product);
-	}
+		    Drawer drawer = storeAction.getDrawer();
+		    Robot.this.removeProduct(storeAction.getProduct());
+		    drawer.setProduct(storeAction.getProduct());
 
-	private void removeProduct(Product product) {
-		products.remove(product);
-	}
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
+		}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
 
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
+	} else if (action instanceof DestockingAction) {
+	    final DestockingAction destockingAction = ((DestockingAction) action);
+	    this.setOrderInProgress(destockingAction.getProduct().getOrder());
 
-	public void addAction(Action action) {
-		actions.add(action);
-	}
+	    timerTask = new TimerTask() {
+		public void run() {
+		    Drawer drawer = destockingAction.getDrawer();
+		    Robot.this.addProduct(drawer.getProduct());
+		    drawer.setProduct(null);
 
-	public Integer getTraveledDistance() {
-		return traveledDistance;
-	}
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
+		}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
 
-	public Integer getConsumption() {
-		return consumption;
-	}
+	} else if (action instanceof InputAction) {
+	    final InputAction inputAction = ((InputAction) action);
+	    this.setOrderInProgress(inputAction.getProduct().getOrder());
 
-	public ArrayList<Action> getActions() {
-		return actions;
-	}
+	    timerTask = new TimerTask() {
+		public void run() {
 
-	public Rail getRail() {
-		return rail;
-	}
+		    Robot.this.addProduct(inputAction.getProduct());
+		    inputAction.getInput().removeProduct(
+			    inputAction.getProduct());
 
-	public Boolean getWorking() {
-		return working;
-	}
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
+		}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
 
-	public Integer getStatus() {
-		return status;
+	} else if (action instanceof OutputAction) {
+	    final OutputAction outputAction = ((OutputAction) action);
+	    this.setOrderInProgress(outputAction.getProduct().getOrder());
+	    timerTask = new TimerTask() {
+		public void run() {
+
+		    Robot.this.removeProduct(outputAction.getProduct());
+		    outputAction.getOutput().addProduct(
+			    outputAction.getProduct());
+
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
+		}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
+
+	} else if (action instanceof PauseAction) {
+	    this.setOrderInProgress(null);
+	    timerTask = new TimerTask() {
+		public void run() {
+		    Robot.this.setChanged();
+		    Robot.this.notifyObservers();
+		}
+	    };
+	    timer.schedule(timerTask, action.getDuration());
 	}
+    }
+
+    public Action getCurrentAction() {
+	if (actions != null && actions.size() > 0)
+	    return actions.get(0);
+	else
+	    return null;
+    }
+
+    public void removeCurrentAction() {
+	if (actions != null && actions.size() > 0)
+	    this.actions.remove(0);
+    }
+
+    private void addProduct(Product product) {
+	products.add(product);
+    }
+
+    private void removeProduct(Product product) {
+	products.remove(product);
+    }
+
+    public ArrayList<Product> getProducts() {
+	return products;
+    }
+
+    public void addAction(Action action) {
+	actions.add(action);
+    }
+
+    public Integer getTraveledDistance() {
+	return traveledDistance;
+    }
+
+    public Integer getConsumption() {
+	return consumption;
+    }
+
+    public ArrayList<Action> getActions() {
+	return actions;
+    }
+
+    public Rail getRail() {
+	return rail;
+    }
+
+    public Boolean getWorking() {
+	return working;
+    }
+
+    public Integer getStatus() {
+	return status;
+    }
+
+    public Order getOrderInProgress() {
+	return orderInProgress;
+    }
+
+    public void setOrderInProgress(Order orderInProgress) {
+	this.orderInProgress = orderInProgress;
+    }
 }
