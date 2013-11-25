@@ -12,11 +12,11 @@ public class OutputActionTest {
 
 	@Test
 	public void test() {
-		OutputAction testAction = new OutputAction(0, null);
+		OutputAction testAction = new OutputAction(0, null, null);
 		Robot testRobot = new Robot(null);
-		Product testProduct = new Product("");
+		Product testProduct = new Product(null);
 		
-		// Test de la durée
+		// Test de la durÃ©e
 		assertTrue(testAction.getDuration() == 0);
 		assertFalse(testAction.getDuration() == 10);
 		
