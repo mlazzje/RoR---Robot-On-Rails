@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario>
+<order orderDate="10">
+<product productionDate="20">A1</product>
+<product productionDate="15">A2</product>
+<product productionDate="30">A3</product>
+<product productionDate="40">A5</product>
+<product productionDate="25">A6</product>
+<product productionDate="35">B1</product>
+</order>
+
+<order orderDate="40">
+<product productionDate="60">A1</product>
+<product productionDate="10">C1</product>
+<product productionDate="80">D1</product>
+<product productionDate="20">A2</product>
+<product productionDate="20">A1</product>
+<product productionDate="20">A1</product>
+</order>
+</scenario>
