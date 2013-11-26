@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Scenario (Order+)>
+<!ELEMENT Order (product+)>
+<!ATTLIST order orderDate (#PCDATA)>
+<!ELEMENT product (#PCDATA)>
+<!ATTLIST product productionDate (#PCDATA)>
+<!ENTITY AUTHOR "GL-C">
