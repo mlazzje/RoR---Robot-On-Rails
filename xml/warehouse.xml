@@ -5,13 +5,12 @@
 
 	<!-- Ligne 1 -->
 	<rail_row>
-		<way>left</way>
 		<start>
-			<x>1</x>
+			<x>44</x>
 			<y>0</y>
 		</start>
 		<end>
-			<x>44</x>
+			<x>1</x>
 			<y>0</y>
 		</end>
 		<previous>
@@ -26,7 +25,6 @@
 
 	<!-- Ligne 2 -->
 	<rail_row>
-		<way>right</way>
 		<start>
 			<x>2</x>
 			<y>3</y>
@@ -46,13 +44,12 @@
 	</rail_row>
 
 	<rail_row>
-		<way>left</way>
 		<start>
-			<x>24</x>
+			<x>43</x>
 			<y>3</y>
 		</start>
 		<end>
-			<x>43</x>
+			<x>24</x>
 			<y>3</y>
 		</end>
 		<previous>
@@ -67,7 +64,6 @@
 
 	<!-- Ligne 3 -->
 	<rail_row>
-		<way>right</way>
 		<start>
 			<x>2</x>
 			<y>6</y>
@@ -87,13 +83,12 @@
 	</rail_row>
 
 	<rail_row>
-		<way>left</way>
 		<start>
-			<x>24</x>
+			<x>43</x>
 			<y>6</y>
 		</start>
 		<end>
-			<x>43</x>
+			<x>24</x>
 			<y>6</y>
 		</end>
 		<previous>
@@ -108,7 +103,6 @@
 
 	<!-- Ligne 4 -->
 	<rail_row>
-		<way>right</way>
 		<start>
 			<x>2</x>
 			<y>9</y>
@@ -128,13 +122,12 @@
 	</rail_row>
 
 	<rail_row>
-		<way>left</way>
 		<start>
-			<x>24</x>
+			<x>43</x>
 			<y>9</y>
 		</start>
 		<end>
-			<x>43</x>
+			<x>24</x>
 			<y>9</y>
 		</end>
 		<previous>
@@ -149,7 +142,6 @@
 
 	<!-- Ligne 5 -->
 	<rail_row>
-		<way>right</way>
 		<start>
 			<x>1</x>
 			<y>12</y>
@@ -172,7 +164,6 @@
 
 	<!-- Colonne 1 -->
 	<rail_row>
-		<way>bottom</way>
 		<start>
 			<x>1</x>
 			<y>1</y>
@@ -193,14 +184,13 @@
 
 	<!-- Colonne 2 -->
 	<rail_row>
-		<way>top</way>
 		<start>
 			<x>22</x>
-			<y>1</y>
+			<y>11</y>
 		</start>
 		<end>
 			<x>22</x>
-			<y>11</y>
+			<y>1</y>
 		</end>
 		<previous>
 			<x>22</x>
@@ -214,7 +204,6 @@
 
 	<!-- Colonne 3 -->
 	<rail_row>
-		<way>bottom</way>
 		<start>
 			<x>23</x>
 			<y>1</y>
@@ -235,14 +224,13 @@
 
 	<!-- Colonne 4 -->
 	<rail_row>
-		<way>top</way>
 		<start>
 			<x>44</x>
-			<y>1</y>
+			<y>11</y>
 		</start>
 		<end>
 			<x>44</x>
-			<y>11</y>
+			<y>1</y>
 		</end>
 		<previous>
 			<x>44</x>
