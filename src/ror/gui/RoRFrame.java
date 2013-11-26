@@ -47,7 +47,8 @@ public class RoRFrame extends JFrame {
 	    throws HeadlessException {
 	super(title);
 	this.uiController = uiController;
-	
+	this.importFileChooser = new ImportFileChooser();
+
 	// Menu
 	this.menuBar = new JMenuBar();
 	this.startButton = new StartButton();
@@ -80,7 +81,6 @@ public class RoRFrame extends JFrame {
 	
 	// Map
 	JPanel mapPanel = new JPanel();
-	System.out.println(uiController.getSimulationManager());
 	RoRElement[][] map = uiController.getSimulationManager().getMap();
 	mapPanel.setLayout(new GridLayout(map.length, map[0].length));
 	float coeff = (float) 1.6;
@@ -153,4 +153,11 @@ public class RoRFrame extends JFrame {
 	this.setVisible(true);
     }
 
+    public ImportFileChooser getImportFileChooser() {
+	return importFileChooser;
+    }
+
+    public UIController getUiController() {
+	return uiController;
+    }
 }
