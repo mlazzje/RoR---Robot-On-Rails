@@ -48,30 +48,43 @@ public class SimulationManagerTest extends TestCase {
 	@Test
 	public void testRun() {
 		simulationManager.setSpeed((float) 1);
-
+		
+		System.out.println("Run simulation manager");
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				simulationManager.run();
 			}
 		});
+		
+		System.out.println("Going to start");
 		t.start();
+		
+		System.out.println("Sleep for a while");
 		try {
 			Thread.sleep(3000); // sleep 3 secondes
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Going to pause");
 		simulationManager.setPause();
 		try {
 			Thread.sleep(3000); // sleep 3 secondes
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Start again");
 		simulationManager.setPlay();
+		
+		System.out.println("Sleep again");
 		try {
 			Thread.sleep(3000); // sleep 3 secondes
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Finally stop");
 		simulationManager.setStop();
 	}
 
