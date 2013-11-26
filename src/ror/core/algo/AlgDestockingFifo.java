@@ -16,6 +16,8 @@ public class AlgDestockingFifo implements IAlgDestocking {
 	@Override
 	public ArrayList<Action> getActions(ArrayList<Order> orders,
 			ArrayList<Product> stockProducts, Output output) {
+		
+		//TODO Output to delete ?
 
 		ArrayList<Action> actions = new ArrayList<Action>();
 

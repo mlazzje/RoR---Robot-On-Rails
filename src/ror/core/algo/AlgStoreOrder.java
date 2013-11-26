@@ -10,7 +10,10 @@ import ror.core.actions.Action;
 public class AlgStoreOrder implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, RoRElement[][] map) {
-		//TODO implement
+		// TODO RoRElement[][] map to delete ?
+		
+		
+		
 		return new ArrayList<Action>();
 	}
 }
