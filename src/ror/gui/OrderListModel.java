@@ -1,25 +1,34 @@
 package ror.gui;
 
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
-public class OrderListModel extends AbstractTableModel {
+public class OrderListModel extends DefaultTableModel {
+    public OrderListModel() {
+	super();
+	this.addColumn("#");
+	this.addColumn("Articles");
+	this.addColumn("Etat");
 
-	@Override
-	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	String[] orders = { "#1123", "1, 2, 3, 4", "En attente" };
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+	this.addRow(orders);
+    }
 
-	@Override
-	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    public boolean isCellEditable(int row, int column) {
+	return false;
+    }
 }
