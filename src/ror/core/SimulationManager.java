@@ -30,10 +30,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private Integer status = 0;
 	private boolean source;
 	private Integer coeff = 1000; // <==> 1 second
-	private long startTime; // TODO modifier le type de l'attribut dans le
-							// D.Classes
+	private long startTime;
 
-	// new attributes //TODO ajouter dans le d.classe
 	private ArrayList<Product> stockProducts;
 	private Input input;
 	private Output output;

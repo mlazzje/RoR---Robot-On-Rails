@@ -17,7 +17,8 @@ public class UIController implements Observer {
 
     private RoRFrame rorFrame;
     private SimulationManager simulationManager;
-
+    private Thread thread;
+    
     public UIController() {
 	this.simulationManager = new SimulationManager();
 	this.rorFrame = new RoRFrame(this,
@@ -97,7 +98,8 @@ public class UIController implements Observer {
     }
 
     public void startSimulation() {
-	simulationManager.run();
+	this.thread = new Thread(this.simulationManager);
+	this.thread.start();
     }
 
     public void setSpeed(Float speed) {
