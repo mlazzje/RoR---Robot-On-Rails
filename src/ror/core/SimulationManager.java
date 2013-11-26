@@ -41,6 +41,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	public SimulationManager() {
 		this.map = new RoRElement[0][0];
 		this.robots = new ArrayList<Robot>();
+		this.orderSource = new OrderSource();
+		this.source = false;
 	}
 	
 	public Integer getStatus() {
@@ -88,13 +90,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		startTime = System.currentTimeMillis();
 		status = 1;
 		while (status != 0) {
-			System.out.print("simulation manager loop ");
+			System.out.println("simulation manager loop ");
 			System.out.println(status);
 			if (status == 1) // running
 			{
 				ArrayList<Order> newOrders = new ArrayList<Order>();
 				ArrayList<Product> newProducts = new ArrayList<Product>();
-				if (source) // random mode
+				if (!source) // random mode
 				{
 					newOrders=SimulationManager.this.orderSource.getRandomOrders();
 					newProducts=SimulationManager.this.orderSource.getRandomProducts(newOrders, SimulationManager.this.stockProducts);
@@ -109,6 +111,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				// add new products to stockProducts list
 				SimulationManager.this.stockProducts.addAll(newProducts);
 
+				// TODO Implémenter méthodes algo pour pouvoir tester
+				/*
 				// get store and input actions for newProducts
 				ArrayList<Action> newActions = SimulationManager.this.iAlgStore
 						.getActions(newProducts, newOrders,
@@ -122,7 +126,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				// update robot actions lists
 				SimulationManager.this.iAlgMove.updateRobotsActions(newActions,
 						SimulationManager.this.robots);
-
+*/
 				// update statistic indicators
 				SimulationManager.this.updateIndicators();
 
