@@ -8,7 +8,7 @@ import ror.core.Cabinet;
 import ror.core.Column;
 import ror.core.Rail;
 
-public class ColumnsTest {
+public class ColumnTest {
 
 	@Test
 	public void test() {
@@ -17,8 +17,6 @@ public class ColumnsTest {
 		Rail testColumnRail = new Rail(0, 0, null, null, null, null);
 		Rail testColumnRail2 = new Rail(1, 1, null, null, null, null);
 		int positionInCabinet = 1;
-		int x=0;
-		int y=0;
 		Column columnTest = new Column(testColumnCabinet, 0, 0, positionInCabinet, testColumnRail);
 		Column columnTestNull = new Column(null, 0, 0, 0, null);
 		

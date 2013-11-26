@@ -5,15 +5,20 @@ import java.util.List;
 
 public class Cabinet {
 
-	private static final int columnNumber = 40;
+    private static final int columnNumber = 40;
 
-	private List<Column> columnList;
+    private List<Column> columnList;
 
-	public Cabinet() {
-		this.columnList = new ArrayList<Column>(columnNumber);
-	}
+    public Cabinet() {
+	this.columnList = new ArrayList<Column>(columnNumber);
+    }
 
-	public void addColumn(Column c) {
-		columnList.add(c);
-	}
+    public void addColumn(Column c) {
+	columnList.add(c);
+    }
+    
+    public List<Column> getColumn()
+    {
+	return this.columnList;
+    }
 }

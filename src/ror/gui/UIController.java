@@ -18,17 +18,15 @@ public class UIController implements Observer {
     private RoRFrame rorFrame;
     private SimulationManager simulationManager;
     private Thread thread;
-    
+
     public UIController() {
 	this.simulationManager = new SimulationManager();
-	this.rorFrame = new RoRFrame(this,
-		"Robot On Rails - Simulateur automatisé des stocks");
+	this.rorFrame = new RoRFrame(this, "Robot On Rails - Simulateur automatisé des stocks");
     }
 
     @Override
     public void update(Observable o, Object arg) {
-	// TODO mettre à jour tous les composants graphiques en fonction de la
-	// simulation
+	// TODO mettre à jour tous les composants graphiques en fonction de la simulation
     }
 
     public void setAlgMove(Integer algId) {

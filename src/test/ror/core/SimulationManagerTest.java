@@ -1,5 +1,7 @@
 package test.ror.core;
 
+import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -174,8 +176,7 @@ public class SimulationManagerTest extends TestCase {
 
 	@Test
 	public void testSetFile() {
-		// TODO tester avec un fichier ordersource
-		simulationManager.setFile(null);
+		fail("Not yet implemented");
 	}
 
 	@Test
