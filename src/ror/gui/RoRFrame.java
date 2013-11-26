@@ -16,6 +16,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import ror.core.RoRElement;
+
 @SuppressWarnings("serial")
 public class RoRFrame extends JFrame {
 
@@ -44,7 +46,8 @@ public class RoRFrame extends JFrame {
     public RoRFrame(UIController uiController, String title)
 	    throws HeadlessException {
 	super(title);
-
+	this.uiController = uiController;
+	
 	// Menu
 	this.menuBar = new JMenuBar();
 	this.startButton = new StartButton();
@@ -73,18 +76,19 @@ public class RoRFrame extends JFrame {
 	this.importButton = new ImportButton();
 	this.menuBar.add(importButton);
 	this.setJMenuBar(this.menuBar);
-
 	this.setLayout(new FlowLayout());
+	
 	// Map
 	JPanel mapPanel = new JPanel();
-	mapPanel.setLayout(new GridLayout(15, 56));
+	System.out.println(uiController.getSimulationManager());
+	RoRElement[][] map = uiController.getSimulationManager().getMap();
+	mapPanel.setLayout(new GridLayout(map.length, map[0].length));
 	float coeff = (float) 1.6;
 	mapPanel.setPreferredSize(new Dimension((int) (797 * coeff),
 		(int) (213 * coeff)));
-
-	for (int l = 0; l < 15; l++) {
-	    for (int c = 0; c < 56; c++) {
-		mapPanel.add(new RoRElementPanel());
+	for (int l = 0; l < map.length; l++) {
+	    for (int c = 0; c < map[0].length; c++) {
+		mapPanel.add(new RoRElementPanel(map[l][c]));
 	    }
 	}
 	this.getContentPane().add(mapPanel);
@@ -92,6 +96,7 @@ public class RoRFrame extends JFrame {
 	JPanel bottomPanel = new JPanel();
 	bottomPanel.setLayout(new GridLayout(1, 4));
 	bottomPanel.setPreferredSize(new Dimension(1280,300));
+	
 	// Liste des commandes
 	this.orderList = new OrderList();
 	bottomPanel.add(this.orderList);
@@ -140,7 +145,6 @@ public class RoRFrame extends JFrame {
 
 	this.getContentPane().add(bottomPanel);
 
-	this.uiController = uiController;
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.setPreferredSize(new Dimension(1280, 800));
 	this.pack();

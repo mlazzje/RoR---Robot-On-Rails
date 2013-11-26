@@ -39,7 +39,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private Output output;
 
 	public SimulationManager() {
-		this.map = new RoRElement[0][0];
+		this.map = new RoRElement[1][1]; // Taille par defaut
 		this.robots = new ArrayList<Robot>();
 	}
 
