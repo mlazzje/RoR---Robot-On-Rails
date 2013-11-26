@@ -10,5 +10,7 @@ public class SpeedSlider extends JSlider {
 	this.setSnapToTicks(true);
 	this.setMaximum(100);
 	this.setMinimum(0);
+	this.setPaintTicks(true);
+	this.setMajorTickSpacing(10);
     }
 }
