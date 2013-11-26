@@ -10,7 +10,7 @@ import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveAuto;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgMoveFast;
-import ror.core.algo.AlgStoreFIFO;
+import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.AlgStoreOrder;
 
 public class UIController implements Observer {
@@ -50,7 +50,7 @@ public class UIController implements Observer {
     public void setAlgStore(Integer algId) {
 	switch (algId) {
 	case 0:
-	    simulationManager.setiAlgStore(new AlgStoreFIFO());
+	    simulationManager.setiAlgStore(new AlgStoreFifo());
 	    break;
 	case 1:
 	    simulationManager.setiAlgStore(new AlgStoreOrder());

@@ -7,7 +7,7 @@ import ror.core.Product;
 import ror.core.RoRElement;
 import ror.core.actions.Action;
 
-public class AlgStoreFIFO implements IAlgStore {
+public class AlgStoreFifo implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, RoRElement[][] map) {
 		// TODO implement

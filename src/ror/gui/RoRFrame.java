@@ -22,6 +22,79 @@ import ror.core.RoRElement;
 public class RoRFrame extends JFrame {
 
     private JMenuBar menuBar;
+
+    public StartButton getStartButton() {
+        return startButton;
+    }
+
+    public AcceleratedButton getAcceleratedButton() {
+        return acceleratedButton;
+    }
+
+    public StopButton getStopButton() {
+        return stopButton;
+    }
+
+    public SpeedSlider getSpeedSlider() {
+        return speedSlider;
+    }
+
+    public AlgStoreComboBox getAlgStoreComboBox() {
+        return algStoreComboBox;
+    }
+
+    public AlgDestockingComboBox getAlgDestockingComboBox() {
+        return algDestockingComboBox;
+    }
+
+    public AlgMoveComboBox getAlgMoveComboBox() {
+        return algMoveComboBox;
+    }
+
+    public RobotComboBox getRobotComboBox() {
+        return robotComboBox;
+    }
+
+    public RandomCheckBox getRandomCheckBox() {
+        return randomCheckBox;
+    }
+
+    public ImportButton getImportButton() {
+        return importButton;
+    }
+
+    public OrderList getOrderList() {
+        return orderList;
+    }
+
+    public LogList getLogList() {
+        return logList;
+    }
+
+    public JLabel getNbOrderLabel() {
+        return nbOrderLabel;
+    }
+
+    public JLabel getAvgTimeOrderLabel() {
+        return avgTimeOrderLabel;
+    }
+
+    public JLabel getTotalTimeOrderLabel() {
+        return totalTimeOrderLabel;
+    }
+
+    public JLabel getAvgConsumptionLabel() {
+        return avgConsumptionLabel;
+    }
+
+    public JLabel getTotalConsumptionLabel() {
+        return totalConsumptionLabel;
+    }
+
+    public JPanel getInformationsPanel() {
+        return informationsPanel;
+    }
+
     private StartButton startButton;
     private AcceleratedButton acceleratedButton;
     private StopButton stopButton;

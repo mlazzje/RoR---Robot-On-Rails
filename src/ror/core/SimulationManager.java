@@ -8,6 +8,9 @@ import java.util.Observer;
 import ror.core.actions.Action;
 import ror.core.actions.MoveAction;
 import ror.core.actions.PauseAction;
+import ror.core.algo.AlgDestockingFifo;
+import ror.core.algo.AlgMoveEco;
+import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.IAlgDestocking;
 import ror.core.algo.IAlgMove;
 import ror.core.algo.IAlgStore;
@@ -41,6 +44,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.robots = new ArrayList<Robot>();
 		this.orderSource = new OrderSource();
 		this.source = false;
+		this.iAlgStore = new AlgStoreFifo();
+		this.iAlgDestocking = new AlgDestockingFifo();
+		this.iAlgMove = new AlgMoveEco();
 	}
 	
 	public Integer getStatus() {
