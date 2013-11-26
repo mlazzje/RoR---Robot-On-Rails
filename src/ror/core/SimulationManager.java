@@ -1,9 +1,16 @@
 package ror.core;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 
 import ror.core.actions.Action;
 import ror.core.actions.MoveAction;
@@ -41,6 +48,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public SimulationManager() {
 		this.map = new RoRElement[1][1]; // Taille par defaut
+		File file = new File("xml/warehouse.xml");
+		this.setWareHouse(file);
 		this.robots = new ArrayList<Robot>();
 		this.orderSource = new OrderSource();
 		this.source = false;
@@ -48,32 +57,31 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.iAlgDestocking = new AlgDestockingFifo();
 		this.iAlgMove = new AlgMoveEco();
 	}
-	
+
 	public Integer getStatus() {
 		return this.status;
 	}
-	
-	public boolean getSource()
-	{
+
+	public boolean getSource() {
 		return this.source;
 	}
-	
+
 	public Float getSpeed() {
 		return this.speed;
 	}
-	
+
 	public IAlgStore getiAlgStore() {
 		return this.iAlgStore;
 	}
-	
+
 	public IAlgMove getiAlgMove() {
 		return this.iAlgMove;
 	}
-	
+
 	public IAlgDestocking getiAlgDestocking() {
 		return this.iAlgDestocking;
 	}
-	
+
 	public Integer getNbRobot() {
 		return this.nbRobot;
 	}
@@ -102,12 +110,19 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				ArrayList<Product> newProducts = new ArrayList<Product>();
 				if (!source) // random mode
 				{
-					newOrders=SimulationManager.this.orderSource.getRandomOrders();
-					newProducts=SimulationManager.this.orderSource.getRandomProducts(newOrders, SimulationManager.this.stockProducts);
+					newOrders = SimulationManager.this.orderSource
+							.getRandomOrders();
+					newProducts = SimulationManager.this.orderSource
+							.getRandomProducts(newOrders,
+									SimulationManager.this.stockProducts);
 				} else // scenario mode
 				{
-					newOrders=SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
-					newProducts=SimulationManager.this.orderSource.getScenartioProducts(SimulationManager.this.getUptime());
+					newOrders = SimulationManager.this.orderSource
+							.getScenarioOrders(SimulationManager.this
+									.getUptime());
+					newProducts = SimulationManager.this.orderSource
+							.getScenartioProducts(SimulationManager.this
+									.getUptime());
 				}
 				// add new orders to orders list
 				SimulationManager.this.orders.addAll(newOrders);
@@ -117,20 +132,21 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 				// TODO Implémenter méthodes algo pour pouvoir tester
 				/*
-				// get store and input actions for newProducts
-				ArrayList<Action> newActions = SimulationManager.this.iAlgStore
-						.getActions(newProducts, newOrders,
-								SimulationManager.this.map);
-
-				// get destocking and output actions for stockProducts
-				newActions.addAll(SimulationManager.this.iAlgDestocking
-						.getActions(newOrders, stockProducts,
-								SimulationManager.this.output));
-
-				// update robot actions lists
-				SimulationManager.this.iAlgMove.updateRobotsActions(newActions,
-						SimulationManager.this.robots);
-*/
+				 * // get store and input actions for newProducts
+				 * ArrayList<Action> newActions =
+				 * SimulationManager.this.iAlgStore .getActions(newProducts,
+				 * newOrders, SimulationManager.this.map);
+				 * 
+				 * // get destocking and output actions for stockProducts
+				 * newActions.addAll(SimulationManager.this.iAlgDestocking
+				 * .getActions(newOrders, stockProducts,
+				 * SimulationManager.this.output));
+				 * 
+				 * // update robot actions lists
+				 * SimulationManager.this.iAlgMove.
+				 * updateRobotsActions(newActions,
+				 * SimulationManager.this.robots);
+				 */
 				// update statistic indicators
 				SimulationManager.this.updateIndicators();
 
@@ -298,5 +314,151 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			}
 		}
 		return null;
+	}
+
+	public void setWareHouse(File file) {
+
+		Document document = null;
+		Element racine;
+
+		SAXBuilder sxb = new SAXBuilder();
+		try {
+			document = sxb.build(file);
+		} catch (Exception e) {
+		}
+
+		racine = document.getRootElement();
+
+		// creations des rails
+		int height = Integer.parseInt(racine.getAttributeValue("height"));
+		int width = Integer.parseInt(racine.getAttributeValue("width"));
+		this.map = new RoRElement[height][width];
+
+		// creation de l'input
+		Element elInput = racine.getChild("input");
+		this.input = new Input(Integer.parseInt(elInput.getChild("x")
+				.getValue()),
+				Integer.parseInt(elInput.getChild("y").getValue()), null);
+		this.map[Integer.parseInt(elInput.getChild("y").getValue())][Integer
+				.parseInt(elInput.getChild("x").getValue())] = input;
+
+		// creation de l'output
+		Element elOutput = racine.getChild("output");
+		this.output = new Output(Integer.parseInt(elOutput.getChild("x")
+				.getValue()), Integer.parseInt(elOutput.getChild("y")
+				.getValue()), null);
+		this.map[Integer.parseInt(elOutput.getChild("y").getValue())][Integer
+				.parseInt(elOutput.getChild("x").getValue())] = input;
+
+		// Creation des rails
+		List railRowList = racine.getChildren("rail_row");
+		Iterator it = railRowList.iterator();
+		while (it.hasNext()) {
+
+			Element currentRail = (Element) it.next();
+
+			// start point
+			Element start = currentRail.getChild("start");
+			Point startPoint = new Point();
+			startPoint.x = Integer.parseInt(start.getChild("x").getValue());
+			startPoint.y = Integer.parseInt(start.getChild("y").getValue());
+
+			// right rail
+			Element end = currentRail.getChild("end");
+			Point endPoint = new Point();
+			endPoint.x = Integer.parseInt(end.getChild("x").getValue());
+			endPoint.y = Integer.parseInt(end.getChild("y").getValue());
+
+			// previous rail
+			Element previous = currentRail.getChild("previous");
+			Point previousPoint = new Point();
+			previousPoint.x = Integer.parseInt(previous.getChild("x")
+					.getValue());
+			previousPoint.y = Integer.parseInt(previous.getChild("y")
+					.getValue());
+
+			// left rail
+			Element left = currentRail.getChild("next");
+			Point leftPoint = new Point();
+			leftPoint.x = Integer.parseInt(left.getChild("x").getValue());
+			leftPoint.y = Integer.parseInt(left.getChild("y").getValue());
+
+			if (startPoint.x == endPoint.x) {
+				int x = startPoint.x;
+
+				// verticale de haut en bas 0 -> Y
+				if (startPoint.y < endPoint.y) {
+					for (int y = startPoint.y; y <= endPoint.y; y++)
+						this.map[y][x] = new Rail(x, y, null, null, null, null);
+				}
+				// verticale de bas en haut Y -> 0
+				else {
+					for (int y = startPoint.y; y >= endPoint.y; y--)
+						this.map[y][x] = new Rail(x, y, null, null, null, null);
+				}
+			} else if (startPoint.y == endPoint.y) {
+				int y = startPoint.y;
+				// ligne de gauche à droite 0 -> X
+				if (startPoint.x < endPoint.x) {
+					for (int x = startPoint.x; x <= endPoint.x; x++)
+						this.map[y][x] = new Rail(x, y, null, null, null, null);
+
+				}
+				// ligne de droite à gauche X -> 0
+				else {
+					for (int x = startPoint.x; x >= endPoint.x; x--)
+						this.map[y][x] = new Rail(x, y, null, null, null, null);
+				}
+			}
+		}
+
+		// Creation des colonnes
+		List columnsRowList = racine.getChildren("column_row");
+		Iterator itc = columnsRowList.iterator();
+		while (itc.hasNext()) {
+
+			Element currentColumnRail = (Element) itc.next();
+
+			// start point
+			Element start = currentColumnRail.getChild("start");
+			Point startPoint = new Point();
+			startPoint.x = Integer.parseInt(start.getChild("x").getValue());
+			startPoint.y = Integer.parseInt(start.getChild("y").getValue());
+
+			// right rail
+			Element end = currentColumnRail.getChild("end");
+			Point endPoint = new Point();
+			endPoint.x = Integer.parseInt(end.getChild("x").getValue());
+			endPoint.y = Integer.parseInt(end.getChild("y").getValue());
+
+			if (startPoint.x == endPoint.x) {
+				int x = startPoint.x;
+
+				// verticale de haut en bas 0 -> Y
+				if (startPoint.y < endPoint.y) {
+					for (int y = startPoint.y; y <= endPoint.y; y++)
+						this.map[y][x] = new Column(null, x, y, null, null);
+				}
+				// verticale de bas en haut Y -> 0
+				else {
+					for (int y = startPoint.y; y >= endPoint.y; y--)
+						this.map[y][x] = new Column(null, x, y, null, null);
+				}
+			} else if (startPoint.y == endPoint.y) {
+				int y = startPoint.y;
+				// ligne de gauche à droite 0 -> X
+				if (startPoint.x < endPoint.x) {
+					for (int x = startPoint.x; x <= endPoint.x; x++)
+						this.map[y][x] = new Column(null, x, y, null, null);
+
+				}
+				// ligne de droite à gauche X -> 0
+				else {
+					for (int x = startPoint.x; x >= endPoint.x; x--)
+						this.map[y][x] = new Column(null, x, y, null, null);
+				}
+			}
+		}
+
 	}
 }
