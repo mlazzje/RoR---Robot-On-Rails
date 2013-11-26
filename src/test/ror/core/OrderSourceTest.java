@@ -18,7 +18,6 @@ import org.junit.Test;
 import ror.core.Order;
 import ror.core.OrderSource;
 import ror.core.Product;
-import sun.org.mozilla.javascript.internal.ast.ForInLoop;
 
 public class OrderSourceTest {
 
@@ -81,9 +80,14 @@ public class OrderSourceTest {
 		    Integer key = entry.getKey();
 		    ArrayList<Product> value = entry.getValue();
 		    
-		    System.out.println(key.toString()+" : ");
+		    System.out.println("Order :"+key.toString()+" : ");
 		    for(Product product : value)
 		    	System.out.println(product.getName());
+		}
+		
+		for(String productName : orderSourceTest.getCatalog())
+		{
+			System.out.println(productName);
 		}
 		
 		

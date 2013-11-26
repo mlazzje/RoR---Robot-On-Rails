@@ -1,34 +1,29 @@
 package ror.core;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.XMLConstants;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import org.xml.sax.SAXException;
 
 public class OrderSource {
 
 	private File file;
+	private File catalogFile;
+	private ArrayList<String> catalog;
 	private HashMap<Integer, ArrayList<Product>> products;
 	private HashMap<Integer, ArrayList<Order>> orders;
-	
-	
+
 	public OrderSource() {
 		super();
-		this.products= new HashMap<Integer, ArrayList<Product>>();
+		this.products = new HashMap<Integer, ArrayList<Product>>();
 		this.orders = new HashMap<Integer, ArrayList<Order>>();
+		this.catalog = new ArrayList<String>();
+
 	}
 
 	public HashMap<Integer, ArrayList<Product>> getProducts() {
@@ -105,44 +100,65 @@ public class OrderSource {
 
 		SAXBuilder sxb = new SAXBuilder();
 		try {
-			// On crée un nouveau document JDOM avec en argument le fichier XML
-			// Le parsing est terminé ;)
 			document = sxb.build(file);
 		} catch (Exception e) {
 		}
 
 		racine = document.getRootElement();
 
-		List orderList = racine.getChildren("order");
+		// recuperation du catalogue des produits
+		Element catalogElement = racine.getChild("Catalog");
+		List catalogProductList = catalogElement.getChildren("Product");
+		Iterator itpc = catalogProductList.iterator();
+		// on boucle sur chaque produit
+		while (itpc.hasNext()) {
+			Element currentProduct = (Element) itpc.next();
+			this.catalog.add(currentProduct.getValue());
+		}
+
+		// recuperation du scenario de la simulation
+
+		Element scenarioElement = racine.getChild("Scenario");
+		List orderList = scenarioElement.getChildren("Order");
 
 		Iterator i = orderList.iterator();
-		//on boucle sur chaque commande
+		// on boucle sur chaque commande
 		while (i.hasNext()) {
 			Order newOrder = new Order();
-			ArrayList<String> orderProductsName= new ArrayList<String>();
-			
+			ArrayList<String> orderProductsName = new ArrayList<String>();
+
 			Element currentOrder = (Element) i.next();
-			List productList = currentOrder.getChildren("product");
+			List productList = currentOrder.getChildren("Product");
 			Iterator j = productList.iterator();
 			while (j.hasNext()) {
 				Element currentProduct = (Element) j.next();
 				Product newProduct = new Product(currentProduct.getValue());
-				int productionDate = Integer.parseInt(currentProduct.getAttributeValue("productionDate"));
-				
-				if(this.products.get(productionDate)==null)
+				int productionDate = Integer.parseInt(currentProduct
+						.getAttributeValue("productionDate"));
+
+				if (this.products.get(productionDate) == null)
 					this.products.put(productionDate, new ArrayList<Product>());
 				this.products.get(productionDate).add(newProduct);
 			}
 			newOrder.setProductsName(orderProductsName);
-			int orderDate = Integer.parseInt(currentOrder.getAttribute("orderDate").getValue());
-			
-			if(this.orders.get(orderDate)==null)
+			int orderDate = Integer.parseInt(currentOrder.getAttribute(
+					"orderDate").getValue());
+
+			if (this.orders.get(orderDate) == null)
 				this.orders.put(orderDate, new ArrayList<Order>());
-			
+
 			this.orders.get(orderDate).add(newOrder);
 		}
 
 		this.file = file;
+	}
+
+	public ArrayList<String> getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(ArrayList<String> catalog) {
+		this.catalog = catalog;
 	}
 
 }
