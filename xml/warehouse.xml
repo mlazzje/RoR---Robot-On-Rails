@@ -3,10 +3,33 @@
 
 	<!-- Description des lignes de rails horizontales -->
 
-	<!-- Ligne 1 -->
+	<!-- Ligne 1 découpée en 2 -->
 	<rail_row>
 		<start>
 			<x>44</x>
+			<y>0</y>
+		</start>
+		<end>
+			<x>23</x>
+			<y>0</y>
+		</end>
+		<previous>
+			<x>44</x>
+			<y>1</y>
+		</previous>
+		<right>
+			<x>22</x>
+			<y>0</y>
+		</right>
+		<left>
+			<x>23</x>
+			<y>1</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>22</x>
 			<y>0</y>
 		</start>
 		<end>
@@ -14,13 +37,13 @@
 			<y>0</y>
 		</end>
 		<previous>
-			<x>44</x>
-			<y>1</y>
+			<x>23</x>
+			<y>0</y>
 		</previous>
-		<next>
+		<right>
 			<x>1</x>
 			<y>1</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Ligne 2 -->
@@ -37,10 +60,10 @@
 			<x>1</x>
 			<y>3</y>
 		</previous>
-		<next>
+		<right>
 			<x>22</x>
 			<y>3</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<rail_row>
@@ -56,10 +79,10 @@
 			<x>44</x>
 			<y>3</y>
 		</previous>
-		<next>
+		<right>
 			<x>23</x>
 			<y>3</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Ligne 3 -->
@@ -76,10 +99,10 @@
 			<x>1</x>
 			<y>6</y>
 		</previous>
-		<next>
+		<right>
 			<x>22</x>
 			<y>6</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<rail_row>
@@ -95,10 +118,10 @@
 			<x>44</x>
 			<y>6</y>
 		</previous>
-		<next>
+		<right>
 			<x>23</x>
 			<y>6</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Ligne 4 -->
@@ -115,10 +138,10 @@
 			<x>1</x>
 			<y>9</y>
 		</previous>
-		<next>
+		<right>
 			<x>22</x>
 			<y>9</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<rail_row>
@@ -134,16 +157,39 @@
 			<x>44</x>
 			<y>9</y>
 		</previous>
-		<next>
+		<right>
 			<x>23</x>
 			<y>9</y>
-		</next>
+		</right>
 	</rail_row>
 
-	<!-- Ligne 5 -->
+	<!-- Ligne 5 découpée en 2-->
 	<rail_row>
 		<start>
 			<x>1</x>
+			<y>12</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>12</y>
+		</end>
+		<previous>
+			<x>1</x>
+			<y>11</y>
+		</previous>
+		<right>
+			<x>23</x>
+			<y>12</y>
+		</right>
+		<left>
+			<x>22</x>
+			<y>11</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>23</x>
 			<y>12</y>
 		</start>
 		<end>
@@ -151,18 +197,19 @@
 			<y>12</y>
 		</end>
 		<previous>
-			<x>1</x>
-			<y>11</y>
+			<x>22</x>
+			<y>12</y>
 		</previous>
-		<next>
+		<right>
 			<x>44</x>
 			<y>11</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Description des lignes de rails verticales -->
 
-	<!-- Colonne 1 -->
+	<!-- Colonne 1 decoupée en 4 -->
+	
 	<rail_row>
 		<start>
 			<x>1</x>
@@ -170,16 +217,85 @@
 		</start>
 		<end>
 			<x>1</x>
-			<y>11</y>
+			<y>3</y>
 		</end>
 		<previous>
 			<x>1</x>
 			<y>0</y>
 		</previous>
-		<next>
+		<right>
+			<x>1</x>
+			<y>4</y>
+		</right>
+		<left>
+			<x>2</x>
+			<y>3</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>1</x>
+			<y>4</y>
+		</start>
+		<end>
+			<x>1</x>
+			<y>6</y>
+		</end>
+		<previous>
+			<x>1</x>
+			<y>3</y>
+		</previous>
+		<right>
+			<x>1</x>
+			<y>7</y>
+		</right>
+		<left>
+			<x>2</x>
+			<y>6</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>1</x>
+			<y>7</y>
+		</start>
+		<end>
+			<x>1</x>
+			<y>9</y>
+		</end>
+		<previous>
+			<x>1</x>
+			<y>6</y>
+		</previous>
+		<right>
+			<x>1</x>
+			<y>10</y>
+		</right>
+		<left>
+			<x>2</x>
+			<y>9</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>1</x>
+			<y>10</y>
+		</start>
+		<end>
+			<x>1</x>
+			<y>11</y>
+		</end>
+		<previous>
+			<x>1</x>
+			<y>9</y>
+		</previous>
+		<right>
 			<x>1</x>
 			<y>12</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Colonne 2 -->
@@ -196,10 +312,10 @@
 			<x>22</x>
 			<y>12</y>
 		</previous>
-		<next>
+		<right>
 			<x>22</x>
 			<y>0</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Colonne 3 -->
@@ -216,13 +332,13 @@
 			<x>23</x>
 			<y>0</y>
 		</previous>
-		<next>
+		<right>
 			<x>23</x>
 			<y>12</y>
-		</next>
+		</right>
 	</rail_row>
 
-	<!-- Colonne 4 -->
+	<!-- Colonne 4 découpée en 4-->
 	<rail_row>
 		<start>
 			<x>44</x>
@@ -230,16 +346,85 @@
 		</start>
 		<end>
 			<x>44</x>
-			<y>1</y>
+			<y>9</y>
 		</end>
 		<previous>
 			<x>44</x>
 			<y>12</y>
 		</previous>
-		<next>
+		<right>
+			<x>44</x>
+			<y>8</y>
+		</right>
+		<left>
+			<x>43</x>
+			<y>9</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>44</x>
+			<y>8</y>
+		</start>
+		<end>
+			<x>44</x>
+			<y>6</y>
+		</end>
+		<previous>
+			<x>44</x>
+			<y>9</y>
+		</previous>
+		<right>
+			<x>44</x>
+			<y>5</y>
+		</right>
+		<left>
+			<x>43</x>
+			<y>6</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>44</x>
+			<y>5</y>
+		</start>
+		<end>
+			<x>44</x>
+			<y>3</y>
+		</end>
+		<previous>
+			<x>44</x>
+			<y>6</y>
+		</previous>
+		<right>
+			<x>44</x>
+			<y>2</y>
+		</right>
+		<left>
+			<x>43</x>
+			<y>3</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>44</x>
+			<y>2</y>
+		</start>
+		<end>
+			<x>44</x>
+			<y>1</y>
+		</end>
+		<previous>
+			<x>44</x>
+			<y>3</y>
+		</previous>
+		<right>
 			<x>44</x>
 			<y>0</y>
-		</next>
+		</right>
 	</rail_row>
 
 	<!-- Points d'entrées et de sorties -->
