@@ -12,7 +12,7 @@ import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveAuto;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgMoveFast;
-import ror.core.algo.AlgStoreFIFO;
+import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.AlgStoreOrder;
 import junit.framework.TestCase;
 
@@ -128,11 +128,11 @@ public class SimulationManagerTest extends TestCase {
 
 	@Test
 	public void testSetiAlgStore() {
-		AlgStoreFIFO algoFifo = new AlgStoreFIFO();
+		AlgStoreFifo algoFifo = new AlgStoreFifo();
 		AlgStoreOrder algoOrder = new AlgStoreOrder();
 
 		simulationManager.setiAlgStore(algoFifo);
-		assertTrue(simulationManager.getiAlgStore() instanceof AlgStoreFIFO);
+		assertTrue(simulationManager.getiAlgStore() instanceof AlgStoreFifo);
 
 		simulationManager.setiAlgStore(algoOrder);
 		assertTrue(simulationManager.getiAlgStore() instanceof AlgStoreOrder);
