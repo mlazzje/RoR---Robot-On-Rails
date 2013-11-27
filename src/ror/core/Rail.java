@@ -9,35 +9,35 @@ public class Rail extends RoRElement {
 	private Rail next;
 
 	// Setters and getters
-	protected Rail getLeftRail() {
+	public Rail getLeftRail() {
 		return leftRail;
 	}
 
-	protected void setLeftRail(Rail leftRail) {
+	public void setLeftRail(Rail leftRail) {
 		this.leftRail = leftRail;
 	}
 
-	protected Rail getRightRail() {
+	public Rail getRightRail() {
 		return rightRail;
 	}
 
-	protected void setRightRail(Rail rightRail) {
+	public void setRightRail(Rail rightRail) {
 		this.rightRail = rightRail;
 	}
 
-	protected Rail getPrevioustRail() {
+	public Rail getPrevioustRail() {
 		return previous;
 	}
 
-	protected void setPrevioustRail(Rail previoustRail) {
+	public void setPrevioustRail(Rail previoustRail) {
 		this.previous = previoustRail;
 	}
 
-	protected Rail getNextRail() {
+	public Rail getNextRail() {
 		return next;
 	}
 
-	protected void setNextRail(Rail nextRail) {
+	public void setNextRail(Rail nextRail) {
 		this.next = nextRail;
 	}
 
