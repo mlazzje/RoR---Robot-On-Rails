@@ -348,7 +348,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				.getValue()), Integer.parseInt(elOutput.getChild("y")
 				.getValue()), null);
 		this.map[Integer.parseInt(elOutput.getChild("y").getValue())][Integer
-				.parseInt(elOutput.getChild("x").getValue())] = input;
+				.parseInt(elOutput.getChild("x").getValue())] = output;
 
 		// Creation des rails
 		List railRowList = racine.getChildren("rail_row");
@@ -368,20 +368,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			Point endPoint = new Point();
 			endPoint.x = Integer.parseInt(end.getChild("x").getValue());
 			endPoint.y = Integer.parseInt(end.getChild("y").getValue());
-
-			// previous rail
-			Element previous = currentRail.getChild("previous");
-			Point previousPoint = new Point();
-			previousPoint.x = Integer.parseInt(previous.getChild("x")
-					.getValue());
-			previousPoint.y = Integer.parseInt(previous.getChild("y")
-					.getValue());
-
-			// left rail
-			Element left = currentRail.getChild("next");
-			Point leftPoint = new Point();
-			leftPoint.x = Integer.parseInt(left.getChild("x").getValue());
-			leftPoint.y = Integer.parseInt(left.getChild("y").getValue());
 
 			if (startPoint.x == endPoint.x) {
 				int x = startPoint.x;
@@ -408,6 +394,167 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				else {
 					for (int x = startPoint.x; x >= endPoint.x; x--)
 						this.map[y][x] = new Rail(x, y, null, null, null, null);
+				}
+			}
+		}
+
+		// Creation des rails
+		it = railRowList.iterator();
+		while (it.hasNext()) {
+
+			Element currentRail = (Element) it.next();
+
+			// start point
+			Element start = currentRail.getChild("start");
+			Point startPoint = new Point();
+			startPoint.x = Integer.parseInt(start.getChild("x").getValue());
+			startPoint.y = Integer.parseInt(start.getChild("y").getValue());
+
+			// end rail
+			Element end = currentRail.getChild("end");
+			Point endPoint = new Point();
+			endPoint.x = Integer.parseInt(end.getChild("x").getValue());
+			endPoint.y = Integer.parseInt(end.getChild("y").getValue());
+
+			// previous rail
+			Element previous = currentRail.getChild("previous");
+			Point previousPoint = new Point();
+			previousPoint.x = Integer.parseInt(previous.getChild("x")
+					.getValue());
+			previousPoint.y = Integer.parseInt(previous.getChild("y")
+					.getValue());
+
+			// left rail
+			Element left = currentRail.getChild("left");
+			Point leftPoint = null;
+			if (left != null) {
+				leftPoint = new Point();
+				leftPoint.x = Integer.parseInt(left.getChild("x").getValue());
+				leftPoint.y = Integer.parseInt(left.getChild("y").getValue());
+			}
+
+			// right rail
+			Element right = currentRail.getChild("right");
+			Point rightPoint = null;
+			if (right != null) {
+				rightPoint = new Point();
+				rightPoint.x = Integer.parseInt(right.getChild("x").getValue());
+				rightPoint.y = Integer.parseInt(right.getChild("y").getValue());
+			}
+
+			if (startPoint.x == endPoint.x) {
+				int x = startPoint.x;
+
+				// verticale de haut en bas 0 -> Y
+				if (startPoint.y < endPoint.y) {
+					for (int y = startPoint.y; y <= endPoint.y; y++) {
+						Rail r = (Rail) this.map[y][x];
+
+						// si rail de debut
+						if (y == startPoint.y) {
+							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// si rail de fin
+						else if (y == endPoint.y) {
+							r.setPrevioustRail((Rail) this.map[y - 1][x]);
+
+							if (leftPoint != null)
+								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// sinon rail du milieu
+						else {
+							r.setPrevioustRail((Rail) this.map[y - 1][x]);
+							r.setRightRail((Rail) this.map[y + 1][x]);
+						}
+					}
+				}
+				// verticale de bas en haut Y -> 0
+				else {
+					for (int y = startPoint.y; y >= endPoint.y; y--) {
+						Rail r = (Rail) this.map[y][x];
+
+						// si rail de debut
+						if (y == startPoint.y) {
+							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// si rail de fin
+						else if (y == endPoint.y) {
+							r.setPrevioustRail((Rail) this.map[y + 1][x]);
+
+							if (leftPoint != null)
+								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// sinon rail du milieu
+						else {
+							r.setPrevioustRail((Rail) this.map[y + 1][x]);
+							r.setRightRail((Rail) this.map[y - 1][x]);
+
+						}
+					}
+				}
+			} else if (startPoint.y == endPoint.y) {
+				int y = startPoint.y;
+				// ligne de gauche à droite 0 -> X
+				if (startPoint.x < endPoint.x) {
+					for (int x = startPoint.x; x <= endPoint.x; x++) {
+						Rail r = (Rail) this.map[y][x];
+
+						// si rail de debut
+						if (x == startPoint.x) {
+							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// si rail de fin
+						else if (x == endPoint.x) {
+							r.setPrevioustRail((Rail) this.map[y][x - 1]);
+
+							if (leftPoint != null)
+								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// sinon rail du milieu
+						else {
+							r.setPrevioustRail((Rail) this.map[y][x - 1]);
+							r.setRightRail((Rail) this.map[y][x + 1]);
+						}
+					}
+				}
+				// ligne de droite à gauche X -> 0
+				else {
+					for (int x = startPoint.x; x >= endPoint.x; x--) {
+						Rail r = (Rail) this.map[y][x];
+
+						// si rail de debut
+						if (x == startPoint.x) {
+							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// si rail de fin
+						else if (x == endPoint.x) {
+							r.setPrevioustRail((Rail) this.map[y][x + 1]);
+
+							if (leftPoint != null)
+								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
+							if (rightPoint != null)
+								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+						}
+						// sinon rail du milieu
+						else {
+							r.setPrevioustRail((Rail) this.map[y][x + 1]);
+							r.setRightRail((Rail) this.map[y][x - 1]);
+						}
+					}
 				}
 			}
 		}

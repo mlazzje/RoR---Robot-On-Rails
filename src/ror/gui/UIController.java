@@ -15,99 +15,99 @@ import ror.core.algo.AlgStoreOrder;
 
 public class UIController implements Observer {
 
-    private RoRFrame rorFrame;
-    private SimulationManager simulationManager;
-    private Thread thread;
-    
-    public UIController() {
-	this.simulationManager = new SimulationManager();
-	this.rorFrame = new RoRFrame(this,
-		"Robot On Rails - Simulateur automatisé des stocks");
-    }
+	private RoRFrame rorFrame;
+	private SimulationManager simulationManager;
+	private Thread thread;
 
-    @Override
-    public void update(Observable o, Object arg) {
-	// TODO mettre à jour tous les composants graphiques en fonction de la
-	// simulation
-    }
-
-    public void setAlgMove(Integer algId) {
-	switch (algId) {
-	case 0:
-	    simulationManager.setiAlgMove(new AlgMoveEco());
-	    break;
-	case 1:
-	    simulationManager.setiAlgMove(new AlgMoveFast());
-	    break;
-	case 2:
-	    simulationManager.setiAlgMove(new AlgMoveAuto());
-	    break;
-	default:
-	    break;
+	public UIController() {
+		this.simulationManager = new SimulationManager();
+		this.rorFrame = new RoRFrame(this,
+				"Robot On Rails - Simulateur automatisé des stocks");
 	}
-    }
 
-    public void setAlgStore(Integer algId) {
-	switch (algId) {
-	case 0:
-	    simulationManager.setiAlgStore(new AlgStoreFifo());
-	    break;
-	case 1:
-	    simulationManager.setiAlgStore(new AlgStoreOrder());
-	    break;
-	default:
-	    break;
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO mettre à jour tous les composants graphiques en fonction de la
+		// simulation
 	}
-    }
 
-    public void setAlgDestocking(Integer algId) {
-	switch (algId) {
-	case 0:
-	    simulationManager.setiAlgDestocking(new AlgDestockingFifo());
-	    break;
-	case 1:
-	    simulationManager.setiAlgDestocking(new AlgDestockingOrder());
-	    break;
-	default:
-	    break;
+	public void setAlgMove(Integer algId) {
+		switch (algId) {
+		case 0:
+			simulationManager.setiAlgMove(new AlgMoveEco());
+			break;
+		case 1:
+			simulationManager.setiAlgMove(new AlgMoveFast());
+			break;
+		case 2:
+			simulationManager.setiAlgMove(new AlgMoveAuto());
+			break;
+		default:
+			break;
+		}
 	}
-    }
 
-    public void setEndSimulation() {
-	simulationManager.setEndSimulation();
-    }
+	public void setAlgStore(Integer algId) {
+		switch (algId) {
+		case 0:
+			simulationManager.setiAlgStore(new AlgStoreFifo());
+			break;
+		case 1:
+			simulationManager.setiAlgStore(new AlgStoreOrder());
+			break;
+		default:
+			break;
+		}
+	}
 
-    public void setNbRobot(Integer nbRobot) {
-	simulationManager.setNbRobot(nbRobot);
-    }
+	public void setAlgDestocking(Integer algId) {
+		switch (algId) {
+		case 0:
+			simulationManager.setiAlgDestocking(new AlgDestockingFifo());
+			break;
+		case 1:
+			simulationManager.setiAlgDestocking(new AlgDestockingOrder());
+			break;
+		default:
+			break;
+		}
+	}
 
-    public void setFile(File file) {
-	simulationManager.setFile(file);
-    }
+	public void setEndSimulation() {
+		simulationManager.setEndSimulation();
+	}
 
-    public void setRandomMode() {
-	simulationManager.setRandomMode();
-    }
+	public void setNbRobot(Integer nbRobot) {
+		simulationManager.setNbRobot(nbRobot);
+	}
 
-    public void stopSimulation() {
-	simulationManager.setStop();
-    }
+	public void setFile(File file) {
+		simulationManager.setFile(file);
+	}
 
-    public void pauseSimulation() {
-	simulationManager.setPause();
-    }
+	public void setRandomMode() {
+		simulationManager.setRandomMode();
+	}
 
-    public void startSimulation() {
-	this.thread = new Thread(this.simulationManager);
-	this.thread.start();
-    }
+	public void stopSimulation() {
+		simulationManager.setStop();
+	}
 
-    public void setSpeed(Float speed) {
-	simulationManager.setSpeed(speed);
-    }
+	public void pauseSimulation() {
+		simulationManager.setPause();
+	}
 
-    public SimulationManager getSimulationManager() {
-	return this.simulationManager;
-    }
+	public void startSimulation() {
+		this.thread = new Thread(this.simulationManager);
+		this.thread.start();
+	}
+
+	public void setSpeed(Float speed) {
+		simulationManager.setSpeed(speed);
+	}
+
+	public SimulationManager getSimulationManager() {
+		return this.simulationManager;
+	}
 
 }
