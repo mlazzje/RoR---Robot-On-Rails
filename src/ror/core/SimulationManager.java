@@ -416,14 +416,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			endPoint.x = Integer.parseInt(end.getChild("x").getValue());
 			endPoint.y = Integer.parseInt(end.getChild("y").getValue());
 
-			// previous rail
-			Element previous = currentRail.getChild("previous");
-			Point previousPoint = new Point();
-			previousPoint.x = Integer.parseInt(previous.getChild("x")
-					.getValue());
-			previousPoint.y = Integer.parseInt(previous.getChild("y")
-					.getValue());
-
 			// left rail
 			Element left = currentRail.getChild("left");
 			Point leftPoint = null;
@@ -449,27 +441,29 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				if (startPoint.y < endPoint.y) {
 					for (int y = startPoint.y; y <= endPoint.y; y++) {
 						Rail r = (Rail) this.map[y][x];
-
 						// si rail de debut
 						if (y == startPoint.y) {
-							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
-							if (rightPoint != null)
-								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							if (rightPoint != null) {
+								r.setRightRail((Rail) this.map[y + 1][x]);
+							}
 						}
 						// si rail de fin
 						else if (y == endPoint.y) {
-							r.setPrevioustRail((Rail) this.map[y - 1][x]);
-
-							if (leftPoint != null)
+							if (leftPoint != null) {
 								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
-							if (rightPoint != null)
+							}
+							if (rightPoint != null) {
 								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							}
 						}
 						// sinon rail du milieu
 						else {
-							r.setPrevioustRail((Rail) this.map[y - 1][x]);
 							r.setRightRail((Rail) this.map[y + 1][x]);
 						}
+						if (r.getLeftRail() != null)
+							r.getLeftRail().setPrevioustRail(r);
+						if (r.getRightRail() != null)
+							r.getRightRail().setPrevioustRail(r);
 					}
 				}
 				// verticale de bas en haut Y -> 0
@@ -479,25 +473,28 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 						// si rail de debut
 						if (y == startPoint.y) {
-							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
-							if (rightPoint != null)
-								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							if (rightPoint != null) {
+								r.setRightRail((Rail) this.map[y - 1][x]);
+							}
 						}
 						// si rail de fin
 						else if (y == endPoint.y) {
-							r.setPrevioustRail((Rail) this.map[y + 1][x]);
-
-							if (leftPoint != null)
+							if (leftPoint != null) {
 								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
-							if (rightPoint != null)
+							}
+							if (rightPoint != null) {
 								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							}
 						}
 						// sinon rail du milieu
 						else {
-							r.setPrevioustRail((Rail) this.map[y + 1][x]);
 							r.setRightRail((Rail) this.map[y - 1][x]);
-
 						}
+
+						if (r.getLeftRail() != null)
+							r.getLeftRail().setPrevioustRail(r);
+						if (r.getRightRail() != null)
+							r.getRightRail().setPrevioustRail(r);
 					}
 				}
 			} else if (startPoint.y == endPoint.y) {
@@ -509,24 +506,27 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 						// si rail de debut
 						if (x == startPoint.x) {
-							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
-							if (rightPoint != null)
-								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							if (rightPoint != null) {
+								r.setRightRail((Rail) this.map[y][x + 1]);
+							}
 						}
 						// si rail de fin
 						else if (x == endPoint.x) {
-							r.setPrevioustRail((Rail) this.map[y][x - 1]);
-
-							if (leftPoint != null)
+							if (leftPoint != null) {
 								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
-							if (rightPoint != null)
+							}
+							if (rightPoint != null) {
 								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							}
 						}
 						// sinon rail du milieu
 						else {
-							r.setPrevioustRail((Rail) this.map[y][x - 1]);
 							r.setRightRail((Rail) this.map[y][x + 1]);
 						}
+						if (r.getLeftRail() != null)
+							r.getLeftRail().setPrevioustRail(r);
+						if (r.getRightRail() != null)
+							r.getRightRail().setPrevioustRail(r);
 					}
 				}
 				// ligne de droite à gauche X -> 0
@@ -536,24 +536,28 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 						// si rail de debut
 						if (x == startPoint.x) {
-							r.setPrevioustRail((Rail) this.map[previousPoint.y][previousPoint.x]);
-							if (rightPoint != null)
-								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							if (rightPoint != null) {
+								r.setRightRail((Rail) this.map[y][x - 1]);
+							}
 						}
 						// si rail de fin
 						else if (x == endPoint.x) {
-							r.setPrevioustRail((Rail) this.map[y][x + 1]);
-
-							if (leftPoint != null)
+							if (leftPoint != null) {
 								r.setLeftRail((Rail) this.map[leftPoint.y][leftPoint.x]);
-							if (rightPoint != null)
+							}
+							if (rightPoint != null) {
 								r.setRightRail((Rail) this.map[rightPoint.y][rightPoint.x]);
+							}
 						}
 						// sinon rail du milieu
 						else {
-							r.setPrevioustRail((Rail) this.map[y][x + 1]);
 							r.setRightRail((Rail) this.map[y][x - 1]);
 						}
+
+						if (r.getLeftRail() != null)
+							r.getLeftRail().setPrevioustRail(r);
+						if (r.getRightRail() != null)
+							r.getRightRail().setPrevioustRail(r);
 					}
 				}
 			}
