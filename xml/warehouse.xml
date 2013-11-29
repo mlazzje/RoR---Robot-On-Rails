@@ -349,8 +349,8 @@
 		<x>0</x>
 		<y>6</y>
 		<robot_access>
-			<position>right</position>
-			<distance>1</distance>
+			<x>1</x>
+			<y>6</y>
 		</robot_access>
 	</input>
 
@@ -358,8 +358,8 @@
 		<x>45</x>
 		<y>6</y>
 		<robot_access>
-			<position>left</position>
-			<distance>1</distance>
+			<x>44</x>
+			<y>6</y>
 		</robot_access>
 	</output>
 
@@ -368,8 +368,7 @@
 	<!-- Armoire 1 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -383,8 +382,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -399,8 +397,7 @@
 	<!-- Armoire 2 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -414,8 +411,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -430,8 +426,7 @@
 	<!-- Armoire 3 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -445,8 +440,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -461,8 +455,7 @@
 	<!-- Armoire 4 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -476,8 +469,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>2</x>
@@ -492,8 +484,7 @@
 	<!-- Armoire 5 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -507,8 +498,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -523,8 +513,7 @@
 	<!-- Armoire 6 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -538,8 +527,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -554,8 +542,7 @@
 	<!-- Armoire 7 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -569,8 +556,7 @@
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -585,8 +571,7 @@
 	<!-- Armoire 8 -->
 	<column_row>
 		<robot_access>
-			<position>top</position>
-			<distance>1</distance>
+		-1
 		</robot_access>
 		<start>
 			<x>24</x>
@@ -594,14 +579,13 @@
 		</start>
 		<end>
 			<x>43</x>
-			<y>10</y>
+			<y>10</y>	
 		</end>
 	</column_row>
 
 	<column_row>
 		<robot_access>
-			<position>bottom</position>
-			<distance>1</distance>
+		1
 		</robot_access>
 		<start>
 			<x>24</x>
