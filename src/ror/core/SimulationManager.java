@@ -616,4 +616,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
     }
+    
+    public List<Order> getOrders()
+    {
+	return this.orders;
+    }
 }
