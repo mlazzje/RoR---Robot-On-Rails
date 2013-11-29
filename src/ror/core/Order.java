@@ -5,7 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Order implements Comparable<Order> {
-<<<<<<< HEAD
+
+    public static final Integer INIT = 0; // Commande passée
+    public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
+    public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
+    public static final Integer ACTIONNED = 3; // Toutes les actions sont créés
+    public static final Integer DONE = 4; // La commande a été livrée
+
     private Integer idOrder;
     private static Integer lastIdOrder = 0;
     private Integer status;
@@ -20,6 +26,7 @@ public class Order implements Comparable<Order> {
 	this.time = 0;
 	this.productsName = new ArrayList<String>();
 	this.products = new ArrayList<Product>();
+
     }
 
     public Integer getIdOrder() {
@@ -70,55 +77,29 @@ public class Order implements Comparable<Order> {
 	this.products.add(product);
     }
 
-    public String[] toWeirdString()
-    {
+    public String[] toWeirdString() {
 	Iterator<String> it = this.productsName.iterator();
 	String productsString = "";
 	String statusString;
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 	    String product = it.next();
 	    productsString = productsString.concat(product);
-	    if(it.hasNext()) {
+	    if (it.hasNext()) {
 		productsString = productsString.concat(", ");
 	    }
-=======
-    
-    public static final Integer INIT = 0; // Commande passée
-    public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
-    public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
-    public static final Integer ACTIONNED = 3; // Toutes les actions sont créés
-    public static final Integer DONE = 4; // La commande a été livrée
-        
-	private Integer idOrder;
-	private static Integer lastIdOrder = 0;
-	private Integer status;
-	private Integer time;
-	private List<String> productsName;
-	private List<Product> products;
 
-	public Order() {
-		Order.lastIdOrder++;
-		this.setIdOrder(Order.lastIdOrder);
-		this.status = 0;
-		this.time = 0;
-		this.productsName = new ArrayList<String>();
-		this.products = new ArrayList<Product>();
->>>>>>> a08ab6e4be7b1dd43bd337f13704e3af6739af38
 	}
-	
-	if(status == 0) {
+
+	if (status == 0) {
 	    statusString = "Initialisée";
-	}
-	else if(status == 1) {
+	} else if (status == 1) {
 	    statusString = "En attente";
-	}
-	else if(status == 2) {
+	} else if (status == 2) {
 	    statusString = "En cours";
-	}
-	else {
+	} else {
 	    statusString = "Terminé";
 	}
-	return new String[]{"#"+this.getIdOrder(), productsString, statusString};
+	return new String[] { "#" + this.getIdOrder(), productsString, statusString };
     }
 
     public float getRatePerform() {
