@@ -44,10 +44,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     private long startTime;
     private ArrayList<Product> stockProducts;
 
-
     public SimulationManager() {
 	this.map = new Map();
-	
+
 	this.robots = new ArrayList<Robot>();
 	this.orderSource = new OrderSource();
 	this.source = false;
@@ -101,24 +100,27 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	while (status != 0) {
 	    if (status == 1) // running
 	    {
-		ArrayList<Order> newOrders = new ArrayList<Order>();
-		ArrayList<Product> newProducts = new ArrayList<Product>();
+		ArrayList<Order> newOrders;
+		ArrayList<Product> newProducts;
 		if (!source) // random mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
-		    newProducts = SimulationManager.this.orderSource.getRandomProducts(newOrders, SimulationManager.this.stockProducts);
+		    SimulationManager.this.orders.addAll(newOrders);
+		    newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
+		    SimulationManager.this.orders.addAll(newOrders);
 		    newProducts = SimulationManager.this.orderSource.getScenartioProducts(SimulationManager.this.getUptime());
 		}
-		// add new orders to orders list
-		SimulationManager.this.orders.addAll(newOrders);
+		for (Product product : newProducts) {
+		    this.map.getInput().addProduct(product);
+		    this.stockProducts.add(product);
+		}
 
 		// add new products to stockProducts list
 		SimulationManager.this.stockProducts.addAll(newProducts);
-		
-		System.out.println("Orders = "+SimulationManager.this.orders);
+
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		/*
 		 * // get store and input actions for newProducts ArrayList<Action> newActions = SimulationManager.this.iAlgStore .getActions(newProducts, newOrders, SimulationManager.this.map);
@@ -136,7 +138,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    Thread.sleep((long) ( 3000-(SimulationManager.this.coeff * SimulationManager.this.speed)));
+		    Thread.sleep((long) (3000 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}

@@ -36,25 +36,30 @@ public class OrderSource {
     }
 
     public ArrayList<Product> getRandomProducts(ArrayList<Order> orders, ArrayList<Product> stock) {
+	if(orders.isEmpty())
+	    return new ArrayList<Product>();
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
-	// add all product name to productNamesInStock
+	ArrayList<String> productNamesInOrder = new ArrayList<String>();
+	Integer cpt = 0;
+	// Add all product name to productNamesInStock
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());
 	}
-
+	
 	for (Order order : orders) {
-	    // TODO substract productNames of order to productNamesInStock;
-	}
-
-	for (String string : productNamesInStock) {
-	    // one chance on productNamesInStock.size()*2 to add the product to
-	    // newProducts
-	    if (random(1, productNamesInStock.size() * 2) == 1) {
-		newProducts.add(new Product("Nom")); // TODO specify the product
-						     // name
-		// in the constructor
+	    for (String product : order.getProductsName()) {	// Parcours des produits des commandes en attente
+		if(productNamesInStock.contains(product)) {	// Si le produit est en stock, on le destock fictivement
+		    productNamesInStock.remove(product);
+		}
+		else						// Si le produit n'est pas disponible en stock
+		{
+		    if (random(1, 100) <= ((cpt)/orders.size())*100F) {	// Plus une commande est ancienne, plus elle a une chance de généré ses produits
+			productNamesInOrder.add(product);
+		    }
+		}
 	    }
+	    cpt++;
 	}
 
 	return newProducts;
@@ -64,14 +69,14 @@ public class OrderSource {
 	ArrayList<Order> newOrders = new ArrayList<Order>();
 	Integer nbOrdersToCreate = this.random(1, 5); // 1 a 5 commande(s) crée(s)
 	// 1 chance sur 20 de créer les commandes
-	if (random(1, 20) == 1) {
+	if (random(1, 15) == 1) {
 	    // Création des commandes
 	    for (int i = 0; i < nbOrdersToCreate; i++) {
 		Order order = new Order();
 		Integer nbProducts = this.random(1, 7);
 		// Ajout des produits à la commande
-		for(int j = 0 ; j < nbProducts ; j++) {
-		    order.addProductName(catalog.get(this.random(0, catalog.size()-1)));
+		for (int j = 0; j < nbProducts; j++) {
+		    order.addProductName(catalog.get(this.random(0, catalog.size() - 1)));
 		}
 		newOrders.add(order);
 	    }
