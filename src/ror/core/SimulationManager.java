@@ -341,25 +341,25 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// verticale de haut en bas 0 -> Y
 		if (startPoint.y < endPoint.y) {
 		    for (int y = startPoint.y; y <= endPoint.y; y++)
-			this.map[y][x] = new Rail(x, y, null, null, null, null);
+			this.map[y][x] = new Rail(x, y, null, null, new ArrayList<Rail>(), null);
 		}
 		// verticale de bas en haut Y -> 0
 		else {
 		    for (int y = startPoint.y; y >= endPoint.y; y--)
-			this.map[y][x] = new Rail(x, y, null, null, null, null);
+			this.map[y][x] = new Rail(x, y, null, null, new ArrayList<Rail>(), null);
 		}
 	    } else if (startPoint.y == endPoint.y) {
 		int y = startPoint.y;
 		// ligne de gauche à droite 0 -> X
 		if (startPoint.x < endPoint.x) {
 		    for (int x = startPoint.x; x <= endPoint.x; x++)
-			this.map[y][x] = new Rail(x, y, null, null, null, null);
+			this.map[y][x] = new Rail(x, y, null, null, new ArrayList<Rail>(), null);
 
 		}
 		// ligne de droite à gauche X -> 0
 		else {
 		    for (int x = startPoint.x; x >= endPoint.x; x--)
-			this.map[y][x] = new Rail(x, y, null, null, null, null);
+			this.map[y][x] = new Rail(x, y, null, null, new ArrayList<Rail>(), null);
 		}
 	    }
 	}
@@ -427,9 +427,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			    r.setRightRail((Rail) this.map[y + 1][x]);
 			}
 			if (r.getLeftRail() != null)
-			    r.getLeftRail().setPrevioustRail(r);
+			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
-			    r.getRightRail().setPrevioustRail(r);
+			    r.getRightRail().addPreviousRail(r);
 		    }
 		}
 		// verticale de bas en haut Y -> 0
@@ -458,9 +458,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			}
 
 			if (r.getLeftRail() != null)
-			    r.getLeftRail().setPrevioustRail(r);
+			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
-			    r.getRightRail().setPrevioustRail(r);
+			    r.getRightRail().addPreviousRail(r);
 		    }
 		}
 	    } else if (startPoint.y == endPoint.y) {
@@ -490,9 +490,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			    r.setRightRail((Rail) this.map[y][x + 1]);
 			}
 			if (r.getLeftRail() != null)
-			    r.getLeftRail().setPrevioustRail(r);
+			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
-			    r.getRightRail().setPrevioustRail(r);
+			    r.getRightRail().addPreviousRail(r);
 		    }
 		}
 		// ligne de droite à gauche X -> 0
@@ -521,9 +521,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			}
 
 			if (r.getLeftRail() != null)
-			    r.getLeftRail().setPrevioustRail(r);
+			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
-			    r.getRightRail().setPrevioustRail(r);
+			    r.getRightRail().addPreviousRail(r);
 		    }
 		}
 	    }
