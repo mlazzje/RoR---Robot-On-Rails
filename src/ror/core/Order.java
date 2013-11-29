@@ -5,6 +5,12 @@ import java.util.List;
 
 
 public class Order implements Comparable<Order> {
+    
+        private static final Integer INIT = 0; // Commande passée
+        private static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
+        private static final Integer INPROGRESS = 2; // Tous les produits sont disponibles et stockés
+        private static final Integer DONE = 3; // La commande a été livrée
+        
 	private Integer idOrder;
 	private static Integer lastIdOrder = 0;
 	private Integer status;
