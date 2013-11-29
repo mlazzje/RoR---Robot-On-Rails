@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -97,7 +98,7 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 
 	    frame.reColor();
 	    Rail rail = (Rail) this.rorElement;
-	    Rail previousRail = rail.getPrevioustRail();
+	    ArrayList<Rail> previousRails = rail.getPreviousRail();
 	    Rail rightRail = rail.getRightRail();
 	    Rail leftRail = rail.getLeftRail();
 	    JPanel parent = (JPanel) this.getParent();
@@ -105,9 +106,10 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 	    // JPanel previousRailPanel = (JPanel)
 	    // (parent.getComponentAt(previousRail.getX()*r.width,
 	    // previousRail.getY()*r.height));
-	    if (previousRail != null) {
-		JPanel previousRailPanel = (JPanel) parent.getComponent(previousRail.getX() + (previousRail.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
-		previousRailPanel.setBackground(Color.gray);
+	    for(Rail pr : previousRails)
+	    {
+		JPanel previousRailPanel = (JPanel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
+		previousRailPanel.setBackground(Color.gray);	    
 	    }
 
 	    JPanel rightRailPanel = (JPanel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
@@ -121,7 +123,6 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 	    this.setBackground(new Color(255, 102, 0));
 	    rightRailPanel.setBackground(new Color(102, 204, 0));
 	    System.out.println(rail.getX().toString() + "," + rail.getY().toString());
-	    System.out.println(previousRail.getX().toString() + "," + previousRail.getY().toString());
 
 	}
     }
