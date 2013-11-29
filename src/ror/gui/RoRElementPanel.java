@@ -88,14 +88,14 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 		// previousRail.getY()*r.height));
 
 		for (Rail pr : previousRails) {
-		    JPanel previousRailPanel = (JPanel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
+		    JPanel previousRailPanel = (JPanel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 		    previousRailPanel.setBackground(Color.gray);
 		}
 
-		JPanel rightRailPanel = (JPanel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
+		JPanel rightRailPanel = (JPanel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 
 		if (leftRail != null) {
-		    JPanel leftRailPanel = (JPanel) parent.getComponent(leftRail.getX() + (leftRail.getY() * frame.getUiController().getSimulationManager().getMap()[0].length));
+		    JPanel leftRailPanel = (JPanel) parent.getComponent(leftRail.getX() + (leftRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 		    leftRailPanel.setBackground(Color.green);
 		}
 		this.setBackground(new Color(255, 102, 0));

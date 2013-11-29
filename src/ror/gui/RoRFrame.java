@@ -155,7 +155,7 @@ public class RoRFrame extends JFrame {
 
 	// Map
 	mapPanel = new JPanel();
-	RoRElement[][] map = uiController.getSimulationManager().getMap();
+	RoRElement[][] map = uiController.getSimulationManager().getMap().getMap();
 	mapPanel.setLayout(new GridLayout(map.length, map[0].length));
 	float coeff = (float) 1.6;
 	mapPanel.setPreferredSize(new Dimension((int) (797 * coeff), (int) (213 * coeff)));
