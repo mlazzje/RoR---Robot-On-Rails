@@ -38,12 +38,6 @@ public class AlgDestockingFifo implements IAlgDestocking {
 						DestockingAction currentAction = new DestockingAction(
 								null, null, null, currentProduct);
 						actions.add(currentAction);
-						currentProduct.setStatus(2); // on met à jour le
-														// stockProducts, c'est
-														// de la simulation !
-														// C'est algoMove qui
-														// mettra a jour le vrai
-														// stockproducts
 						break; // on sort de la boucle on a trouvé notre produit
 								// pas besoin d'aller voir ailleurs
 					}
