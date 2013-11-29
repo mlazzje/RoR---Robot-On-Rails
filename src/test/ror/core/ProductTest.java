@@ -55,11 +55,16 @@ public class ProductTest {
 	@Test
 	public void testGetStatut() {
 		product = new Product("s");
+<<<<<<< HEAD
 		assertTrue(product.getStatus() == 0);
+=======
+		//assertTrue(product.getStatut() == 0);
+>>>>>>> GLC-36
 
 	}
 
 	@Test
+<<<<<<< HEAD
 	public void testsetStatus() {
 
 		product.setStatus(0);
@@ -69,6 +74,17 @@ public class ProductTest {
 		product.setStatus(2);
 		assertTrue(product.getStatus() == 2);
 
+=======
+	public void testSetStatut() {
+
+		/*product.setStatut(0);
+		assertTrue(product.getStatut() == 0);
+		product.setStatut(1);
+		assertTrue(product.getStatut() == 1);
+		product.setStatut(2);
+		assertTrue(product.getStatut() == 2);
+*/
+>>>>>>> GLC-36
 		// 0 free
 		// 1 waiting
 		// 2 booked
