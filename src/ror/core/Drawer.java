@@ -1,6 +1,9 @@
 package ror.core;
 
 public class Drawer {
+    
+    public static final Integer FREE = 0;
+    public static final Integer BOOKED = 1;
 
     private Integer positionInColumn;
     private Integer status;
@@ -10,7 +13,7 @@ public class Drawer {
     public Drawer(Column column, Integer positionInColumn) {
 	this.column = column;
 	this.positionInColumn = positionInColumn;
-	this.status = 1;
+	this.status = FREE;
 	this.product = null;
     }
 
@@ -44,6 +47,7 @@ public class Drawer {
 
     public void setProduct(Product product) {
 	this.product = product;
+	if (product == null) this.status = FREE;
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Order implements Comparable<Order> {
+<<<<<<< HEAD
     private Integer idOrder;
     private static Integer lastIdOrder = 0;
     private Integer status;
@@ -80,6 +81,29 @@ public class Order implements Comparable<Order> {
 	    if(it.hasNext()) {
 		productsString = productsString.concat(", ");
 	    }
+=======
+    
+    public static final Integer INIT = 0; // Commande passée
+    public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
+    public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
+    public static final Integer ACTIONNED = 3; // Toutes les actions sont créés
+    public static final Integer DONE = 4; // La commande a été livrée
+        
+	private Integer idOrder;
+	private static Integer lastIdOrder = 0;
+	private Integer status;
+	private Integer time;
+	private List<String> productsName;
+	private List<Product> products;
+
+	public Order() {
+		Order.lastIdOrder++;
+		this.setIdOrder(Order.lastIdOrder);
+		this.status = 0;
+		this.time = 0;
+		this.productsName = new ArrayList<String>();
+		this.products = new ArrayList<Product>();
+>>>>>>> a08ab6e4be7b1dd43bd337f13704e3af6739af38
 	}
 	
 	if(status == 0) {

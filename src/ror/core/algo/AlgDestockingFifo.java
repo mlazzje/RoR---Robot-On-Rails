@@ -15,34 +15,23 @@ public class AlgDestockingFifo implements IAlgDestocking {
 
 	@Override
 	public ArrayList<Action> getActions(ArrayList<Order> orders,
-			ArrayList<Product> stockProducts, Output output) {
-		
-		//TODO Output to delete ?
+			ArrayList<Product> stockProducts) {
 
 		ArrayList<Action> actions = new ArrayList<Action>();
 
 		Iterator<Order> itOrder = orders.iterator();
-
 		while (itOrder.hasNext()) { // Parcours les commandes
-			Order currentOrder = itOrder.next();
-			List<String> productsName = currentOrder.getProductsName();
-			Iterator<String> itProductName = productsName.iterator();
-			while (itProductName.hasNext()) { // Parcours les produits
-				String currentProductName = itProductName.next();
-				Iterator<Product> itTestProduct = stockProducts.iterator();
-				while (itTestProduct.hasNext()) {
-					Product currentProduct = itTestProduct.next();
-					if (currentProduct.getStatus() == 0
-							&& currentProduct.getName().equals(
-									currentProductName)) {
-						DestockingAction currentAction = new DestockingAction(
-								null, null, null, currentProduct);
+			Order currentOrder = itOrder.next(); // Commande actuelle
+			if(currentOrder.getStatus()==Order.READY_FOR_DESTOCKING) {
+				Iterator<Product> ProductsOrder = currentOrder.getProducts().iterator();
+				while (ProductsOrder.hasNext()) {
+					Product currentProduct = ProductsOrder.next();
+						DestockingAction currentAction = new DestockingAction(0, null, currentProduct);
 						actions.add(currentAction);
-						break; // on sort de la boucle on a trouvé notre produit
-								// pas besoin d'aller voir ailleurs
-					}
 				}
+
 			}
+			currentOrder.setStatus(Order.ACTIONNED);
 		}
 		return actions;
 	}

@@ -13,7 +13,7 @@ public class DestockingActionTest {
 
 	@Test
 	public void test() {
-		DestockingAction testAction = new DestockingAction(0, null, null, null);
+		DestockingAction testAction = new DestockingAction(0, null, null);
 		Robot testRobot = new Robot(null);
 		Drawer testDrawer = new Drawer(null, null);
 		Product testProduct = new Product(null);

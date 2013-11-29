@@ -14,7 +14,6 @@ import ror.core.actions.StoreAction;
 public class AlgStoreFifo implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, RoRElement[][] map) {
-
 		
 		ArrayList<Action> actions = new ArrayList<Action>();
 

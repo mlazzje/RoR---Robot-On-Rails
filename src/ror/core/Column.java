@@ -1,6 +1,7 @@
 package ror.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Column extends RoRElement {
@@ -10,6 +11,7 @@ public class Column extends RoRElement {
     private Integer positionInCabinet;
     private List<Drawer> drawerList;
     private Rail access;
+    private Drawer availablaDrawer;
 
     public Column(Cabinet cabinet, Integer x, Integer y, Integer positionInCabinet, Rail access) {
 	super(RoRElementTypes.Column, x, y);
@@ -28,7 +30,22 @@ public class Column extends RoRElement {
 	this.positionInCabinet = positionInCabinet;
     }
 
-    public Rail getAccess() {
+    public Drawer getAvailablaDrawer() {
+    	Iterator<Drawer> itDrawer = this.drawerList.iterator();
+    	while(itDrawer.hasNext()) {
+    		Drawer drawer = itDrawer.next();
+    		if(drawer.getStatus()==Drawer.FREE) {
+    			return drawer;
+    		}
+    	}
+		return null;
+	}
+
+	public void setAvailablaDrawer(Drawer availablaDrawer) {
+		this.availablaDrawer = availablaDrawer;
+	}
+
+	public Rail getAccess() {
 	return access;
     }
 
