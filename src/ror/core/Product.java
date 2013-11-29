@@ -3,8 +3,8 @@ package ror.core;
 public class Product {
     
 	public static final Integer DONE = 4;
-	public static final Integer INPROGRESS = 3;
-    public static final Integer BOOKED = 2;
+	public static final Integer BOOKED = 3;
+    public static final Integer STORED = 2;
     public static final Integer BEING_STORED = 1;
     public static final Integer FREE = 0;
     public static final Integer WAITING = -1;

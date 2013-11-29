@@ -18,8 +18,9 @@ public class Order implements Comparable<Order> {
     private Integer time;
     private List<String> productsName;
     private List<Product> products;
+    private List<Drawer> drawers;
 
-    public Order() {
+	public Order() {
 	Order.lastIdOrder++;
 	this.setIdOrder(Order.lastIdOrder);
 	this.status = 0;
@@ -28,6 +29,14 @@ public class Order implements Comparable<Order> {
 	this.products = new ArrayList<Product>();
 
     }
+	
+	public List<Drawer> getDrawers() {
+		return drawers;
+	}
+
+	public void setDrawers(List<Drawer> drawers) {
+		this.drawers = drawers;
+	}
 
     public Integer getIdOrder() {
 	return idOrder;

@@ -34,7 +34,7 @@ public class AlgStoreFifo implements IAlgStore {
 				}
 				StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
 				actions.add(currentAction);
-				currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts, c'est de la simulation ! C'est algoMove qui mettra a jour le vrai inputproducts
+				currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts, c'est de la simulation ! C'est algoMove qui mettra a jour le vrai input products
 			}
 		}
 		return actions;
