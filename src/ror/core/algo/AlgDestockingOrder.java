@@ -28,6 +28,7 @@ public class AlgDestockingOrder implements IAlgDestocking {
 
 		while (itOrder.hasNext()) { // Parcours les commandes
 			Order currentOrder = itOrder.next();
+			//if(currentOrder.getStatus()==2)
 			List<String> productsName = currentOrder.getProductsName();
 			Iterator<String> itProductName = productsName.iterator();
 			while (itProductName.hasNext()) { // Parcours les produits
