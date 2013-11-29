@@ -53,21 +53,21 @@ public class ProductTest {
 	}
 
 	@Test
-	public void testGetStatut() {
+	public void testgetStatus() {
 		product = new Product("s");
-		assertTrue(product.getStatut() == 0);
+		assertTrue(product.getStatus() == 0);
 
 	}
 
 	@Test
-	public void testSetStatut() {
+	public void testsetStatus() {
 
-		product.setStatut(0);
-		assertTrue(product.getStatut() == 0);
-		product.setStatut(1);
-		assertTrue(product.getStatut() == 1);
-		product.setStatut(2);
-		assertTrue(product.getStatut() == 2);
+		product.setStatus(0);
+		assertTrue(product.getStatus() == 0);
+		product.setStatus(1);
+		assertTrue(product.getStatus() == 1);
+		product.setStatus(2);
+		assertTrue(product.getStatus() == 2);
 
 		// 0 free
 		// 1 waiting
