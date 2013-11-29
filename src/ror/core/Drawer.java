@@ -47,6 +47,7 @@ public class Drawer {
 
     public void setProduct(Product product) {
 	this.product = product;
+	if (product == null) this.status = FREE;
     }
 
 }
