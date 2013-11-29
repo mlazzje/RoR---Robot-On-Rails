@@ -32,7 +32,7 @@ public class AlgDestockingOrder implements IAlgDestocking {
 						actions.add(currentAction);
 				}
 			}
-			currentOrder.setStatus(Order.ACTIONNED);
+			currentOrder.setStatus(Order.BEING_DESTOCKED);
 		}
 		return actions;
 	}

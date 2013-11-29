@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ror.core.Map;
 import ror.core.Order;
 import ror.core.Product;
 import ror.core.RoRElement;
@@ -13,7 +14,7 @@ import ror.core.actions.StoreAction;
 
 public class AlgStoreOrder implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
-			ArrayList<Order> orders, RoRElement[][] map) {
+			ArrayList<Order> orders, Map map) {
 		
 		ArrayList<Action> actions = new ArrayList<Action>();
 

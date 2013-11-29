@@ -5,8 +5,9 @@ public class Product {
 	public static final Integer DONE = 4;
 	public static final Integer INPROGRESS = 3;
     public static final Integer BOOKED = 2;
-    public static final Integer WAITING = 1;
+    public static final Integer BEING_STORED = 1;
     public static final Integer FREE = 0;
+    public static final Integer WAITING = -1;
     
     private String name;
     private Integer status;
@@ -15,7 +16,7 @@ public class Product {
 
     public Product(String name) {
 	this.name = name;
-	this.status = 0;
+	this.status = FREE;
 	this.order = null;
 	this.drawer = null;
     }

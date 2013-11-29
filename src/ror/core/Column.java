@@ -11,7 +11,7 @@ public class Column extends RoRElement {
     private Integer positionInCabinet;
     private List<Drawer> drawerList;
     private Rail access;
-    private Drawer availablaDrawer;
+    private Drawer availableDrawer;
 
     public Column(Cabinet cabinet, Integer x, Integer y, Integer positionInCabinet, Rail access) {
 	super(RoRElementTypes.Column, x, y);
@@ -30,7 +30,7 @@ public class Column extends RoRElement {
 	this.positionInCabinet = positionInCabinet;
     }
 
-    public Drawer getAvailablaDrawer() {
+    public Drawer getAvailableDrawer() {
     	Iterator<Drawer> itDrawer = this.drawerList.iterator();
     	while(itDrawer.hasNext()) {
     		Drawer drawer = itDrawer.next();
@@ -41,8 +41,8 @@ public class Column extends RoRElement {
 		return null;
 	}
 
-	public void setAvailablaDrawer(Drawer availablaDrawer) {
-		this.availablaDrawer = availablaDrawer;
+	public void setAvailableDrawer(Drawer availableDrawer) {
+		this.availableDrawer = availableDrawer;
 	}
 
 	public Rail getAccess() {
