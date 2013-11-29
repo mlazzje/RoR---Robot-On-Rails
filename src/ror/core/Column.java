@@ -11,8 +11,7 @@ public class Column extends RoRElement {
     private List<Drawer> drawerList;
     private Rail access;
 
-    public Column(Cabinet cabinet, Integer x, Integer y,
-	    Integer positionInCabinet, Rail access) {
+    public Column(Cabinet cabinet, Integer x, Integer y, Integer positionInCabinet, Rail access) {
 	super(RoRElementTypes.Column, x, y);
 	this.cabinet = cabinet;
 	this.positionInCabinet = positionInCabinet;
@@ -49,5 +48,9 @@ public class Column extends RoRElement {
 
     public void setCabinet(Cabinet cabinet) {
 	this.cabinet = cabinet;
+    }
+    
+    public List<Drawer> getDrawerList() {
+	return this.drawerList;
     }
 }

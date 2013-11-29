@@ -7,6 +7,7 @@ public class Rail extends RoRElement {
 	private Rail rightRail;
 	private Rail previous;
 	private Rail next;
+	private Robot robot;
 
 	// Setters and getters
 	public Rail getLeftRail() {
@@ -49,6 +50,15 @@ public class Rail extends RoRElement {
 		this.rightRail = rightRail;
 		this.previous = previousRail;
 		this.next = nextRail;
+		this.robot = new Robot(this);
+	}
+
+	public Robot getRobot() {
+	    return robot;
+	}
+
+	public void setRobot(Robot robot) {
+	    this.robot = robot;
 	}
 
 	// Methods
