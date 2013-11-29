@@ -35,11 +35,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     private OrderSource orderSource;
 
     // own attributes
-    private Float speed = (float) 0;
+    private Float speed = (float) 1;
     private Integer nbRobot = 0;
     private Integer status = 0;
     private boolean source;
-    private Integer coeff = 1000; // <==> 1 second
+    private Integer coeff = 2500; // <==> 1 second
     private long startTime;
 
     private ArrayList<Product> stockProducts;
@@ -56,6 +56,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.iAlgStore = new AlgStoreFifo();
 	this.iAlgDestocking = new AlgDestockingFifo();
 	this.iAlgMove = new AlgMoveEco();
+	this.orders = new ArrayList<Order>();
     }
 
     public Integer getStatus() {
@@ -97,13 +98,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    robots.add(new Robot(null)); // TODO ajouter le rail par defaut pour
 					 // le robot
 
-	this.stockProducts = new ArrayList<Product>();
-	this.orders = new ArrayList<Order>();
 	startTime = System.currentTimeMillis();
 	status = 1;
 	while (status != 0) {
-	    System.out.println("simulation manager loop ");
-	    System.out.println(status);
 	    if (status == 1) // running
 	    {
 		ArrayList<Order> newOrders = new ArrayList<Order>();
@@ -122,7 +119,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// add new products to stockProducts list
 		SimulationManager.this.stockProducts.addAll(newProducts);
-
+		
+		System.out.println("Orders = "+SimulationManager.this.orders);
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		/*
 		 * // get store and input actions for newProducts ArrayList<Action> newActions = SimulationManager.this.iAlgStore .getActions(newProducts, newOrders, SimulationManager.this.map);
@@ -135,12 +133,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		SimulationManager.this.updateIndicators();
 
 		// notify observers (UIController)
-		this.setChanged();
-		this.notifyObservers();
+		SimulationManager.this.setChanged();
+		SimulationManager.this.notifyObservers();
 
 		// sleep
 		try {
-		    Thread.sleep((int) (SimulationManager.this.coeff * SimulationManager.this.speed));
+		    Thread.sleep((long) ( 3000-(SimulationManager.this.coeff * SimulationManager.this.speed)));
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -615,5 +613,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    this.map[Integer.parseInt(elOutput.getChild("y").getValue().trim())][Integer.parseInt(elOutput.getChild("x").getValue().trim())] = output;
 	}
 
+    }
+
+    public ArrayList<Order> getOrders() {
+	return this.orders;
     }
 }
