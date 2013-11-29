@@ -2,9 +2,11 @@ package ror.core;
 
 public class Product {
     
-    private static final Integer BOOKED = 2;
-    private static final Integer WAITING = 1;
-    private static final Integer FREE = 0;
+	public static final Integer DONE = 4;
+	public static final Integer INPROGRESS = 3;
+    public static final Integer BOOKED = 2;
+    public static final Integer WAITING = 1;
+    public static final Integer FREE = 0;
     
     private String name;
     private Integer status;
@@ -40,8 +42,10 @@ public class Product {
      *  0 = Free
      *  1 = Waiting (not in stock)
      *  2 = Booked (for an order)
+     *  3 = In progress (assigned to an action of destocking)
+     *  4 = Done (in Ouput !)
      *
-     * @return      The status 0 = Free, 1 = Waiting, 2 = Booked
+     * @return      The status 0 = Free, 1 = Waiting, 2 = Booked, 3 = In progress, 4 = Done
      * @see         Diagramme Etats-transitions "Statut product"
      */
     public Integer getStatus() {
@@ -54,8 +58,10 @@ public class Product {
      *  0 = Free
      *  1 = Waiting (not in stock)
      *  2 = Booked (for an order)
+     *  3 = In progress (assigned to an action of destocking)
+     *  4 = Done (in Ouput !)
      *
-     * @param      The status 0 = Free, 1 = Waiting, 2 = Booked
+     * @return      The status 0 = Free, 1 = Waiting, 2 = Booked, 3 = In progress, 4 = Done
      * @see        Diagramme Etats-transitions "Statut product"
      */
     public void setStatus(Integer status) {

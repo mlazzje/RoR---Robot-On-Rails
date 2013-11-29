@@ -2,8 +2,8 @@ package ror.core;
 
 public class Drawer {
     
-    private static final Integer FREE = 0;
-    private static final Integer BOOKED = 1;
+    public static final Integer FREE = 0;
+    public static final Integer BOOKED = 1;
 
     private Integer positionInColumn;
     private Integer status;
