@@ -11,9 +11,7 @@ public class StopButton extends JButton implements MouseListener {
 
     public StopButton() {
 	super();
-	ImageIcon icon = new ImageIcon(new ImageIcon(
-		StartButton.class.getResource("/ressources/stop.png"))
-		.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/stop.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.setIcon(icon);
 	this.addMouseListener(this);
     }
@@ -21,8 +19,7 @@ public class StopButton extends JButton implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 	if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
-	    RoRFrame frame = (RoRFrame) this.getParent().getParent()
-		    .getParent().getParent();
+	    RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
 	    frame.getUiController().stopSimulation();
 	    frame.getAlgDestockingComboBox().setEnabled(true);
 	    frame.getAlgStoreComboBox().setEnabled(true);

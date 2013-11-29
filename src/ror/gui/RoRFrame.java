@@ -1,6 +1,5 @@
 package ror.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,11 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -171,7 +167,7 @@ public class RoRFrame extends JFrame {
 	bottomPanel.setPreferredSize(new Dimension(1280, 300));
 
 	// Liste des commandes
-	this.orderList = new OrderList();
+	this.orderList = new OrderList(this);
 	JScrollPane orderListPane = new JScrollPane(this.orderList);
 	bottomPanel.add(orderListPane);
 

@@ -31,6 +31,7 @@ public class Robot extends Observable {
 	timer = new Timer();
 	actions = new ArrayList<Action>();
 	rail = initRail;
+	initRail.setRobot(this);
     }
 
     public void stopSchedule() {
