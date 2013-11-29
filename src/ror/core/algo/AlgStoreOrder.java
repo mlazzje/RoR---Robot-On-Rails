@@ -14,7 +14,6 @@ import ror.core.actions.StoreAction;
 public class AlgStoreOrder implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, RoRElement[][] map) {
-		// TODO RoRElement[][] map to delete ?
 		
 		ArrayList<Action> actions = new ArrayList<Action>();
 
