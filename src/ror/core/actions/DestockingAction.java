@@ -9,9 +9,9 @@ public class DestockingAction extends Action {
 	private Drawer drawer;
 	private Product product;
 
-	public DestockingAction(Integer duration, Robot robot, Drawer drawer, Product product) {
+	public DestockingAction(Integer duration, Robot robot, Product product) {
 		super(duration, robot);
-		this.setDrawer(drawer);
+		this.setDrawer(product.getDrawer());
 		this.setProduct(product);
 	}
 

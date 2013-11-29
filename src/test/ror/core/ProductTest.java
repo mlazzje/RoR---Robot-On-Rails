@@ -14,7 +14,6 @@ import ror.core.Order;
 import ror.core.Product;
 
 public class ProductTest {
-
     public Product product;
 
     @BeforeClass
@@ -64,8 +63,8 @@ public class ProductTest {
 	/*
 	 * product.setStatut(0); assertTrue(product.getStatut() == 0); product.setStatut(1); assertTrue(product.getStatut() == 1); product.setStatut(2); assertTrue(product.getStatut() == 2);
 	 */// 0 free
-	// 1 waiting
-	// 2 booked
+	   // 1 waiting
+	   // 2 booked
     }
 
     @Test

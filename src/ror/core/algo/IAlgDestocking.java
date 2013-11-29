@@ -9,7 +9,7 @@ import ror.core.actions.Action;
 
 public interface IAlgDestocking {
 	public ArrayList<Action> getActions(ArrayList<Order> orders,
-			ArrayList<Product> stockProducts, Output output);
+			ArrayList<Product> stockProducts);
 	
 	
 }
