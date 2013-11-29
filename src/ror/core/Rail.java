@@ -1,67 +1,73 @@
 package ror.core;
 
+import java.util.ArrayList;
+
 public class Rail extends RoRElement {
 
-	// Properties
-	private Rail leftRail;
-	private Rail rightRail;
-	private Rail previous;
-	private Rail next;
-	private Robot robot;
+    // Properties
+    private Rail leftRail;
+    private Rail rightRail;
+    private ArrayList<Rail> previous;
+    private Rail next;
+    private Robot robot;
 
-	// Setters and getters
-	public Rail getLeftRail() {
-		return leftRail;
-	}
+    // Setters and getters
+    public Rail getLeftRail() {
+	return leftRail;
+    }
 
-	public void setLeftRail(Rail leftRail) {
-		this.leftRail = leftRail;
-	}
+    public void setLeftRail(Rail leftRail) {
+	this.leftRail = leftRail;
+    }
 
-	public Rail getRightRail() {
-		return rightRail;
-	}
+    public Rail getRightRail() {
+	return rightRail;
+    }
 
-	public void setRightRail(Rail rightRail) {
-		this.rightRail = rightRail;
-	}
+    public void setRightRail(Rail rightRail) {
+	this.rightRail = rightRail;
+    }
 
-	public Rail getPrevioustRail() {
-		return previous;
-	}
+    public ArrayList<Rail> getPreviousRail() {
+	return previous;
+    }
 
-	public void setPrevioustRail(Rail previoustRail) {
-		this.previous = previoustRail;
-	}
+    public void setPreviousRail(ArrayList<Rail> previoustRail) {
+	this.previous = previoustRail;
+    }
 
-	public Rail getNextRail() {
-		return next;
-	}
+    public void addPreviousRail(Rail rail) {
+	this.previous.add(rail);
+    }
 
-	public void setNextRail(Rail nextRail) {
-		this.next = nextRail;
-	}
+    public Rail getNextRail() {
+	return next;
+    }
 
-	// Constructor
-	public Rail(Integer x, Integer y, Rail leftRail, Rail rightRail,
-			Rail previousRail, Rail nextRail) {
-		super(RoRElementTypes.Rail, x, y);
-		this.leftRail = leftRail;
-		this.rightRail = rightRail;
-		this.previous = previousRail;
-		this.next = nextRail;
-		this.robot = new Robot(this);
-	}
+    public void setNextRail(Rail nextRail) {
+	this.next = nextRail;
+    }
 
-	public Robot getRobot() {
-	    return robot;
-	}
+    // Constructor
+    public Rail(Integer x, Integer y, Rail leftRail, Rail rightRail, ArrayList<Rail> previousRail, Rail nextRail) {
+	super(RoRElementTypes.Rail, x, y);
+	this.leftRail = leftRail;
+	this.rightRail = rightRail;
+	this.previous = previousRail;
+	this.next = nextRail;
+	this.robot = new Robot(this);
+    }
 
-	public void setRobot(Robot robot) {
-	    this.robot = robot;
-	}
+    public Robot getRobot() {
+	return robot;
+    }
 
-	// Methods
+    public void setRobot(Robot robot) {
+	this.robot = robot;
+    }
 
-	// TODO MoveAction
+    // Methods
+
+    // TODO MoveAction
+
 }

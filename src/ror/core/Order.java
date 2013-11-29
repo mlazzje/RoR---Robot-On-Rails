@@ -3,7 +3,8 @@ package ror.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+
+public class Order implements Comparable<Order> {
 	private Integer idOrder;
 	private static Integer lastIdOrder = 0;
 	private Integer status;
@@ -66,5 +67,23 @@ public class Order {
 
 	public void addProduct(Product product) {
 		this.products.add(product);
+	}
+
+	public float getRatePerform() {
+		return this.products.size()/this.productsName.size();
+	}
+
+	@Override
+	public int compareTo(Order o) {
+		int resultat = 0;
+		
+		if (this.getRatePerform() > o.getRatePerform())
+			resultat = 1;
+		if (this.getRatePerform() < o.getRatePerform())
+			resultat = -1;
+		if (this.getRatePerform() == o.getRatePerform())
+			resultat = 0;
+		
+		return resultat;
 	}
 }
