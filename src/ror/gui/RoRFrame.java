@@ -1,11 +1,14 @@
 package ror.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,7 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
+import ror.core.Rail;
 import ror.core.RoRElement;
+import ror.core.algo.Dijkstra;
 
 @SuppressWarnings("serial")
 public class RoRFrame extends JFrame {
@@ -229,6 +234,36 @@ public class RoRFrame extends JFrame {
 	this.setLocationRelativeTo(null);
 	this.setResizable(false);
 	this.setVisible(true);
+
+	List<Rail> path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[1][1], (Rail)map[2][23]);
+	for (Rail rail : path) {
+	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
+	    previousRailPanel.setBackground(Color.orange);
+	}
+	try {
+	    Thread.sleep(3000);
+	} catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	this.reColor();
+	path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[1][1], (Rail)map[2][22]);
+	for (Rail rail : path) {
+	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
+	    previousRailPanel.setBackground(Color.orange);
+	}
+	try {
+	    Thread.sleep(3000);
+	} catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	this.reColor();
+	path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[2][44], (Rail)map[2][22]);
+	for (Rail rail : path) {
+	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
+	    previousRailPanel.setBackground(Color.orange);
+	}
     }
 
     public void reColor() {

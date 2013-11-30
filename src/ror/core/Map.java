@@ -10,6 +10,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
+import ror.core.algo.Dijkstra;
+
 public class Map {
 
     private ArrayList<Column> columns;
@@ -17,7 +19,7 @@ public class Map {
     private RoRElement[][] map;
     private Input input;
     private Output output;
-
+    private Dijkstra djikstra;
     public Map() {
 	this.map = new RoRElement[1][1]; // Taille par defaut
 	this.input = null;
@@ -26,6 +28,12 @@ public class Map {
 	this.rails = new ArrayList<Rail>();
 	File file = new File("xml/warehouse.xml");
 	this.setWareHouse(file);
+	this.djikstra = new Dijkstra(this.rails);	
+    }
+    
+    public ArrayList<Rail> getPath(Rail start, Rail end)
+    {
+	return (ArrayList<Rail>) djikstra.getPath(start, end);
     }
 
     public ArrayList<Rail> getRails() {
@@ -66,6 +74,76 @@ public class Map {
 
     public void setOutput(Output output) {
 	this.output = output;
+    }
+
+    
+    public ArrayList<Rail> CalculateBestPath(Rail startNode, Rail endPoint)
+    {
+	
+	ArrayList<Rail> open = new ArrayList<Rail>();
+	ArrayList<Rail> close = new ArrayList<Rail>();
+	
+        open.add(startNode);
+
+        while (open.size() > 0)
+        {
+            Rail best = open.remove(0);          // This is the best node
+            if (best.x == endPoint.x && best.y==endPoint.y)        // We are finished
+            {
+        	ArrayList<Rail> sol = new ArrayList<Rail>();  // The solution
+                while (best.getPreviousRail().get(0) != null)
+                {
+                    sol.add(best);
+                    System.out.println(best.x.toString()+","+best.y.toString());
+                    best = best.getPreviousRail().get(0);
+                }
+                return sol; // Return the solution when the parent is null (the first point)
+            }
+            close.add(best);
+            if(best.getLeftRail()!=null && !open.contains(best.getLeftRail()))
+            {
+        	open.add(best.getLeftRail());
+        	
+        	best.getLeftRail().getPreviousRail().remove(best);
+            }
+          
+            
+            if(best.getRightRail()!=null && !open.contains(best.getRightRail()))
+            {
+        	open.add(best.getRightRail());
+        	best.getRightRail().getPreviousRail().remove(best);
+
+            }
+        }
+        // No path found
+        return null;
+    }
+
+    
+    public void generateWeightTable(Rail start, Rail end) {
+
+	Object[][] weights = new Object[rails.size()][3];
+	Rail[] previous = new Rail[rails.size()];
+
+	int i = 0;
+	for (Object[] o : weights) {
+	    Rail r = rails.get(i);
+	    o[0] = r;
+	    if (r == start)
+		o[1] = 0;
+	    else
+		o[1] = 1; // poid égal à un (rail à rail = 1)
+	    o[2] = false;
+	    i++;
+	}
+	int totalWeight = 0;
+	for (Object[] o : weights) {
+	    totalWeight+=(Integer)o[1];
+	    if ((Boolean) o[2] == false) {
+		
+	    }
+	}
+
     }
 
     public void setWareHouse(File file) {

@@ -66,6 +66,13 @@ public class Rail extends RoRElement {
 	this.robot = robot;
     }
 
+    @Override
+    public String toString() {
+	return "Rail ("+this.getX()+","+this.getY()+")";
+    }
+    
+    
+
     // Methods
 
     // TODO MoveAction
