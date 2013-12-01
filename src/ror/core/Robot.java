@@ -52,9 +52,10 @@ public class Robot extends Observable {
 	    this.setOrderInProgress(null);
 	    timerTask = new TimerTask() {
 		public void run() {
+		    Robot.this.rail.setRobot(null);
 		    Robot.this.rail = ((MoveAction) action).getNext();
-		    Robot.this.consumption += 20 * speed; // TODO vérifier le
-							  // calcul
+		    Robot.this.rail.setRobot(Robot.this);
+		    Robot.this.consumption += 20 * speed; // TODO vérifier le calcul
 		    Robot.this.traveledDistance++;
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
@@ -103,8 +104,7 @@ public class Robot extends Observable {
 		public void run() {
 
 		    Robot.this.addProduct(inputAction.getProduct());
-		    inputAction.getInput().removeProduct(
-			    inputAction.getProduct());
+		    inputAction.getInput().removeProduct(inputAction.getProduct());
 
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
@@ -119,8 +119,7 @@ public class Robot extends Observable {
 		public void run() {
 
 		    Robot.this.removeProduct(outputAction.getProduct());
-		    outputAction.getOutput().addProduct(
-			    outputAction.getProduct());
+		    outputAction.getOutput().addProduct(outputAction.getProduct());
 
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();

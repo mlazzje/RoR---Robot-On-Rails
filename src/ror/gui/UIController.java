@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
+import ror.core.Robot;
 import ror.core.SimulationManager;
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;
@@ -30,6 +31,8 @@ public class UIController implements Observer {
 	// TODO mettre à jour tous les composants graphiques en fonction de la
 	// simulation
 	((OrderListModel) this.rorFrame.getOrderList().getModel()).fireTableDataChanged();
+	
+	this.rorFrame.reColor();
     }
 
     public void setAlgMove(Integer algId) {

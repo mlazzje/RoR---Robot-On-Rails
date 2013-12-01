@@ -55,7 +55,7 @@ public class Rail extends RoRElement {
 	this.rightRail = rightRail;
 	this.previous = previousRail;
 	this.next = nextRail;
-	this.robot = new Robot(this);
+	this.robot = null;
     }
 
     public Robot getRobot() {

@@ -1,5 +1,6 @@
 package ror.core;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.io.File;
@@ -8,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.JPanel;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -92,8 +95,22 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     @Override
     public void run() {
 	// add robots
-	for (int i = 0; i < nbRobot; i++)
-	    robots.add(new Robot(null)); // TODO ajouter le rail par defaut pour le robot
+	// TODO handle nbrobot combobox instead of set nbrobot here
+	nbRobot = 1;
+	for (int i = 0; i < nbRobot; i++) {
+	    Robot r = new Robot((Rail) getMap().getMap()[1][1]);
+	    r.addObserver(SimulationManager.this);
+	    robots.add(r);
+	}
+
+	// demo
+	List<Rail> path = getMap().getPath((Rail) getMap().getMap()[1][1], (Rail) getMap().getMap()[2][23]);
+	for (Rail rail : path) {
+	    MoveAction m = new MoveAction((int) (2500 * SimulationManager.this.speed), robots.get(0), null, rail);
+	    robots.get(0).addAction(m);
+
+	}
+	robots.get(0).executeAction(robots.get(0).getCurrentAction());
 
 	startTime = System.currentTimeMillis();
 	status = 1;
@@ -183,48 +200,50 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     public void update(Observable o, Object arg) { // called by a robot
 	if (o instanceof Robot) {
 	    Robot robot = (Robot) o;
-
+	    System.out.println(robot.getRail());
 	    // save the last action of the robot
 	    Action lastRobotAction = robot.getCurrentAction();
 
 	    // going to the next action
 	    robot.removeCurrentAction();
+	    if (robot.getCurrentAction() != null) {
+		robot.getCurrentAction().setDuration((int) (2500 * SimulationManager.this.speed));
+		// search if the next action is blocked by another robot
+		Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
 
-	    // search if the next action is blocked by another robot
-	    Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
+		// if no robot on the next rail
+		if (blockingRobot == null) {
 
-	    // if no robot on the next rail
-	    if (blockingRobot == null) {
+		    // execute next action
+		    robot.executeAction(robot.getCurrentAction());
 
-		// execute next action
-		robot.executeAction(robot.getCurrentAction());
+		    // get all robots waiting for the current robot to move
+		    ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
 
-		// get all robots waiting for the current robot to move
-		ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
+		    // then unblocks all robots blocked by this robot
+		    for (Robot r : waitingRobots) {
 
-		// then unblocks all robots blocked by this robot
-		for (Robot r : waitingRobots) {
+			// cancel the scheduling task of blocked robot
+			r.stopSchedule();
 
-		    // cancel the scheduling task of blocked robot
-		    r.stopSchedule();
+			// remove the PauseAction of the blocked robot
+			r.removeCurrentAction();
 
-		    // remove the PauseAction of the blocked robot
-		    r.removeCurrentAction();
-
-		    // then launch the next action
-		    r.executeAction(r.getCurrentAction());
+			// then launch the next action
+			r.executeAction(r.getCurrentAction());
+		    }
 		}
-	    }
-	    // else add long waiting action to robot (to be sure that the task
-	    // will
-	    // be cancel by the robot his waiting)
-	    else {
-		robot.executeAction(new PauseAction(100000, robot, blockingRobot));
-	    }
+		// else add long waiting action to robot (to be sure that the task
+		// will
+		// be cancel by the robot his waiting)
+		else {
+		    robot.executeAction(new PauseAction(100000, robot, blockingRobot));
+		}
 
-	    // notify observers (UIController)
-	    this.setChanged();
-	    this.notifyObservers();
+		// notify observers (UIController)
+		this.setChanged();
+		this.notifyObservers();
+	    }
 	}
     }
 

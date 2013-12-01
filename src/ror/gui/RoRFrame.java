@@ -235,41 +235,21 @@ public class RoRFrame extends JFrame {
 	this.setResizable(false);
 	this.setVisible(true);
 
-	List<Rail> path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[1][1], (Rail)map[2][23]);
-	for (Rail rail : path) {
-	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
-	    previousRailPanel.setBackground(Color.orange);
-	}
-	try {
-	    Thread.sleep(3000);
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
 	this.reColor();
-	path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[1][1], (Rail)map[2][22]);
-	for (Rail rail : path) {
-	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
-	    previousRailPanel.setBackground(Color.orange);
-	}
-	try {
-	    Thread.sleep(3000);
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	this.reColor();
-	path = this.getUiController().getSimulationManager().getMap().getPath((Rail)map[2][44], (Rail)map[2][22]);
-	for (Rail rail : path) {
-	    JPanel previousRailPanel = (JPanel) mapPanel.getComponent(rail.getX() + (rail.getY() * map[0].length));
-	    previousRailPanel.setBackground(Color.orange);
-	}
     }
 
     public void reColor() {
 	for (Component jPanel : mapPanel.getComponents()) {
-	    RoRElementPanel r = (RoRElementPanel) jPanel;
-	    r.reColor();
+	    RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel;
+	    if (rorElementPanel.getRorElement() instanceof Rail) {
+		Rail rail = (Rail) rorElementPanel.getRorElement();
+		if (rail.getRobot() != null)
+		    rorElementPanel.setBackground(Color.black);
+		else
+		    rorElementPanel.reColor();
+
+	    } else
+		rorElementPanel.reColor();
 	}
     }
 

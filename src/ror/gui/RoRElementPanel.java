@@ -210,4 +210,14 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 	// TODO Auto-generated method stub
 
     }
+
+    public RoRElement getRorElement() {
+        return rorElement;
+    }
+
+    public void setRorElement(RoRElement rorElement) {
+        this.rorElement = rorElement;
+    }
+    
+    
 }
