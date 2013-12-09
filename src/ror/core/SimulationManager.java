@@ -104,12 +104,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	// demo
-	List<Rail> path = getMap().getPath((Rail) getMap().getMap()[1][1], (Rail) getMap().getMap()[2][23]);
-	for (Rail rail : path) {
-	    MoveAction m = new MoveAction((int) (2500 * SimulationManager.this.speed), robots.get(0), null, rail);
-	    robots.get(0).addAction(m);
-
-	}
+	/*
+	 * List<Rail> path = getMap().getPath((Rail) getMap().getMap()[1][1], (Rail) getMap().getMap()[2][23]); for (Rail rail : path) { MoveAction m = new MoveAction((int) (2500 * SimulationManager.this.speed), robots.get(0), null, rail); robots.get(0).addAction(m);
+	 * 
+	 * }
+	 */
+	PauseAction p = new PauseAction(1000, robots.get(0), null);
+	robots.get(0).addAction(p);
 	robots.get(0).executeAction(robots.get(0).getCurrentAction());
 
 	startTime = System.currentTimeMillis();
@@ -139,13 +140,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		SimulationManager.this.stockProducts.addAll(newProducts);
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
-		/*
-		 * // get store and input actions for newProducts ArrayList<Action> newActions = SimulationManager.this.iAlgStore .getActions(newProducts, newOrders, SimulationManager.this.map);
-		 * 
-		 * // get destocking and output actions for stockProducts newActions.addAll(SimulationManager.this.iAlgDestocking .getActions(newOrders, stockProducts, SimulationManager.this.output));
-		 * 
-		 * // update robot actions lists SimulationManager.this.iAlgMove. updateRobotsActions(newActions, SimulationManager.this.robots);
-		 */
+		ArrayList<Action> newActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
+		if(newActions==null)
+		    newActions = new ArrayList<Action>();
+		
+		newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
+		
+		if(newActions==null)
+		    newActions = new ArrayList<Action>();
+		SimulationManager.this.iAlgMove.updateRobotsActions(newActions, SimulationManager.this.robots, this.map);
+
 		// update statistic indicators
 		SimulationManager.this.updateIndicators();
 
@@ -207,7 +211,14 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    // going to the next action
 	    robot.removeCurrentAction();
 	    if (robot.getCurrentAction() != null) {
-		robot.getCurrentAction().setDuration((int) (2500 * SimulationManager.this.speed));
+		robot.getCurrentAction().setDuration((int) (1000 * SimulationManager.this.speed));
+
+		// aguillage du prochain rail
+		if (robot.getCurrentAction() instanceof MoveAction) {
+		    MoveAction moveAction = (MoveAction) robot.getCurrentAction();
+		    moveAction.getPrevious().setNextRail(moveAction.getNext());
+		}
+
 		// search if the next action is blocked by another robot
 		Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
 

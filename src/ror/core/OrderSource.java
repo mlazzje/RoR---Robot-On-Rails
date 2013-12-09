@@ -36,7 +36,7 @@ public class OrderSource {
     }
 
     public ArrayList<Product> getRandomProducts(ArrayList<Order> orders, ArrayList<Product> stock) {
-	if(orders.isEmpty())
+	if (orders.isEmpty())
 	    return new ArrayList<Product>();
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
@@ -46,20 +46,26 @@ public class OrderSource {
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());
 	}
-	
+
 	for (Order order : orders) {
-	    for (String product : order.getProductsName()) {	// Parcours des produits des commandes en attente
-		if(productNamesInStock.contains(product)) {	// Si le produit est en stock, on le destock fictivement
+	    for (String product : order.getProductsName()) { // Parcours des produits des commandes en attente
+		if (productNamesInStock.contains(product)) { // Si le produit est en stock, on le destock fictivement
 		    productNamesInStock.remove(product);
-		}
-		else						// Si le produit n'est pas disponible en stock
+		} else // Si le produit n'est pas disponible en stock
 		{
-		    if (random(1, 100) <= ((cpt)/orders.size())*100F) {	// Plus une commande est ancienne, plus elle a une chance de généré ses produits
-			productNamesInOrder.add(product);
+		    // Plus une commande est ancienne, plus elle a une chance de généré ses produits
+		    if (random(1, orders.size()) == 1) {
+			if (random(0, orders.size()*2) >= orders.indexOf(order)) {
+			    productNamesInOrder.add(product);
+			}
 		    }
 		}
 	    }
 	    cpt++;
+	}
+
+	for (String productName : productNamesInOrder) {
+	    newProducts.add(new Product(productName));
 	}
 
 	return newProducts;

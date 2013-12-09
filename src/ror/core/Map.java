@@ -288,7 +288,10 @@ public class Map {
 			if (r.getLeftRail() != null)
 			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
+			{
 			    r.getRightRail().addPreviousRail(r);
+			    r.setNextRail(r.getRightRail());
+			}
 		    }
 		}
 		// verticale de bas en haut Y -> 0
@@ -319,7 +322,10 @@ public class Map {
 			if (r.getLeftRail() != null)
 			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
+			{
 			    r.getRightRail().addPreviousRail(r);
+			    r.setNextRail(r.getRightRail());
+			}
 		    }
 		}
 	    } else if (startPoint.y == endPoint.y) {
@@ -351,7 +357,10 @@ public class Map {
 			if (r.getLeftRail() != null)
 			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
+			{
 			    r.getRightRail().addPreviousRail(r);
+			    r.setNextRail(r.getRightRail());
+			}
 		    }
 		}
 		// ligne de droite à gauche X -> 0
@@ -382,7 +391,10 @@ public class Map {
 			if (r.getLeftRail() != null)
 			    r.getLeftRail().addPreviousRail(r);
 			if (r.getRightRail() != null)
+			{
 			    r.getRightRail().addPreviousRail(r);
+			    r.setNextRail(r.getRightRail());
+			}
 		    }
 		}
 	    }

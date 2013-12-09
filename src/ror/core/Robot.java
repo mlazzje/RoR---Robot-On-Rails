@@ -31,6 +31,7 @@ public class Robot extends Observable {
 	timer = new Timer();
 	actions = new ArrayList<Action>();
 	rail = initRail;
+	products = new ArrayList<Product>();
 	initRail.setRobot(this);
     }
 
@@ -53,7 +54,8 @@ public class Robot extends Observable {
 	    timerTask = new TimerTask() {
 		public void run() {
 		    Robot.this.rail.setRobot(null);
-		    Robot.this.rail = ((MoveAction) action).getNext();
+		    if (((MoveAction) action).getNext() != null)
+			Robot.this.rail = ((MoveAction) action).getNext();
 		    Robot.this.rail.setRobot(Robot.this);
 		    Robot.this.consumption += 20 * speed; // TODO vérifier le calcul
 		    Robot.this.traveledDistance++;
@@ -88,6 +90,7 @@ public class Robot extends Observable {
 		public void run() {
 		    Drawer drawer = destockingAction.getDrawer();
 		    Robot.this.addProduct(drawer.getProduct());
+		    drawer.setStatus(Drawer.FREE);
 		    drawer.setProduct(null);
 
 		    Robot.this.setChanged();
@@ -197,5 +200,45 @@ public class Robot extends Observable {
 
     public void setOrderInProgress(Order orderInProgress) {
 	this.orderInProgress = orderInProgress;
+    }
+
+    public Rail getLastActionRail() {
+	Action lastAction;
+	if (this.actions.size() > 0) {
+	    lastAction = this.actions.get(this.actions.size() - 1);
+
+	    if (lastAction instanceof MoveAction) {
+		return ((MoveAction) lastAction).getNext();
+	    } else if (lastAction instanceof StoreAction) {
+		return ((StoreAction) lastAction).getDrawer().getColumn().getAccess();
+	    } else if (lastAction instanceof DestockingAction) {
+		return ((DestockingAction) lastAction).getDrawer().getColumn().getAccess();
+	    } else if (lastAction instanceof OutputAction) {
+		return ((OutputAction) lastAction).getOutput().getAccess();
+	    } else if (lastAction instanceof InputAction) {
+		return ((InputAction) lastAction).getInput().getAccess();
+	    } else
+		return this.rail;
+	} else
+	    return this.rail;
+    }
+
+    public Integer getLastActionSpaceAvailability() {
+	int count = this.products.size();
+
+	for (Action action : actions) {
+
+	    if (action instanceof StoreAction) {
+		count--;
+	    } else if (action instanceof DestockingAction) {
+		count++;
+	    } else if (action instanceof OutputAction) {
+		count--;
+	    } else if (action instanceof InputAction) {
+		count++;
+	    }
+	}
+
+	return 10 - count;
     }
 }
