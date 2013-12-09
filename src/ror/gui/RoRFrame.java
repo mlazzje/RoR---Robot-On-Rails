@@ -7,9 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -241,15 +243,7 @@ public class RoRFrame extends JFrame {
     public void reColor() {
 	for (Component jPanel : mapPanel.getComponents()) {
 	    RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel;
-	    if (rorElementPanel.getRorElement() instanceof Rail) {
-		Rail rail = (Rail) rorElementPanel.getRorElement();
-		if (rail.getRobot() != null)
-		    rorElementPanel.setBackground(Color.black);
-		else
-		    rorElementPanel.reColor();
-
-	    } else
-		rorElementPanel.reColor();
+	    rorElementPanel.reColor();
 	}
     }
 

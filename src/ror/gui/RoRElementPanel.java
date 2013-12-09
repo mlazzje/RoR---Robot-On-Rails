@@ -61,88 +61,73 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	this.addMouseListener(this);
 
 	this.rorElement = element;
-	//this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+	// this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 	reColor();
     }
 
     public void reColor() {
 	if (rorElement instanceof Rail) {
-	    Rail rail = (Rail)rorElement;
+	    Rail rail = (Rail) rorElement;
 	    // Rail Simple
-	    if(rail.getPreviousRail().size() == 1 && rail.getLeftRail() == null) {
-		
+	    if (rail.getPreviousRail().size() == 1 && rail.getLeftRail() == null) {
+
 		// Horizontal
-		if(rail.getRightRail().getY() == rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
+		if (rail.getRightRail().getY() == rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railH);
 		}
 		// Vertical
-		else if(rail.getRightRail().getY() != rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() == rail.getPreviousRail().get(0).getX()) {
+		else if (rail.getRightRail().getY() != rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() == rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railV);
 		}
 		// Virages Simples
-		else if(rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
+		else if (rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railDH);
-		}
-		else if(rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
+		} else if (rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railGH);
-		}
-		else if(rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
+		} else if (rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railDB);
-		}
-		else if(rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
+		} else if (rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
 		    this.setIcon(RoRElementPanel.railGB);
 		}
 	    }
 	    // Après Aiguillage
-	    else if(rail.getPreviousRail().size() > 1) {
-		if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY())
-		{
+	    else if (rail.getPreviousRail().size() > 1) {
+		if (rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY()) {
 		    this.setIcon(RoRElementPanel.railDHB);
-		}
-		else if(rail.getPreviousRail().get(0).getX() < rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY())
-		{
+		} else if (rail.getPreviousRail().get(0).getX() < rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY()) {
 		    this.setIcon(RoRElementPanel.railDGH);
-		}
-		else if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY())
-		{
+		} else if (rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY()) {
 		    this.setIcon(RoRElementPanel.railDGB);
-		}
-		else if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY())
-		{
+		} else if (rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY()) {
 		    this.setIcon(RoRElementPanel.railGHB);
 		}
 	    }
 	    // Avant Aiguillage
-	    else if(rail.getLeftRail() != null){
-		if(rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()) {
+	    else if (rail.getLeftRail() != null) {
+		if (rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()) {
 		    this.setIcon(RoRElementPanel.railGHB);
-		}
-		else if(rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()){
+		} else if (rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()) {
 		    this.setIcon(RoRElementPanel.railDGB);
-		}
-		else if(rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
-		    this.setIcon(RoRElementPanel.railDHB);		    
-		}
-		else if(rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
-		    this.setIcon(RoRElementPanel.railDGH);		    
+		} else if (rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
+		    this.setIcon(RoRElementPanel.railDHB);
+		} else if (rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
+		    this.setIcon(RoRElementPanel.railDGH);
 		}
 	    }
-	    
-	    //if(rail.getRobot() != null) {
-	    	if(rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
-        		JLabel robotLabel = new JLabel();
-        		robotLabel.setSize(new Dimension(16, 16));
-        		robotLabel.setIcon(robot);
-        		this.add(robotLabel);
-	    	}
-	    	else {
-        		JLabel robotLabel = new JLabel();
-        		robotLabel.setSize(new Dimension(16, 16));
-        		robotLabel.setIcon(roboti);
-        		this.add(robotLabel);
-	    	}
-	   //}
-	    
+	    JLabel robotLabel = new JLabel();
+	    robotLabel.setSize(new Dimension(16, 16));
+	    if(((Rail)this.getRorElement()).getRobot() != null) {
+		if (rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
+		    robotLabel.setIcon(robot);
+		} else {
+		    robotLabel.setIcon(roboti);
+		}
+		this.add(robotLabel);
+	    }
+	    else
+		this.removeAll();
+	    this.repaint();
+
 	} else if (rorElement instanceof Output) {
 	    this.setIcon(RoRElementPanel.output);
 	} else if (rorElement instanceof Input) {
@@ -165,7 +150,6 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	    // Clic sur un rail
 	    if (this.rorElement instanceof Rail) {
 
-		
 		frame.reColor();
 		Rail rail = (Rail) this.rorElement;
 		ArrayList<Rail> previousRails = rail.getPreviousRail();
@@ -302,12 +286,11 @@ public class RoRElementPanel extends JLabel implements MouseListener {
     }
 
     public RoRElement getRorElement() {
-        return rorElement;
+	return rorElement;
     }
 
     public void setRorElement(RoRElement rorElement) {
-        this.rorElement = rorElement;
+	this.rorElement = rorElement;
     }
-    
-    
+
 }
