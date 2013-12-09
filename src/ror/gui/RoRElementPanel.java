@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -30,9 +31,25 @@ import ror.core.Product;
 import ror.core.Rail;
 import ror.core.RoRElement;
 
-public class RoRElementPanel extends JPanel implements MouseListener {
+public class RoRElementPanel extends JLabel implements MouseListener {
 
     private RoRElement rorElement;
+    private static ImageIcon railEmpty = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/empty.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railDB = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-db.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railGB = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-gb.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railDH = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-dh.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railGH = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-gh.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railDGB = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-dgb.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railDGH = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-dgh.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railDHB = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-dhb.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railGHB = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-ghb.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railH = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-h.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon railV = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/rail-v.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon column = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/column.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon output = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/output.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon input = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/input.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+    private static ImageIcon robot = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/robot.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT));
+    private static ImageIcon roboti = new ImageIcon(new ImageIcon(RoRElementPanel.class.getResource("/ressources/robot-i.png")).getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT));
 
     public RoRElementPanel(RoRElement element) {
 	super();
@@ -44,24 +61,96 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 	this.addMouseListener(this);
 
 	this.rorElement = element;
-	this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+	//this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 	reColor();
     }
 
     public void reColor() {
 	if (rorElement instanceof Rail) {
-	    if (((Rail) this.rorElement).getRobot() != null) {
-		this.add(new RobotLabel());
+	    Rail rail = (Rail)rorElement;
+	    // Rail Simple
+	    if(rail.getPreviousRail().size() == 1 && rail.getLeftRail() == null) {
+		
+		// Horizontal
+		if(rail.getRightRail().getY() == rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railH);
+		}
+		// Vertical
+		else if(rail.getRightRail().getY() != rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() == rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railV);
+		}
+		// Virages Simples
+		else if(rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railDH);
+		}
+		else if(rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() > rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railGH);
+		}
+		else if(rail.getRightRail().getY() > rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railDB);
+		}
+		else if(rail.getRightRail().getY() < rail.getPreviousRail().get(0).getY() && rail.getRightRail().getX() < rail.getPreviousRail().get(0).getX()) {
+		    this.setIcon(RoRElementPanel.railGB);
+		}
 	    }
-	    this.setBackground(Color.blue);
+	    // Après Aiguillage
+	    else if(rail.getPreviousRail().size() > 1) {
+		if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY())
+		{
+		    this.setIcon(RoRElementPanel.railDHB);
+		}
+		else if(rail.getPreviousRail().get(0).getX() < rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() > rail.getPreviousRail().get(1).getY())
+		{
+		    this.setIcon(RoRElementPanel.railDGH);
+		}
+		else if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY())
+		{
+		    this.setIcon(RoRElementPanel.railDGB);
+		}
+		else if(rail.getPreviousRail().get(0).getX() > rail.getPreviousRail().get(1).getX() && rail.getPreviousRail().get(0).getY() < rail.getPreviousRail().get(1).getY())
+		{
+		    this.setIcon(RoRElementPanel.railGHB);
+		}
+	    }
+	    // Avant Aiguillage
+	    else if(rail.getLeftRail() != null){
+		if(rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()) {
+		    this.setIcon(RoRElementPanel.railGHB);
+		}
+		else if(rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() < rail.getLeftRail().getY()){
+		    this.setIcon(RoRElementPanel.railDGB);
+		}
+		else if(rail.getRightRail().getX() < rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
+		    this.setIcon(RoRElementPanel.railDHB);		    
+		}
+		else if(rail.getRightRail().getX() > rail.getLeftRail().getX() && rail.getRightRail().getY() > rail.getLeftRail().getY()) {
+		    this.setIcon(RoRElementPanel.railDGH);		    
+		}
+	    }
+	    
+	    //if(rail.getRobot() != null) {
+	    	if(rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
+        		JLabel robotLabel = new JLabel();
+        		robotLabel.setSize(new Dimension(16, 16));
+        		robotLabel.setIcon(robot);
+        		this.add(robotLabel);
+	    	}
+	    	else {
+        		JLabel robotLabel = new JLabel();
+        		robotLabel.setSize(new Dimension(16, 16));
+        		robotLabel.setIcon(roboti);
+        		this.add(robotLabel);
+	    	}
+	   //}
+	    
 	} else if (rorElement instanceof Output) {
-	    this.setBackground(Color.yellow);
+	    this.setIcon(RoRElementPanel.output);
 	} else if (rorElement instanceof Input) {
-	    this.setBackground(Color.green);
+	    this.setIcon(RoRElementPanel.input);
 	} else if (rorElement instanceof Column) {
-	    this.setBackground(Color.red);
+	    this.setIcon(RoRElementPanel.column);
 	} else {
-	    this.setBackground(Color.white);
+	    this.setIcon(RoRElementPanel.railEmpty);
 	}
     }
 
@@ -76,6 +165,7 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 	    // Clic sur un rail
 	    if (this.rorElement instanceof Rail) {
 
+		
 		frame.reColor();
 		Rail rail = (Rail) this.rorElement;
 		ArrayList<Rail> previousRails = rail.getPreviousRail();
@@ -83,19 +173,19 @@ public class RoRElementPanel extends JPanel implements MouseListener {
 		Rail leftRail = rail.getLeftRail();
 		JPanel parent = (JPanel) this.getParent();
 
-		// JPanel previousRailPanel = (JPanel)
+		// JLabel previousRailPanel = (JLabel)
 		// (parent.getComponentAt(previousRail.getX()*r.width,
 		// previousRail.getY()*r.height));
 
 		for (Rail pr : previousRails) {
-		    JPanel previousRailPanel = (JPanel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
+		    JLabel previousRailPanel = (JLabel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 		    previousRailPanel.setBackground(Color.gray);
 		}
 
-		JPanel rightRailPanel = (JPanel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
+		JLabel rightRailPanel = (JLabel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 
 		if (leftRail != null) {
-		    JPanel leftRailPanel = (JPanel) parent.getComponent(leftRail.getX() + (leftRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
+		    JLabel leftRailPanel = (JLabel) parent.getComponent(leftRail.getX() + (leftRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
 		    leftRailPanel.setBackground(Color.green);
 		}
 		this.setBackground(new Color(255, 102, 0));
