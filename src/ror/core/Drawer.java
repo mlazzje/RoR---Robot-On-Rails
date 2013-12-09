@@ -9,6 +9,7 @@ public class Drawer {
     private Integer status;
     private Column column;
     private Product product;
+    
 
     public Drawer(Column column, Integer positionInColumn) {
 	this.column = column;

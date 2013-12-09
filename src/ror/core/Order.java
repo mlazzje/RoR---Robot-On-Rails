@@ -9,7 +9,7 @@ public class Order implements Comparable<Order> {
     public static final Integer INIT = 0; // Commande passée
     public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
     public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
-    public static final Integer ACTIONNED = 3; // Toutes les actions sont créés
+    public static final Integer BEING_DESTOCKED = 3; // Toutes les actions sont créés
     public static final Integer DONE = 4; // La commande a été livrée
 
     private Integer idOrder;
@@ -18,8 +18,9 @@ public class Order implements Comparable<Order> {
     private Integer time;
     private List<String> productsName;
     private List<Product> products;
+    private List<Drawer> drawers;
 
-    public Order() {
+	public Order() {
 	Order.lastIdOrder++;
 	this.setIdOrder(Order.lastIdOrder);
 	this.status = 0;
@@ -28,6 +29,14 @@ public class Order implements Comparable<Order> {
 	this.products = new ArrayList<Product>();
 
     }
+	
+	public List<Drawer> getDrawers() {
+		return drawers;
+	}
+
+	public void setDrawers(List<Drawer> drawers) {
+		this.drawers = drawers;
+	}
 
     public Integer getIdOrder() {
 	return idOrder;
