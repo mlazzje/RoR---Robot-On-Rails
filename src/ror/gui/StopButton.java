@@ -18,6 +18,7 @@ public class StopButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+	System.out.println("Debug 1");
 	if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 	    RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
 	    frame.getUiController().stopSimulation();

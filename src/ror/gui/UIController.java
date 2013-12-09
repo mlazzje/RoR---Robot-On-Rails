@@ -1,8 +1,11 @@
 package ror.gui;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.ImageIcon;
 
 import ror.core.Robot;
 import ror.core.SimulationManager;
@@ -94,14 +97,20 @@ public class UIController implements Observer {
     }
 
     public void stopSimulation() {
+	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+	this.rorFrame.getStartButton().setIcon(icon);
 	simulationManager.setStop();
     }
 
     public void pauseSimulation() {
+	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+	this.rorFrame.getStartButton().setIcon(icon);
 	simulationManager.setPause();
     }
 
     public void startSimulation() {
+	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+	this.rorFrame.getStartButton().setIcon(icon);
 	this.thread = new Thread(this.simulationManager);
 	this.thread.start();
     }
