@@ -123,10 +123,13 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 		    robotLabel.setIcon(roboti);
 		}
 		this.add(robotLabel);
+		this.repaint();
 	    }
-	    else
+	    else if(this.getComponentCount()>0) //on supprime le robot sur les rails precedents
+	    {
 		this.removeAll();
-	    this.repaint();
+		this.repaint();
+	    }
 
 	} else if (rorElement instanceof Output) {
 	    this.setIcon(RoRElementPanel.output);
