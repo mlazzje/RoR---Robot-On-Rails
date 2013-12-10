@@ -44,7 +44,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     private Integer status = 0;
     private boolean wasInPause = false;
     private boolean source;
-    private Integer coeff = 2500; // <==> 1 second
+    private Integer coeff = 3000; // <==> 1 second
     private long startTime;
     private ArrayList<Product> stockProducts;
 
