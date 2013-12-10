@@ -13,7 +13,7 @@ public class Order implements Comparable<Order> {
     public static final Integer DONE = 4; // La commande a été livrée
 
     private Integer idOrder;
-    private static Integer lastIdOrder = 0;
+    private static Integer lastIdOrder = -2;	// TODO Bug : L'ID commence à 3 si cette variable est à 0
     private Integer status;
     private Integer time;
     private List<String> productsName;
