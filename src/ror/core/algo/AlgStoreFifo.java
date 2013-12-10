@@ -2,7 +2,6 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import ror.core.Column;
 import ror.core.Drawer;
@@ -16,25 +15,28 @@ public class AlgStoreFifo implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, Map map) {
 		
-		ArrayList<Action> actions = new ArrayList<Action>(); // init
-		Drawer drawer=null;
-		
+		ArrayList<Action> actions = new ArrayList<Action>();
 		Iterator<Product> itProduct = inputProducts.iterator();
+		Drawer drawer = null;
+		
+		// Pour chaque produit libre du input on va chercher une place de libre
 		while (itProduct.hasNext()) {
 			Product currentProduct = itProduct.next();
 			if (currentProduct.getStatus() == Product.FREE) {
 				for (Column currentColumn : map.getColumns()) {
-					if (currentColumn.getAvailableDrawer()!=null) {
-						drawer=currentColumn.getAvailableDrawer();
+				    drawer = currentColumn.getAvailableDrawer();
+					if (drawer!=null) 
+					{
+					    	currentProduct.setStatus(Product.BEING_STORED); // on passe le produit en attente de stockage
+						drawer.setStatus(Drawer.BOOKED); // on réserve le tiroir dans la colonne
 						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
 						actions.add(currentAction);
-						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts.
-						drawer.setStatus(Drawer.BOOKED); // on met à jour le drawer
 						break;
 					}
 				}
-				if(drawer==null) {
-					break;
+				if(drawer==null){
+				    // Si on arrive ici c'est qu'il n'y a plus de columns disponibles
+				    return actions;
 				}
 			}
 		}
