@@ -30,27 +30,25 @@ public class AlgDestockingOrder implements IAlgDestocking {
 		Iterator<Order> itOrder = orders.iterator();
 		while (itOrder.hasNext()) { // Parcours les commandes
 			Order currentOrder = itOrder.next(); // Commande actuelle
-			
-			if(stockProductsName.containsAll(currentOrder.getProductsName())) {
-				
+			if(stockProductsName.containsAll(currentOrder.getProductsName()) && currentOrder.getStatus() != Order.BEING_DESTOCKED) { // Si tous les produits de la commande sont dispos
 				Iterator<String> itProductName = currentOrder.getProductsName().iterator();
 				while (itProductName.hasNext()) { // Parcours les produits de la commande
 					String currentProductName = itProductName.next();
 					Iterator<Product> itTestProduct = stockProducts.iterator();
 					while (itTestProduct.hasNext()) {  // Parcours les produits en stock
 						Product currentProduct = itTestProduct.next();
-						if (currentProduct.getName().equals(currentProductName)) {
+						if (currentProduct.getName().equals(currentProductName) && currentProduct.getStatus()==Product.STORED ) {
 							DestockingAction currentAction = new DestockingAction(0, null, currentProduct);
+							currentOrder.addProduct(currentProduct); // on met à jour la classe Order
+							currentProduct.setStatus(Product.BOOKED);
 							actions.add(currentAction);
 							break; // on a récupéré le produit, on parcours le produit suivant de la commande
 						}
 					}
 				}
-				if(currentOrder.getRatePerform()!=1) { // On test que tous les produits soit affectés à la commande
-					System.out.println("Problem with the destocking FIFO : Order ID = " + currentOrder.getIdOrder() + " , Rate Perf = " + currentOrder.getRatePerform());
-					return null;
+				if(currentOrder.getRatePerform()==1) { // On test que tous les produits soit affectés à la commande
+					currentOrder.setStatus(Order.BEING_DESTOCKED);
 				}
-				currentOrder.setStatus(Order.BEING_DESTOCKED);
 			}
 		}
 		return actions;

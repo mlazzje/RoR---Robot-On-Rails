@@ -26,11 +26,11 @@ public class Drawer {
 	this.positionInColumn = positionInColumn;
     }
 
-    protected Integer getStatus() {
+    public Integer getStatus() {
 	return status;
     }
 
-    protected void setStatus(Integer status) {
+    public void setStatus(Integer status) {
 	this.status = status;
     }
 

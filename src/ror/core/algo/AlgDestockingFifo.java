@@ -2,10 +2,7 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import ror.core.Order;
-import ror.core.Output;
 import ror.core.Product;
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
@@ -13,49 +10,54 @@ import ror.core.algo.IAlgDestocking;
 
 public class AlgDestockingFifo implements IAlgDestocking {
 
-	@Override
-	public ArrayList<Action> getActions(ArrayList<Order> orders,
-			ArrayList<Product> stockProducts) {
+    @Override
+    public ArrayList<Action> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts) {
 
-		ArrayList<Action> actions = new ArrayList<Action>();
-		ArrayList<String> stockProductsName = new ArrayList<String>();
-
-		// if destocking FIFO et première commande tjrs pas prête on arrête tout !
-		Iterator<Product> itProductsStock = stockProducts.iterator();
-		while(itProductsStock.hasNext()) { // Parcours les produits du stocks
-			Product currentProductStock = itProductsStock.next();
-			stockProductsName.add(currentProductStock.getName());
-		}
-
-		Iterator<Order> itOrder = orders.iterator();
-		while (itOrder.hasNext()) { // Parcours les commandes
-			Order currentOrder = itOrder.next(); // Commande actuelle
-			
-			if(stockProductsName.containsAll(currentOrder.getProductsName())) {
-				
-				Iterator<String> itProductName = currentOrder.getProductsName().iterator();
-				while (itProductName.hasNext()) { // Parcours les produits de la commande
-					String currentProductName = itProductName.next();
-					Iterator<Product> itTestProduct = stockProducts.iterator();
-					while (itTestProduct.hasNext()) {  // Parcours les produits en stock
-						Product currentProduct = itTestProduct.next();
-						if (currentProduct.getName().equals(currentProductName)) {
-							DestockingAction currentAction = new DestockingAction(0, null, currentProduct);
-							actions.add(currentAction);
-							break; // on a récupéré le produit, on parcours le produit suivant de la commande
-						}
-					}
-				}
-				if(currentOrder.getRatePerform()!=1) { // On test que tous les produits soit affectés à la commande
-					System.out.println("Problem with the destocking FIFO : Order ID = " + currentOrder.getIdOrder() + " , Rate Perf = " + currentOrder.getRatePerform());
-					return null;
-				}
-				currentOrder.setStatus(Order.BEING_DESTOCKED);
-			}
-			else {
-				break; // On sort du while, Fifo on regarde pas les autres commandes
-			}
-		}
-		return actions;
+	ArrayList<Action> actions = new ArrayList<Action>();
+	ArrayList<Action> actionsToSend = new ArrayList<Action>();
+	
+	ArrayList<String> stockProductsName = new ArrayList<String>();
+	ArrayList<Product> storedProducts = new ArrayList<Product>();
+	
+	// On liste les produits stockés, et non réservés pour une commande
+	for (Product product : stockProducts) {
+	    if (product.getStatus()==Product.STORED) {
+		stockProductsName.add(product.getName());
+		storedProducts.add(product);
+	    }
 	}
+	
+	// On parcourt chacune des commandes en cours
+	for (Order currentOrder : orders) {
+	    //On réinitialise les actions
+	    actions.clear();
+	    // On ne prend en compte que les commandes initialisées ou encore en attente de produits
+	    if (currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
+		// On ne fait de traitement que si le stock contient tous les produits de la commande
+		if (stockProductsName.retainAll(currentOrder.getProductsName())) {
+		    // Pour chaque produit du stock
+		    for (Product stockedProduct : storedProducts) {
+			// Pour chaque produit de la commande
+			for(String orderProductName : currentOrder.getProductsName()){
+			    // Si leur nom est identique et que le produit est libre en stock, on le réserve et on ajoute une action
+			    if (orderProductName.equals(stockedProduct.getName()) && stockedProduct.getStatus()==Product.STORED) {
+				stockedProduct.setStatus(Product.BOOKED);
+				currentOrder.addProduct(stockedProduct);
+				DestockingAction currentAction = new DestockingAction(0, null, stockedProduct);
+				actions.add(currentAction);
+				break;
+			    }
+			}
+		    }
+		    // On vérifie que tous les produits sont ok
+		    if(currentOrder.getProductsName().size()==currentOrder.getProducts().size()){
+			actionsToSend.addAll(actions);
+		    }
+		} else {
+		    return actionsToSend;
+		}
+	    }
+	}
+	return actionsToSend;
+    }
 }
