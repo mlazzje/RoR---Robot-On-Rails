@@ -7,22 +7,20 @@ import javax.swing.JCheckBox;
 
 public class RandomCheckBox extends JCheckBox implements ActionListener {
 
-    public RandomCheckBox()
-    {
-	super();
-	this.setText("Mode aléatoire");
-    }
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-	if(this.getParent().getParent().getParent().getParent() instanceof RoRFrame)
-	{
-	    RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
-	    frame.getUiController().setRandomMode();
+	public RandomCheckBox() {
+		super();
+		this.setText("Mode aléatoire");
 	}
-	else
-	{
-	    System.err.println("Can't get parent RoRFrame");
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
+			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
+			frame.getUiController().setRandomMode();
+		} else {
+			System.err.println("Can't get parent RoRFrame");
+		}
 	}
-    }
 }

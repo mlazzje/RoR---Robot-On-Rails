@@ -1,46 +1,45 @@
 package ror.gui;
 
-import java.util.Iterator;
-
 import javax.swing.table.DefaultTableModel;
 
-import ror.core.Order;
-
 public class OrderListModel extends DefaultTableModel {
-    private RoRFrame frame;
 
-    public OrderListModel(RoRFrame frame) {
-	super();
-	this.frame = frame;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public String getColumnName(int col) {
-	switch (col) {
-	case 0:
-	    return "ID";
-	case 1:
-	    return "Produits";
-	case 2:
-	    return "État";
+	private RoRFrame frame;
+
+	public OrderListModel(RoRFrame frame) {
+		super();
+		this.frame = frame;
 	}
-	return "";
-    }
 
-    public int getRowCount() {
-	if(this.frame == null)
-	    return 0;
-	return this.frame.getUiController().getSimulationManager().getOrders().size();
-    }
+	public String getColumnName(int col) {
+		switch (col) {
+		case 0:
+			return "ID";
+		case 1:
+			return "Produits";
+		case 2:
+			return "État";
+		}
+		return "";
+	}
 
-    public int getColumnCount() {
-	return 3;
-    }
+	public int getRowCount() {
+		if (this.frame == null)
+			return 0;
+		return this.frame.getUiController().getSimulationManager().getOrders().size();
+	}
 
-    public Object getValueAt(int row, int col) {
-	return this.frame.getUiController().getSimulationManager().getOrders().get(row).toWeirdString()[col];
-    }
+	public int getColumnCount() {
+		return 3;
+	}
 
-    public boolean isCellEditable(int row, int column) {
-	return false;
-    }
+	public Object getValueAt(int row, int col) {
+		return this.frame.getUiController().getSimulationManager().getOrders().get(row).toWeirdString()[col];
+	}
+
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
 }

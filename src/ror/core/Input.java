@@ -37,9 +37,9 @@ public class Input extends RoRElement {
 	public Integer inputProductsCount() {
 		return this.productList.size();
 	}
-	
+
 	public List<Product> getProductList() {
-	    return this.productList;
+		return this.productList;
 	}
 
 }

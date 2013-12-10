@@ -36,10 +36,9 @@ public class Output extends RoRElement {
 	public Integer outputProductsCount() {
 		return this.productList.size();
 	}
-	
-	public List<Product> getProductList()
-	{
-	    return this.productList;
+
+	public List<Product> getProductList() {
+		return this.productList;
 	}
 
 }

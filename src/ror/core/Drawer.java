@@ -1,54 +1,54 @@
 package ror.core;
 
 public class Drawer {
-    
-    public static final Integer FREE = 0;
-    public static final Integer BOOKED = 1;
 
-    private Integer positionInColumn;
-    private Integer status;
-    private Column column;
-    private Product product;
-    
+	public static final Integer FREE = 0;
+	public static final Integer BOOKED = 1;
 
-    public Drawer(Column column, Integer positionInColumn) {
-	this.column = column;
-	this.positionInColumn = positionInColumn;
-	this.status = FREE;
-	this.product = null;
-    }
+	private Integer positionInColumn;
+	private Integer status;
+	private Column column;
+	private Product product;
 
-    protected Integer getPositionInColumn() {
-	return positionInColumn;
-    }
+	public Drawer(Column column, Integer positionInColumn) {
+		this.column = column;
+		this.positionInColumn = positionInColumn;
+		this.status = FREE;
+		this.product = null;
+	}
 
-    protected void setPositionInColumn(Integer positionInColumn) {
-	this.positionInColumn = positionInColumn;
-    }
+	protected Integer getPositionInColumn() {
+		return positionInColumn;
+	}
 
-    public Integer getStatus() {
-	return status;
-    }
+	protected void setPositionInColumn(Integer positionInColumn) {
+		this.positionInColumn = positionInColumn;
+	}
 
-    public void setStatus(Integer status) {
-	this.status = status;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public Column getColumn() {
-	return column;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public void setColumn(Column column) {
-	this.column = column;
-    }
+	public Column getColumn() {
+		return column;
+	}
 
-    public Product getProduct() {
-	return product;
-    }
+	public void setColumn(Column column) {
+		this.column = column;
+	}
 
-    public void setProduct(Product product) {
-	this.product = product;
-	if (product == null) this.status = FREE;
-    }
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+		if (product == null)
+			this.status = FREE;
+	}
 
 }

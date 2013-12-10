@@ -2,16 +2,13 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import ror.core.Column;
 import ror.core.Drawer;
 import ror.core.Map;
 import ror.core.Order;
 import ror.core.Product;
-import ror.core.RoRElement;
 import ror.core.actions.Action;
-import ror.core.actions.DestockingAction;
 import ror.core.actions.StoreAction;
 
 public class AlgStoreOrder implements IAlgStore {
@@ -65,7 +62,7 @@ public class AlgStoreOrder implements IAlgStore {
 	
 	public boolean bookDrawers (Order order,Map map) {
 		int nbDrawersToBook = order.getProductsName().size();
-		int nbDrawersDec = order.getProductsName().size();
+		//int nbDrawersDec = order.getProductsName().size();
 		int nbDrawersBooked = 0; // Simulation
 		Column firstColumn=null,secondColumn=null,thirdColumn=null; // 20 objets par commande ne peut pas être dans plus de 3 colonnes !
 		for( Column column : map.getColumns()) {

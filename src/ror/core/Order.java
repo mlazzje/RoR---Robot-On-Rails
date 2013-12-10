@@ -6,31 +6,31 @@ import java.util.List;
 
 public class Order implements Comparable<Order> {
 
-    public static final Integer INIT = 0; // Commande passée
-    public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
-    public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
-    public static final Integer BEING_DESTOCKED = 3; // Toutes les actions sont créés
-    public static final Integer DONE = 4; // La commande a été livrée
+	public static final Integer INIT = 0; // Commande passée
+	public static final Integer WAITING = 1; // Tous les produits ne sont pas dispo
+	public static final Integer READY_FOR_DESTOCKING = 2; // Tous les produits sont disponibles et stockés
+	public static final Integer BEING_DESTOCKED = 3; // Toutes les actions sont créés
+	public static final Integer DONE = 4; // La commande a été livrée
 
-    private Integer idOrder;
-    private static Integer lastIdOrder = -2;	// TODO Bug : L'ID commence à 3 si cette variable est à 0
-    private Integer status;
-    private Integer time;
-    private List<String> productsName;
-    private List<Product> products;
-    private List<Product> productsStored; // for algoStoreOrder
-    private List<Drawer> drawers;
+	private Integer idOrder;
+	private static Integer lastIdOrder = -2; // TODO Bug : L'ID commence à 3 si cette variable est à 0
+	private Integer status;
+	private Integer time;
+	private List<String> productsName;
+	private List<Product> products;
+	private List<Product> productsStored; // for algoStoreOrder
+	private List<Drawer> drawers;
 
 	public Order() {
-	Order.lastIdOrder++;
-	this.setIdOrder(Order.lastIdOrder);
-	this.status = 0;
-	this.time = 0;
-	this.productsName = new ArrayList<String>();
-	this.products = new ArrayList<Product>();
+		Order.lastIdOrder++;
+		this.setIdOrder(Order.lastIdOrder);
+		this.status = 0;
+		this.time = 0;
+		this.productsName = new ArrayList<String>();
+		this.products = new ArrayList<Product>();
 
-    }
-	
+	}
+
 	public List<Drawer> getDrawers() {
 		return drawers;
 	}
@@ -39,133 +39,133 @@ public class Order implements Comparable<Order> {
 		this.drawers = drawers;
 	}
 
-    public Integer getIdOrder() {
-	return idOrder;
-    }
+	public Integer getIdOrder() {
+		return idOrder;
+	}
 
-    private void setIdOrder(int idOrder) {
-	this.idOrder = idOrder;
-    }
+	private void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
+	}
 
-    public Integer getStatus() {
-	return status;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public void setStatus(int status) {
-	this.status = status;
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public Integer getTime() {
-	return time;
-    }
+	public Integer getTime() {
+		return time;
+	}
 
-    public void setTime(int time) {
-	this.time = time;
-    }
+	public void setTime(int time) {
+		this.time = time;
+	}
 
-    public List<String> getProductsName() {
-	return productsName;
-    }
+	public List<String> getProductsName() {
+		return productsName;
+	}
 
-    public void setProductsName(List<String> productsName) {
-	this.productsName = productsName;
-    }
+	public void setProductsName(List<String> productsName) {
+		this.productsName = productsName;
+	}
 
-    public void addProductName(String productName) {
-	this.productsName.add(productName);
-    }
+	public void addProductName(String productName) {
+		this.productsName.add(productName);
+	}
 
-    public List<Product> getProducts() {
-	return products;
-    }
+	public List<Product> getProducts() {
+		return products;
+	}
 
-    public void setProducts(List<Product> products) {
-	this.products = products;
-    }
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 
-    public void addProduct(Product product) {
-	this.products.add(product);
-    }
-    
-    public boolean wantsProduct(String productName) {
-    	if(this.nbProductNameWants(productName) > 0 && this.nbProductNameWants(productName) > this.nbProductWants(productName)) {
-    		return true;
-    	}
-    	return false;
-    }
-    
-    private int nbProductNameWants(String productName) {
-    	int nb=0;
-    	for (String prodName : this.productsName) {
-    		if(prodName==productName) {
-    			nb++;
-    		}
-    	}
-    	return nb;
-    }
-    
-    private int nbProductWants(String productName) {
-    	int nb=0;
-    	for (Product prod : this.productsStored) {
-    		if(prod.getName()==productName) {
-    			nb++;
-    		}
-    	}
-    	return nb;
-    }
+	public void addProduct(Product product) {
+		this.products.add(product);
+	}
 
-    public List<Product> getProductsStored() {
+	public boolean wantsProduct(String productName) {
+		if (this.nbProductNameWants(productName) > 0 && this.nbProductNameWants(productName) > this.nbProductWants(productName)) {
+			return true;
+		}
+		return false;
+	}
+
+	private int nbProductNameWants(String productName) {
+		int nb = 0;
+		for (String prodName : this.productsName) {
+			if (prodName == productName) {
+				nb++;
+			}
+		}
+		return nb;
+	}
+
+	private int nbProductWants(String productName) {
+		int nb = 0;
+		for (Product prod : this.productsStored) {
+			if (prod.getName() == productName) {
+				nb++;
+			}
+		}
+		return nb;
+	}
+
+	public List<Product> getProductsStored() {
 		return productsStored;
 	}
 
 	public void setProductsStored(List<Product> productsStored) {
 		this.productsStored = productsStored;
 	}
-	
+
 	public void addProductStored(Product productStored) {
 		this.productsStored.add(productStored);
 	}
 
 	public String[] toWeirdString() {
-	Iterator<String> it = this.productsName.iterator();
-	String productsString = "";
-	String statusString;
-	while (it.hasNext()) {
-	    String product = it.next();
-	    productsString = productsString.concat(product);
-	    if (it.hasNext()) {
-		productsString = productsString.concat(", ");
-	    }
+		Iterator<String> it = this.productsName.iterator();
+		String productsString = "";
+		String statusString;
+		while (it.hasNext()) {
+			String product = it.next();
+			productsString = productsString.concat(product);
+			if (it.hasNext()) {
+				productsString = productsString.concat(", ");
+			}
 
+		}
+
+		if (status == 0) {
+			statusString = "Initialisée";
+		} else if (status == 1) {
+			statusString = "En attente";
+		} else if (status == 2) {
+			statusString = "En cours";
+		} else {
+			statusString = "Terminé";
+		}
+		return new String[] { "#" + this.getIdOrder(), productsString, statusString };
 	}
 
-	if (status == 0) {
-	    statusString = "Initialisée";
-	} else if (status == 1) {
-	    statusString = "En attente";
-	} else if (status == 2) {
-	    statusString = "En cours";
-	} else {
-	    statusString = "Terminé";
+	public float getRatePerform() {
+		return this.products.size() / this.productsName.size();
 	}
-	return new String[] { "#" + this.getIdOrder(), productsString, statusString };
-    }
 
-    public float getRatePerform() {
-    	return this.products.size() / this.productsName.size();
-    }
+	@Override
+	public int compareTo(Order o) {
+		int resultat = 0;
 
-    @Override
-    public int compareTo(Order o) {
-	int resultat = 0;
+		if (this.getRatePerform() > o.getRatePerform())
+			resultat = 1;
+		if (this.getRatePerform() < o.getRatePerform())
+			resultat = -1;
+		if (this.getRatePerform() == o.getRatePerform())
+			resultat = 0;
 
-	if (this.getRatePerform() > o.getRatePerform())
-	    resultat = 1;
-	if (this.getRatePerform() < o.getRatePerform())
-	    resultat = -1;
-	if (this.getRatePerform() == o.getRatePerform())
-	    resultat = 0;
-
-	return resultat;
-    }
+		return resultat;
+	}
 }
