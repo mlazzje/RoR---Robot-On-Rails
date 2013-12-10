@@ -120,6 +120,5 @@ public class AlgStoreOrder implements IAlgStore {
 		} else {
 			return true;
 		}
-		
 	}
 }
