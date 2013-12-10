@@ -75,9 +75,9 @@ public class Robot extends Observable {
 		public void run() {
 
 		    Drawer drawer = storeAction.getDrawer();
+		    storeAction.getProduct().setStatus(Product.STORED);
 		    Robot.this.removeProduct(storeAction.getProduct());
 		    drawer.setProduct(storeAction.getProduct());
-
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
 		}
@@ -107,7 +107,6 @@ public class Robot extends Observable {
 
 	    timerTask = new TimerTask() {
 		public void run() {
-
 		    Robot.this.addProduct(inputAction.getProduct());
 		    inputAction.getInput().removeProduct(inputAction.getProduct());
 
