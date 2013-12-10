@@ -41,7 +41,7 @@ public class OrderSource {
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
 	ArrayList<String> productNamesInOrder = new ArrayList<String>();
-	Integer cpt = 0;
+	Integer cpt = 0, cptProduct = 1;
 	// Add all product name to productNamesInStock
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());
@@ -55,8 +55,9 @@ public class OrderSource {
 		{
 		    // Plus une commande est ancienne, plus elle a une chance de généré ses produits
 		    if (random(1, orders.size()) == 1) {
-			if (random(0, orders.size()*2) >= orders.indexOf(order)) {
+			if (random(0, orders.size()*2) >= orders.indexOf(order) && cptProduct < 3) {
 			    productNamesInOrder.add(product);
+			    cptProduct++;
 			}
 		    }
 		}
@@ -95,7 +96,7 @@ public class OrderSource {
 	return new ArrayList<Order>();
     }
 
-    public ArrayList<Product> getScenartioProducts(Integer uptime) {
+    public ArrayList<Product> getScenarioProducts(Integer uptime) {
 	// TODO implement
 	return new ArrayList<Product>();
     }

@@ -116,7 +116,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	    }
 	    JLabel robotLabel = new JLabel();
 	    robotLabel.setSize(new Dimension(16, 16));
-	    if(((Rail)this.getRorElement()).getRobot() != null) {
+	    if (((Rail) this.getRorElement()).getRobot() != null) {
 		if (rail.getRightRail().getX() != rail.getPreviousRail().get(0).getX()) {
 		    robotLabel.setIcon(robot);
 		} else {
@@ -124,8 +124,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 		}
 		this.add(robotLabel);
 		this.repaint();
-	    }
-	    else if(this.getComponentCount()>0) //on supprime le robot sur les rails precedents
+	    } else if (this.getComponentCount() > 0) // on supprime le robot sur les rails precedents
 	    {
 		this.removeAll();
 		this.repaint();
@@ -182,46 +181,52 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	    // Clic sur un Input : Affichage de l'inventaire de l'Input
 	    else if (this.rorElement instanceof Input) {
 		frame.getInformationsPanel().removeAll();
-		frame.getInformationsPanel().setLayout(new GridLayout(11, 1));
+		frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
 		JLabel title = new JLabel("Détails point d'entrée");
 		title.setFont(h1Font);
 		title.setVerticalAlignment(JLabel.CENTER);
 		title.setHorizontalAlignment(JLabel.CENTER);
-
-		frame.getInformationsPanel().setLayout(new FlowLayout());
 		frame.getInformationsPanel().add(title);
 		// Gestion du cas où aucun produit n'est disponible
 		if (((Input) this.rorElement).getProductList().isEmpty()) {
 		    JLabel label = new JLabel("Aucun produit n'est présent");
+		    label.setVerticalAlignment(JLabel.CENTER);
+		    label.setHorizontalAlignment(JLabel.CENTER);
 		    frame.getInformationsPanel().add(label);
 		} else {
 		    Iterator<Product> it = ((Input) this.rorElement).getProductList().iterator();
 		    while (it.hasNext()) {
 			Product next = it.next();
-			frame.getInformationsPanel().add(new JLabel(next.getName()));
+			JLabel label = new JLabel(next.getName());
+			label.setVerticalAlignment(JLabel.CENTER);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			frame.getInformationsPanel().add(label);
 		    }
 		}
 		frame.pack();
 		frame.repaint();
 	    } else if (this.rorElement instanceof Output) {
 		frame.getInformationsPanel().removeAll();
-		frame.getInformationsPanel().setLayout(new GridLayout(11, 1));
+		frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
 		JLabel title = new JLabel("Détails point de sortie");
 		title.setFont(h1Font);
 		title.setVerticalAlignment(JLabel.CENTER);
 		title.setHorizontalAlignment(JLabel.CENTER);
-
-		frame.getInformationsPanel().setLayout(new FlowLayout());
 		frame.getInformationsPanel().add(title);
 		// Gestion du cas où aucun produit n'est disponible
 		if (((Output) this.rorElement).getProductList().isEmpty()) {
 		    JLabel label = new JLabel("Aucun produit n'est présent");
+		    label.setVerticalAlignment(JLabel.CENTER);
+		    label.setHorizontalAlignment(JLabel.CENTER);
 		    frame.getInformationsPanel().add(label);
 		} else {
 		    Iterator<Product> it = ((Input) this.rorElement).getProductList().iterator();
 		    while (it.hasNext()) {
 			Product next = it.next();
-			frame.getInformationsPanel().add(new JLabel(next.getName()));
+			JLabel label = new JLabel(next.getName());
+			label.setVerticalAlignment(JLabel.CENTER);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			frame.getInformationsPanel().add(label);
 		    }
 		}
 		frame.pack();
@@ -238,6 +243,8 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 		frame.getInformationsPanel().add(title);
 		if (((Column) this.rorElement).getDrawerList().isEmpty()) {
 		    JLabel label = new JLabel("Aucun produit n'est présent");
+		    label.setVerticalAlignment(JLabel.CENTER);
+		    label.setHorizontalAlignment(JLabel.CENTER);
 		    frame.getInformationsPanel().add(label);
 		} else {
 		    Iterator<Drawer> it = ((Column) this.rorElement).getDrawerList().iterator();

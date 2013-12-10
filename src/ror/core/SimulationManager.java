@@ -119,17 +119,19 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    if (status == 1) // running
 	    {
 		ArrayList<Order> newOrders;
-		ArrayList<Product> newProducts;
+		ArrayList<Product> newProducts = new ArrayList<Product>();
 		if (!source) // random mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
 		    SimulationManager.this.orders.addAll(newOrders);
-		    newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
+		    if (this.map.getInput().getProductList().size() < 12)
+			newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
 		    SimulationManager.this.orders.addAll(newOrders);
-		    newProducts = SimulationManager.this.orderSource.getScenartioProducts(SimulationManager.this.getUptime());
+		    if (this.map.getInput().getProductList().size() < 12)
+			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		}
 		for (Product product : newProducts) {
 		    this.map.getInput().addProduct(product);
@@ -141,12 +143,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		ArrayList<Action> newActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
-		if(newActions==null)
+		if (newActions == null)
 		    newActions = new ArrayList<Action>();
-		
+
 		newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
-		
-		if(newActions==null)
+
+		if (newActions == null)
 		    newActions = new ArrayList<Action>();
 		SimulationManager.this.iAlgMove.updateRobotsActions(newActions, SimulationManager.this.robots, this.map);
 

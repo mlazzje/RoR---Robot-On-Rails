@@ -150,6 +150,7 @@ public class RoRFrame extends JFrame {
 	this.robotComboBox = new RobotComboBox();
 	this.menuBar.add(this.robotComboBox);
 	this.randomCheckBox = new RandomCheckBox();
+	this.randomCheckBox.setSelected(true);
 	this.menuBar.add(randomCheckBox);
 	this.importButton = new ImportButton();
 	this.menuBar.add(importButton);
