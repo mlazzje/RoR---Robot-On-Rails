@@ -65,9 +65,60 @@ public class AlgStoreOrder implements IAlgStore {
 	
 	public boolean bookDrawers (Order order,Map map) {
 		int nbDrawersToBook = order.getProductsName().size();
+		int nbDrawersDec = order.getProductsName().size();
+		int nbDrawersBooked = 0; // Simulation
+		Column firstColumn=null,secondColumn=null,thirdColumn=null; // 20 objets par commande ne peut pas être dans plus de 3 colonnes !
 		for( Column column : map.getColumns()) {
-			
+			if(column.getAvailableDrawer()!=null) {
+				if(nbDrawersBooked==nbDrawersToBook) { break; }
+				if(nbDrawersBooked>0) { // Tkt pas ça marche ici
+					if (nbDrawersToBook-nbDrawersBooked >= 10 && column.getNbAvailableDrawers()!=10 && firstColumn!=null) { // pas assez de place dans la seconde colonne
+						nbDrawersBooked=0;
+						firstColumn=null; secondColumn=null; thirdColumn=null;
+					} else if (nbDrawersToBook-nbDrawersBooked < 10 && firstColumn != null && nbDrawersToBook-nbDrawersBooked>column.getNbAvailableDrawers()) { // pas assez de place dans la seconde colonne
+						nbDrawersBooked=0;
+						firstColumn=null; secondColumn=null; thirdColumn=null;
+					} else if (nbDrawersToBook-nbDrawersBooked < 10 && firstColumn != null && secondColumn != null && nbDrawersToBook-nbDrawersBooked>column.getNbAvailableDrawers()) { // Pas assez de place dans la troisième colonne
+						nbDrawersBooked=0;
+						firstColumn=null; secondColumn=null; thirdColumn=null;
+					} else {
+						// Book drawers
+						if(column.getNbAvailableDrawers()==10) { // Si colonne peut se remplir entièrement
+							if(firstColumn==null) {
+								firstColumn=column;
+							} else if(secondColumn==null) {
+								secondColumn=column;
+							} else if(thirdColumn==null) {
+								thirdColumn=column;
+							}
+							if(nbDrawersToBook-nbDrawersBooked<10) {
+								nbDrawersBooked+=nbDrawersToBook-nbDrawersBooked;
+							} else if (nbDrawersToBook-nbDrawersBooked>=10) {
+								nbDrawersBooked+=10;
+							}
+						} else if (nbDrawersToBook-nbDrawersBooked > column.getNbAvailableDrawers()) { // On remplit la première colonne ou la dernière
+							if(firstColumn==null) {
+								firstColumn=column;
+							} else if(secondColumn==null) {
+								secondColumn=column;
+							} else if(thirdColumn==null) {
+								thirdColumn=column;
+							}
+							nbDrawersBooked+=column.getNbAvailableDrawers();
+						}	
+					}
+				}
+				else if (nbDrawersBooked==0) {
+					nbDrawersBooked=column.getNbAvailableDrawers();
+					firstColumn=column;
+				}
+			}
 		}
-		return false;
+		
+		if(nbDrawersBooked!=nbDrawersToBook) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
