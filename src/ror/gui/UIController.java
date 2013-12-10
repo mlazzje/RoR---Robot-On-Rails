@@ -2,9 +2,11 @@ package ror.gui;
 
 import java.awt.Image;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 
 import ror.core.SimulationManager;
@@ -28,12 +30,23 @@ public class UIController implements Observer {
 		this.simulationManager.addObserver(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO mettre à jour tous les composants graphiques en fonction de la
-		// simulation
+		// Mise à jours de la liste des commandes
 		((OrderListModel) this.rorFrame.getOrderList().getModel()).fireTableDataChanged();
-
+		
+		// Mise à jours de la liste des logs
+		ArrayList<String> newLogs = simulationManager.getNewLogs();
+		DefaultListModel<String> model = (DefaultListModel<String>) this.rorFrame.getLogList().getModel();
+		for(String log : newLogs) {
+			//model.addElement(log);
+			model.add(0, log);
+		}
+		this.rorFrame.getLogList().setModel(model);
+		simulationManager.setNewLogs(new ArrayList<String>());
+		
+		//TODO Mise à jours des indicateurs
 		this.rorFrame.reColor();
 	}
 

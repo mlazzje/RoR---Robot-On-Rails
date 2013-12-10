@@ -6,8 +6,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import ror.core.actions.Action;
+import ror.core.actions.DestockingAction;
+import ror.core.actions.InputAction;
 import ror.core.actions.MoveAction;
+import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
+import ror.core.actions.StoreAction;
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgStoreFifo;
@@ -36,10 +40,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private Integer coeff = 3000; // <==> 1 second
 	private long startTime;
 	private ArrayList<Product> stockProducts;
+	private ArrayList<String> newLogs;
 
 	public SimulationManager() {
 		this.map = new Map();
-
+		this.setNewLogs(new ArrayList<String>());
 		this.robots = new ArrayList<Robot>();
 		this.orderSource = new OrderSource();
 		this.source = false;
@@ -211,6 +216,25 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	public void update(Observable o, Object arg) { // called by a robot
 		if (o instanceof Robot) {
 			Robot robot = (Robot) o;
+
+			// Traçage des actions des robots
+			if(robot.getCurrentAction() instanceof InputAction) {
+				InputAction action = (InputAction) robot.getCurrentAction();
+				this.newLogs.add("Robot prend "+action.getProduct().getName()+" au point d'entrée");
+			}
+			else if(robot.getCurrentAction() instanceof OutputAction) {
+				OutputAction action = (OutputAction) robot.getCurrentAction();
+				this.newLogs.add("Robot dépose "+action.getProduct().getName()+" au point de sortie");
+			}
+			else if(robot.getCurrentAction() instanceof StoreAction) {
+				StoreAction action = (StoreAction) robot.getCurrentAction();
+				this.newLogs.add("Robot dépose "+action.getProduct().getName()+" dans la colonne ("+action.getDrawer().getColumn().getX()+", "+action.getDrawer().getColumn().getY()+") dans le tiroir "+action.getDrawer().getPositionInColumn());
+			}
+			else if(robot.getCurrentAction() instanceof DestockingAction) {
+				DestockingAction action = (DestockingAction) robot.getCurrentAction();
+				this.newLogs.add("Robot prend "+action.getProduct().getName()+" dans la colonne ("+action.getDrawer().getColumn().getX()+", "+action.getDrawer().getColumn().getY()+") dans le tiroir "+action.getDrawer().getPositionInColumn());
+			}
+			
 			// save the last action of the robot
 			// Action lastRobotAction = robot.getCurrentAction();
 
@@ -334,5 +358,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public ArrayList<Order> getOrders() {
 		return this.orders;
+	}
+
+	public ArrayList<String> getNewLogs() {
+		return newLogs;
+	}
+
+	public void setNewLogs(ArrayList<String> newLogs) {
+		this.newLogs = newLogs;
 	}
 }

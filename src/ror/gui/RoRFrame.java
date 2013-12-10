@@ -179,7 +179,7 @@ public class RoRFrame extends JFrame {
 
 		// Traces
 		this.logList = new LogList();
-		bottomPanel.add(this.logList);
+		bottomPanel.add(new JScrollPane(this.logList));
 
 		// Informations
 		Font bFont = new Font(UIManager.getDefaults().getFont("TabbedPane.font").getFontName(), Font.BOLD, UIManager.getDefaults().getFont("TabbedPane.font").getSize());
