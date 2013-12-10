@@ -98,7 +98,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	// add robots
 	if (!this.wasInPause) {
 	    for (int i = 0; i < nbRobot; i++) {
-		Robot r = new Robot((Rail) getMap().getMap()[1+i][1]);
+		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1]);
 		r.addObserver(SimulationManager.this);
 		robots.add(r);
 	    }
@@ -153,7 +153,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		if (newActions == null)
 		    newActions = new ArrayList<Action>();
 
-		newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
+		// newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
 
 		if (newActions == null)
 		    newActions = new ArrayList<Action>();
