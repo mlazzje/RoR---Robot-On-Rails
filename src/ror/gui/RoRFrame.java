@@ -8,7 +8,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -19,8 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
+import ror.core.Input;
+import ror.core.Product;
 import ror.core.Rail;
 import ror.core.RoRElement;
+import ror.core.Robot;
 import ror.core.algo.Dijkstra;
 
 @SuppressWarnings("serial")
@@ -48,6 +53,7 @@ public class RoRFrame extends JFrame {
     private ImportFileChooser importFileChooser;
     private UIController uiController;
     private JPanel mapPanel;
+    private Object checkedElement;
 
     public StartButton getStartButton() {
 	return startButton;
@@ -246,6 +252,38 @@ public class RoRFrame extends JFrame {
 	    RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel;
 	    rorElementPanel.reColor();
 	}
+	if (this.checkedElement instanceof RoRElementPanel) {
+	    ((RoRElementPanel) this.checkedElement).dispatchEvent(new MouseEvent(((RoRElementPanel) this.checkedElement), MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), 0, 10, 10, 1, false));
+	} else if (this.checkedElement instanceof Robot) {
+	    Robot robot = (Robot) this.checkedElement;
+	    Font h1Font = new Font(UIManager.getDefaults().getFont("TabbedPane.font").getFontName(), Font.BOLD, UIManager.getDefaults().getFont("TabbedPane.font").getSize() + 2);
+
+	    this.getInformationsPanel().removeAll();
+	    this.getInformationsPanel().setLayout(new GridLayout(13, 1));
+	    JLabel title = new JLabel("Détails Robot");
+	    title.setFont(h1Font);
+	    title.setVerticalAlignment(JLabel.CENTER);
+	    title.setHorizontalAlignment(JLabel.CENTER);
+	    this.getInformationsPanel().add(title);
+	    // Gestion du cas où aucun produit n'est disponible
+	    if (robot.getProducts().isEmpty()) {
+		JLabel label = new JLabel("Aucun produit n'est présent");
+		label.setVerticalAlignment(JLabel.CENTER);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		this.getInformationsPanel().add(label);
+	    } else {
+		Iterator<Product> it = robot.getProducts().iterator();
+		while (it.hasNext()) {
+		    Product next = it.next();
+		    JLabel label = new JLabel(next.getName());
+		    label.setVerticalAlignment(JLabel.CENTER);
+		    label.setHorizontalAlignment(JLabel.CENTER);
+		    this.getInformationsPanel().add(label);
+		}
+	    }
+	    this.pack();
+	    this.repaint();
+	}
     }
 
     public ImportFileChooser getImportFileChooser() {
@@ -254,5 +292,13 @@ public class RoRFrame extends JFrame {
 
     public UIController getUiController() {
 	return uiController;
+    }
+
+    public Object getCheckedElement() {
+	return checkedElement;
+    }
+
+    public void setCheckedElement(Object checkedElement) {
+	this.checkedElement = checkedElement;
     }
 }

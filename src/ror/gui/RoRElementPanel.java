@@ -30,6 +30,7 @@ import ror.core.Output;
 import ror.core.Product;
 import ror.core.Rail;
 import ror.core.RoRElement;
+import ror.core.Robot;
 
 public class RoRElementPanel extends JLabel implements MouseListener {
 
@@ -146,37 +147,41 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 
 	if (this.getParent().getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 	    RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent().getParent();
-	    Font bFont = new Font(UIManager.getDefaults().getFont("TabbedPane.font").getFontName(), Font.BOLD, UIManager.getDefaults().getFont("TabbedPane.font").getSize());
 	    Font h1Font = new Font(UIManager.getDefaults().getFont("TabbedPane.font").getFontName(), Font.BOLD, UIManager.getDefaults().getFont("TabbedPane.font").getSize() + 2);
 
 	    // Clic sur un rail
 	    if (this.rorElement instanceof Rail) {
-
-		frame.reColor();
 		Rail rail = (Rail) this.rorElement;
-		ArrayList<Rail> previousRails = rail.getPreviousRail();
-		Rail rightRail = rail.getRightRail();
-		Rail leftRail = rail.getLeftRail();
-		JPanel parent = (JPanel) this.getParent();
+		if (rail.getRobot() != null) {
+		    frame.setCheckedElement(rail.getRobot());
+		    Robot robot = rail.getRobot();
 
-		// JLabel previousRailPanel = (JLabel)
-		// (parent.getComponentAt(previousRail.getX()*r.width,
-		// previousRail.getY()*r.height));
-
-		for (Rail pr : previousRails) {
-		    JLabel previousRailPanel = (JLabel) parent.getComponent(pr.getX() + (pr.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
-		    previousRailPanel.setBackground(Color.gray);
+		    frame.getInformationsPanel().removeAll();
+		    frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
+		    JLabel title = new JLabel("Détails Robot");
+		    title.setFont(h1Font);
+		    title.setVerticalAlignment(JLabel.CENTER);
+		    title.setHorizontalAlignment(JLabel.CENTER);
+		    frame.getInformationsPanel().add(title);
+		    // Gestion du cas où aucun produit n'est disponible
+		    if (robot.getProducts().isEmpty()) {
+			JLabel label = new JLabel("Aucun produit n'est présent");
+			label.setVerticalAlignment(JLabel.CENTER);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			frame.getInformationsPanel().add(label);
+		    } else {
+			Iterator<Product> it = robot.getProducts().iterator();
+			while (it.hasNext()) {
+			    Product next = it.next();
+			    JLabel label = new JLabel(next.getName());
+			    label.setVerticalAlignment(JLabel.CENTER);
+			    label.setHorizontalAlignment(JLabel.CENTER);
+			    frame.getInformationsPanel().add(label);
+			}
+		    }
+		    frame.pack();
+		    frame.repaint();
 		}
-
-		JLabel rightRailPanel = (JLabel) parent.getComponent(rightRail.getX() + (rightRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
-
-		if (leftRail != null) {
-		    JLabel leftRailPanel = (JLabel) parent.getComponent(leftRail.getX() + (leftRail.getY() * frame.getUiController().getSimulationManager().getMap().getMap()[0].length));
-		    leftRailPanel.setBackground(Color.green);
-		}
-		this.setBackground(new Color(255, 102, 0));
-
-		rightRailPanel.setBackground(new Color(102, 204, 0));
 	    }
 	    // Clic sur un Input : Affichage de l'inventaire de l'Input
 	    else if (this.rorElement instanceof Input) {
@@ -203,6 +208,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			frame.getInformationsPanel().add(label);
 		    }
 		}
+		frame.setCheckedElement(this);
 		frame.pack();
 		frame.repaint();
 	    } else if (this.rorElement instanceof Output) {
@@ -229,6 +235,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			frame.getInformationsPanel().add(label);
 		    }
 		}
+		frame.setCheckedElement(this);
 		frame.pack();
 		frame.repaint();
 	    } else if (this.rorElement instanceof Column) {
@@ -265,6 +272,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			cpt++;
 		    }
 		}
+		frame.setCheckedElement(this);
 		frame.pack();
 		frame.repaint();
 	    }

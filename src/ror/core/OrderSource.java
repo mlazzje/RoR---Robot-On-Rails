@@ -41,7 +41,7 @@ public class OrderSource {
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
 	ArrayList<String> productNamesInOrder = new ArrayList<String>();
-	Integer cpt = 0, cptProduct = 1;
+	Integer cpt = 0, cptProduct = 0;
 	// Add all product name to productNamesInStock
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());
@@ -55,7 +55,7 @@ public class OrderSource {
 		{
 		    // Plus une commande est ancienne, plus elle a une chance de généré ses produits
 		    if (random(1, orders.size()) == 1) {
-			if (random(0, orders.size()*2) >= orders.indexOf(order) && cptProduct < 3) {
+			if (random(0, orders.size()*2) >= orders.indexOf(order) && cptProduct < 1) {
 			    productNamesInOrder.add(product);
 			    cptProduct++;
 			}

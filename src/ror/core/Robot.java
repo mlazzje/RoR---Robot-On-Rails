@@ -36,7 +36,9 @@ public class Robot extends Observable {
     }
 
     public void stopSchedule() {
-	timerTask.cancel();
+	if(timerTask != null) {
+        	timerTask.cancel();
+	}
 	timer.cancel();
 	timer.purge();
 	timer = new Timer();

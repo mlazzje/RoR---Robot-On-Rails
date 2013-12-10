@@ -40,8 +40,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     // own attributes
     private Float speed = (float) 1;
-    private Integer nbRobot = 0;
+    private Integer nbRobot = 3;
     private Integer status = 0;
+    private boolean wasInPause = false;
     private boolean source;
     private Integer coeff = 2500; // <==> 1 second
     private long startTime;
@@ -95,12 +96,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     @Override
     public void run() {
 	// add robots
-	// TODO handle nbrobot combobox instead of set nbrobot here
-	nbRobot = 1;
-	for (int i = 0; i < nbRobot; i++) {
-	    Robot r = new Robot((Rail) getMap().getMap()[1][1]);
-	    r.addObserver(SimulationManager.this);
-	    robots.add(r);
+	if (!this.wasInPause) {
+	    for (int i = 0; i < nbRobot; i++) {
+		Robot r = new Robot((Rail) getMap().getMap()[1+i][1]);
+		r.addObserver(SimulationManager.this);
+		robots.add(r);
+	    }
 	}
 
 	// demo
@@ -118,6 +119,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	while (status != 0) {
 	    if (status == 1) // running
 	    {
+		if (wasInPause) {
+		    for (Robot r : this.robots) {
+			r.executeAction(r.getCurrentAction());
+		    }
+		    wasInPause = false;
+		}
 		ArrayList<Order> newOrders;
 		ArrayList<Product> newProducts = new ArrayList<Product>();
 		if (!source) // random mode
@@ -168,6 +175,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	    } else if (status == 2) // pause simulation
 	    {
+		for (Robot r : this.robots) {
+		    r.stopSchedule();
+		}
 		try {
 		    synchronized (this) {
 			this.wait();
@@ -176,6 +186,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    e.printStackTrace();
 		}
 	    }
+	}
+	for (Robot r : this.robots) {
+	    r.stopSchedule();
 	}
     }
 
@@ -196,6 +209,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     }
 
     public void setPlay() {
+	if (status == 2) {
+	    this.wasInPause = true;
+	}
 	status = 1;
 	synchronized (this) {
 	    this.notify();
@@ -206,7 +222,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     public void update(Observable o, Object arg) { // called by a robot
 	if (o instanceof Robot) {
 	    Robot robot = (Robot) o;
-	    System.out.println(robot.getRail());
 	    // save the last action of the robot
 	    Action lastRobotAction = robot.getCurrentAction();
 
