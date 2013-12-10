@@ -18,6 +18,7 @@ public class Order implements Comparable<Order> {
     private Integer time;
     private List<String> productsName;
     private List<Product> products;
+    private List<Product> productsStored; // for algoStoreOrder
     private List<Drawer> drawers;
 
 	public Order() {
@@ -85,8 +86,47 @@ public class Order implements Comparable<Order> {
     public void addProduct(Product product) {
 	this.products.add(product);
     }
+    
+    public boolean wantsProduct(String productName) {
+    	if(this.nbProductNameWants(productName) > 0 && this.nbProductNameWants(productName) > this.nbProductWants(productName)) {
+    		return true;
+    	}
+    	return false;
+    }
+    
+    private int nbProductNameWants(String productName) {
+    	int nb=0;
+    	for (String prodName : this.productsName) {
+    		if(prodName==productName) {
+    			nb++;
+    		}
+    	}
+    	return nb;
+    }
+    
+    private int nbProductWants(String productName) {
+    	int nb=0;
+    	for (Product prod : this.productsStored) {
+    		if(prod.getName()==productName) {
+    			nb++;
+    		}
+    	}
+    	return nb;
+    }
 
-    public String[] toWeirdString() {
+    public List<Product> getProductsStored() {
+		return productsStored;
+	}
+
+	public void setProductsStored(List<Product> productsStored) {
+		this.productsStored = productsStored;
+	}
+	
+	public void addProductStored(Product productStored) {
+		this.productsStored.add(productStored);
+	}
+
+	public String[] toWeirdString() {
 	Iterator<String> it = this.productsName.iterator();
 	String productsString = "";
 	String statusString;
@@ -112,7 +152,7 @@ public class Order implements Comparable<Order> {
     }
 
     public float getRatePerform() {
-	return this.products.size() / this.productsName.size();
+    	return this.products.size() / this.productsName.size();
     }
 
     @Override

@@ -26,15 +26,16 @@ public class AlgStoreFifo implements IAlgStore {
 				for (Column currentColumn : map.getColumns()) {
 					if (currentColumn.getAvailableDrawer()!=null) {
 						drawer=currentColumn.getAvailableDrawer();
+						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
+						actions.add(currentAction);
+						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts.
+						drawer.setStatus(Drawer.BOOKED); // on met à jour le drawer
 						break;
 					}
 				}
 				if(drawer==null) {
 					break;
 				}
-				StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
-				actions.add(currentAction);
-				currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts, c'est de la simulation ! C'est algoMove qui mettra a jour le vrai input products
 			}
 		}
 		return actions;

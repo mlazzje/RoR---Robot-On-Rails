@@ -40,6 +40,18 @@ public class Column extends RoRElement {
     	}
 		return null;
 	}
+    
+    public int getNbAvailableDrawers() {
+    	int nb=0;
+    	Iterator<Drawer> itDrawer = this.drawerList.iterator();
+    	while(itDrawer.hasNext()) {
+    		Drawer drawer = itDrawer.next();
+    		if(drawer.getStatus()==Drawer.FREE) {
+    			nb++;
+    		}
+    	}
+		return nb;
+	}
 
 	public void setAvailableDrawer(Drawer availableDrawer) {
 		this.availableDrawer = availableDrawer;

@@ -39,8 +39,10 @@ public class AlgDestockingFifo implements IAlgDestocking {
 					Iterator<Product> itTestProduct = stockProducts.iterator();
 					while (itTestProduct.hasNext()) {  // Parcours les produits en stock
 						Product currentProduct = itTestProduct.next();
-						if (currentProduct.getName().equals(currentProductName)) {
+						if (currentProduct.getName().equals(currentProductName) && currentProduct.getStatus()==Product.STORED) {
 							DestockingAction currentAction = new DestockingAction(0, null, currentProduct);
+							currentProduct.setStatus(Product.BOOKED);
+							currentOrder.addProduct(currentProduct);
 							actions.add(currentAction);
 							break; // on a récupéré le produit, on parcours le produit suivant de la commande
 						}
