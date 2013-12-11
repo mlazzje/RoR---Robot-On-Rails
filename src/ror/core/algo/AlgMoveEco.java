@@ -142,7 +142,7 @@ public class AlgMoveEco implements IAlgMove {
     public Robot getBestRobot(ArrayList<Robot> robots) {
 	Robot best = robots.get(0);
 	for (Robot robot : robots) {
-	    if (robot.getActions().size() > best.getActions().size())
+	    if (robot.getActions().size() < best.getActions().size())
 		best = robot;
 	}
 	return best;

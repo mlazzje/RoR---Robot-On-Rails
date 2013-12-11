@@ -104,9 +104,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	 * 
 	 * }
 	 */
-	PauseAction p = new PauseAction(1000, robots.get(0), null);
-	robots.get(0).addAction(p);
-	robots.get(0).executeAction(robots.get(0).getCurrentAction());
+
+	for (Robot robot : this.robots) {
+
+	    PauseAction p = new PauseAction(1000, robot, null);
+	    robot.addAction(p);
+	    robot.executeAction(robot.getCurrentAction());
+	}
 
 	startTime = System.currentTimeMillis();
 	status = 1;
@@ -162,7 +166,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    Thread.sleep((long) (3000 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
+		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -217,21 +221,23 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	if (o instanceof Robot) {
 	    Robot robot = (Robot) o;
 
-	    // Traçage des actions des robots
-	    if (robot.getCurrentAction() instanceof InputAction) {
-		InputAction action = (InputAction) robot.getCurrentAction();
-		this.newLogs.add("Robot prend " + action.getProduct().getName() + " au point d'entrée");
-	    } else if (robot.getCurrentAction() instanceof OutputAction) {
-		OutputAction action = (OutputAction) robot.getCurrentAction();
-		this.newLogs.add("Robot dépose " + action.getProduct().getName() + " au point de sortie");
-	    } else if (robot.getCurrentAction() instanceof StoreAction) {
-		StoreAction action = (StoreAction) robot.getCurrentAction();
-		this.newLogs.add("Robot dépose " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
-	    } else if (robot.getCurrentAction() instanceof DestockingAction) {
-		DestockingAction action = (DestockingAction) robot.getCurrentAction();
-		this.newLogs.add("Robot prend " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
-	    }
+	    synchronized (this.newLogs) {
 
+		// Traçage des actions des robots
+		if (robot.getCurrentAction() instanceof InputAction) {
+		    InputAction action = (InputAction) robot.getCurrentAction();
+		    this.newLogs.add("Robot prend " + action.getProduct().getName() + " au point d'entrée");
+		} else if (robot.getCurrentAction() instanceof OutputAction) {
+		    OutputAction action = (OutputAction) robot.getCurrentAction();
+		    this.newLogs.add("Robot dépose " + action.getProduct().getName() + " au point de sortie");
+		} else if (robot.getCurrentAction() instanceof StoreAction) {
+		    StoreAction action = (StoreAction) robot.getCurrentAction();
+		    this.newLogs.add("Robot dépose " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
+		} else if (robot.getCurrentAction() instanceof DestockingAction) {
+		    DestockingAction action = (DestockingAction) robot.getCurrentAction();
+		    this.newLogs.add("Robot prend " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
+		}
+	    }
 	    // save the last action of the robot
 	    // Action lastRobotAction = robot.getCurrentAction();
 
@@ -275,7 +281,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// will
 		// be cancel by the robot his waiting)
 		else {
-		    robot.executeAction(new PauseAction(1000000, robot, blockingRobot));
+		    System.out.println("robot block");
+		    robot.executeAction(new PauseAction(1000, robot, blockingRobot));
 		}
 
 		// notify observers (UIController)
@@ -348,8 +355,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    MoveAction moveAction = (MoveAction) action;
 	    for (Robot r : robots) {
 		if (r != robot) {
-		    if (moveAction.getNext() == robot.getRail()) {
-			return robot;
+		    if (moveAction.getNext() == r.getRail()) {
+			return r;
 		    }
 		}
 	    }
