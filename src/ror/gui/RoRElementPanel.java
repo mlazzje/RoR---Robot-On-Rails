@@ -55,7 +55,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	this.addMouseListener(this);
 
 	this.rorElement = element;
-	// this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+	this.setBorder(null);
 	reColor();
     }
 

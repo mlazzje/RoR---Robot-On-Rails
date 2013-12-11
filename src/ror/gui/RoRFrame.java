@@ -293,4 +293,8 @@ public class RoRFrame extends JFrame {
 	public void setCheckedElement(Object checkedElement) {
 		this.checkedElement = checkedElement;
 	}
+
+	public void setTotalConsumptionLabel(JLabel label) {
+	    this.totalConsumptionLabel = label;
+	}
 }

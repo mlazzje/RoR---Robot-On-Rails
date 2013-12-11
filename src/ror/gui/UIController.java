@@ -8,7 +8,9 @@ import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
+import ror.core.Robot;
 import ror.core.SimulationManager;
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;
@@ -47,8 +49,16 @@ public class UIController implements Observer {
 	    }
 	    this.rorFrame.getLogList().setModel(model);
 	    simulationManager.setNewLogs(new ArrayList<String>());
+	  
 	}
-
+	int cons = 0;
+	for(Robot robot : this.simulationManager.getRobots()) {
+	    cons += robot.getConsumption();
+	}
+	JLabel label = this.rorFrame.getTotalConsumptionLabel();
+	label.setText(cons+"W");
+	this.rorFrame.setTotalConsumptionLabel(label);
+	
 	// TODO Mise à jours des indicateurs
 	this.rorFrame.reColor();
     }

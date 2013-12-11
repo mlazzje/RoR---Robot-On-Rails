@@ -19,7 +19,7 @@ public class Robot extends Observable {
     private Integer consumption = 0;
     private ArrayList<Action> actions = null;
     private Rail rail = null;
-    private Integer speed = 0;
+    private Integer speed = 1;
     private Boolean working = false;
     private Order orderInProgress = null;
     private Integer status = 0;
@@ -34,6 +34,7 @@ public class Robot extends Observable {
 	rail = initRail;
 	products = new ArrayList<Product>();
 	initRail.setRobot(this);
+	this.consumption = 0;
     }
 
     public void stopSchedule() {
