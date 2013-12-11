@@ -26,7 +26,8 @@ public class Robot extends Observable {
 	private ArrayList<Product> products = null;
 	private Timer timer = null;
 	private TimerTask timerTask;
-
+	private MoveAction lastMove;
+	
 	public Robot(Rail initRail) {
 		timer = new Timer();
 		actions = new ArrayList<Action>();
@@ -52,6 +53,13 @@ public class Robot extends Observable {
 
 		// création d'un timer par action
 		if (action instanceof MoveAction) {
+		    	MoveAction moveAction = (MoveAction)action;
+		    	if(lastMove!=null)
+		    	{
+		    	    if(!moveAction.getPrevious().getPreviousRail().contains(lastMove.getPrevious()))
+		    		System.out.println("Erreur : "+moveAction.getPrevious()+"<-"+lastMove.getPrevious());
+		    	}
+		    	lastMove=moveAction;
 			this.setOrderInProgress(null);
 			timerTask = new TimerTask() {
 				public void run() {
