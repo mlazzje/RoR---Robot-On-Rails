@@ -14,7 +14,6 @@ import ror.core.actions.StoreAction;
 public class AlgMoveEco implements IAlgMove {
     public void updateRobotsActions(ArrayList<Action> newActions, ArrayList<Robot> robots, Map map) {
 
-	ArrayList<Rail> railsToInput = new ArrayList<Rail>();
 
 	ArrayList<StoreAction> storeActions = new ArrayList<StoreAction>();
 	for (Action action : newActions) {
@@ -38,9 +37,7 @@ public class AlgMoveEco implements IAlgMove {
 	    Rail start = robot.getLastActionRail();
 	    Rail end = map.getInput().getAccess();
 
-	    railsToInput.addAll(map.getPath(start, end));
-
-	    ArrayList<MoveAction> movesToInput = railsToMoveActions(railsToInput);
+	    ArrayList<MoveAction> movesToInput = railsToMoveActions(map.getPath(start, end));
 	    for (MoveAction move : movesToInput) {
 		robot.addAction(move);
 	    }
