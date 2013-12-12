@@ -3,8 +3,10 @@ package ror.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Column extends RoRElement {
+public class Column extends RoRElement implements Observer {
 
 	private static final int drawerNumber = 10;
 	private Cabinet cabinet;
@@ -82,5 +84,11 @@ public class Column extends RoRElement {
 
 	public List<Drawer> getDrawerList() {
 		return this.drawerList;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+	    this.setChanged();
+	    this.notifyObservers();
 	}
 }

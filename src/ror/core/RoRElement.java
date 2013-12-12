@@ -1,38 +1,40 @@
 package ror.core;
 
-public abstract class RoRElement {
+import java.util.Observable;
 
-	protected Integer x;
-	protected Integer y;
-	protected RoRElementTypes type;
+public abstract class RoRElement extends Observable {
 
-	public RoRElement(RoRElementTypes type, Integer x, Integer y) {
-		this.type = type;
-		this.x = x;
-		this.y = y;
-	}
+    protected Integer x;
+    protected Integer y;
+    protected RoRElementTypes type;
 
-	public Integer getX() {
-		return x;
-	}
+    public RoRElement(RoRElementTypes type, Integer x, Integer y) {
+	this.type = type;
+	this.x = x;
+	this.y = y;
+    }
 
-	protected void setX(Integer x) {
-		this.x = x;
-	}
+    public Integer getX() {
+	return x;
+    }
 
-	public Integer getY() {
-		return y;
-	}
+    protected void setX(Integer x) {
+	this.x = x;
+    }
 
-	protected void setY(Integer y) {
-		this.y = y;
-	}
+    public Integer getY() {
+	return y;
+    }
 
-	protected RoRElementTypes getType() {
-		return type;
-	}
+    protected void setY(Integer y) {
+	this.y = y;
+    }
 
-	protected void setType(RoRElementTypes type) {
-		this.type = type;
-	}
+    protected RoRElementTypes getType() {
+	return type;
+    }
+
+    protected void setType(RoRElementTypes type) {
+	this.type = type;
+    }
 }

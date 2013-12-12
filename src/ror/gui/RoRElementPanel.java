@@ -47,10 +47,8 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 
     public RoRElementPanel(RoRElement element) {
 	super();
-	Dimension dim = new Dimension(30, 30);
+	Dimension dim = new Dimension(32, 32);
 	this.setSize(dim);
-	this.setMaximumSize(dim);
-	this.setMinimumSize(dim);
 	this.setPreferredSize(dim);
 	this.addMouseListener(this);
 
@@ -141,8 +139,8 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	} else if (rorElement instanceof Column) {
 	    Column column = (Column) rorElement;
 	    int cpt = 0;
-	    for(Drawer drawer : column.getDrawerList()) {
-		if(drawer.getProduct() != null) {
+	    for (Drawer drawer : column.getDrawerList()) {
+		if (drawer.getProduct() != null) {
 		    cpt++;
 		}
 	    }
@@ -191,6 +189,7 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 		    }
 		    frame.pack();
 		    frame.repaint();
+		    robot.addObserver(frame.getUiController());
 		}
 	    }
 	    // Clic sur un Input : Affichage de l'inventaire de l'Input
@@ -218,9 +217,10 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			frame.getInformationsPanel().add(label);
 		    }
 		}
-		frame.setCheckedElement(this);
+		frame.setCheckedElement(this.rorElement);
 		frame.pack();
 		frame.repaint();
+		this.rorElement.addObserver(frame.getUiController());
 	    } else if (this.rorElement instanceof Output) {
 		frame.getInformationsPanel().removeAll();
 		frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
@@ -245,9 +245,10 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			frame.getInformationsPanel().add(label);
 		    }
 		}
-		frame.setCheckedElement(this);
+		frame.setCheckedElement(this.rorElement);
 		frame.pack();
 		frame.repaint();
+		this.rorElement.addObserver(frame.getUiController());
 	    } else if (this.rorElement instanceof Column) {
 		frame.getInformationsPanel().removeAll();
 		frame.getInformationsPanel().setLayout(new FlowLayout());
@@ -282,9 +283,10 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 			cpt++;
 		    }
 		}
-		frame.setCheckedElement(this);
+		frame.setCheckedElement(this.rorElement);
 		frame.pack();
 		frame.repaint();
+		this.rorElement.addObserver(frame.getUiController());
 	    }
 	}
     }
