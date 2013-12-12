@@ -2,6 +2,8 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import ror.core.Map;
 import ror.core.Rail;
 import ror.core.Robot;
@@ -9,23 +11,66 @@ import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
 import ror.core.actions.MoveAction;
+import ror.core.actions.OutputAction;
 import ror.core.actions.StoreAction;
 
 public class AlgMoveEco implements IAlgMove {
     public void updateRobotsActions(ArrayList<Action> newActions, ArrayList<Robot> robots, Map map) {
 
-
 	ArrayList<StoreAction> storeActions = new ArrayList<StoreAction>();
+	ArrayList<DestockingAction> destockingActions = new ArrayList<DestockingAction>();
 	for (Action action : newActions) {
 	    if (action instanceof StoreAction) {
 		storeActions.add((StoreAction) action);
 	    }
+	    if (action instanceof DestockingAction) {
+		destockingActions.add((DestockingAction) action);
+	    }
+	}
+
+	// si des actions input ou store sont disponibles
+	while (destockingActions.size() > 0) {
+	    Robot robot;
+	    robot = getBestRobot(robots, map, destockingActions.get(0).getProduct().getDrawer().getColumn().getAccess());
+
+	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
+	    int freeSpace = robot.getLastActionSpaceAvailability();
+
+	    while (freeSpace > 0 && destockingActions.size() > 0) {
+		destockingActionToAffect.add(destockingActions.get(0));
+		destockingActions.remove(destockingActions.get(0));
+		freeSpace--;
+	    }
+
+	    // ajout des actions de mouvements et de destockage au robot
+	    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
+	    for (Action action : actionMoveAndDestock) {
+		robot.addAction(action);
+	    }
+
+	    Rail start = robot.getLastActionRail();
+	    Rail end = map.getOutput().getAccess();
+
+	    // ajout des actions des mouvements jusqu'a l'output au robot
+	    ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
+	    for (MoveAction move : movesToOutput) {
+		robot.addAction(move);
+	    }
+
+	    // ajout des actions d'output
+	    for (Action action : destockingActionToAffect) {
+		DestockingAction destockingAction = (DestockingAction) action;
+		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
+		outputAction.setProduct(destockingAction.getProduct());
+		robot.addAction(outputAction);
+	    }
+
 	}
 
 	// si des actions input ou store sont disponibles
 	while (storeActions.size() > 0) {
 
-	    Robot robot = getBestRobot(robots);
+	    Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
 
 	    ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 	    for (StoreAction storeAction : storeActions) {
@@ -41,6 +86,7 @@ public class AlgMoveEco implements IAlgMove {
 	    for (MoveAction move : movesToInput) {
 		robot.addAction(move);
 	    }
+	    System.out.println(movesToInput);
 
 	    ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
 
@@ -119,32 +165,103 @@ public class AlgMoveEco implements IAlgMove {
     }
 
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
-	if(rails.size()==1)
+	if(rails.isEmpty())
 	    return new ArrayList<MoveAction>();
+	
 	ArrayList<MoveAction> moves = new ArrayList<MoveAction>();
-	Rail nextRail = null;
-	//System.out.println(rails);
-
+	Rail previous = rails.get(0);
 	for (Rail rail : rails) {
-	    int i = rails.indexOf(rail) + 1;
-	    nextRail = null;
-	    if (rails.size() > i)
-		nextRail = rails.get(i);
-	    //si il y a un nextRail 
-	    if (nextRail != null) {
-		MoveAction move = new MoveAction(1000, null, rail, nextRail);
-		moves.add(move);
-	    }
+	    if(rails.get(0)==rail)
+		continue;
+	    MoveAction move = new MoveAction(1000, null, previous, rail);
+	    moves.add(move);
+	    previous = rail;
 	}
 	return moves;
     }
 
-    public Robot getBestRobot(ArrayList<Robot> robots) {
-	Robot best = robots.get(0);
+    public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
+	// prend en compte le fait qu'un robot peut se trouver sur le chemin d'un autre pour une destination donnée
+	Robot bestRobot = null;
+	Integer minRailCount = null;
+	// on teste chaque robot pour voir si il peut faire la trajectoire jusqu'a la destination sans rencontrer un robot sur le chemin
 	for (Robot robot : robots) {
-	    if (robot.getActions().size() < best.getActions().size())
-		best = robot;
+	    ArrayList<Rail> copyRails = this.getCloneRail(map.getRails());
+	    for (Robot robot2 : robots) {
+		Rail railRobotBloquant = robot2.getLastActionRail();
+		if (robot2 == robot)
+		    continue;
+		else {
+		    // on recupere la liste des rails precedent pour supprimer leur left et/out right si c'est la position du robot
+		    Rail copyRailBloquant = this.getRail(copyRails, railRobotBloquant.getX(), railRobotBloquant.getY());
+
+		    ArrayList<Rail> previousRails = railRobotBloquant.getPreviousRail();
+
+		    for (Rail previousRail : previousRails) {
+			// on supprimer l'acces d'un rail à un autre si un robot se trouve sur le rail de destination
+
+			if (previousRail.getLeftRail() != null && previousRail.getLeftRail().getX() == railRobotBloquant.getX() && previousRail.getLeftRail().getY() == railRobotBloquant.getY())
+			    this.getRail(copyRails, previousRail.getX(), previousRail.getY()).setLeftRail(null);
+			if (previousRail.getRightRail() != null && previousRail.getRightRail().getX() == railRobotBloquant.getX() && previousRail.getRightRail().getY() == railRobotBloquant.getY())
+			    this.getRail(copyRails, previousRail.getX(), previousRail.getY()).setRightRail(null);
+		    }
+
+		}
+
+	    }
+	    Dijkstra dijkstra = new Dijkstra(copyRails);
+	    ArrayList<Rail> path = (ArrayList<Rail>) dijkstra.getPath(this.getRail(copyRails, robot.getLastActionRail().getX(), robot.getLastActionRail().getY()), this.getRail(copyRails, destination.getX(), destination.getY()));
+	    if (path == null) {
+		// System.out.println(robot + " Chemin impossible");
+		continue;
+	    }
+
+	    // System.out.println(robot + ": " + path.size() + " cases jusqu'a destination");
+	    // System.out.println(path);
+
+	    if (minRailCount != null) {
+		if (path.size() < minRailCount) {
+		    bestRobot = robot;
+		    minRailCount = path.size();
+		}
+	    } else {
+		bestRobot = robot;
+		minRailCount = path.size();
+	    }
+
 	}
-	return best;
+
+	// System.out.println(bestRobot);
+	return bestRobot;// robotNotBeblocked.get(0);//getBestRobot(robotNotBeblocked, map, destination);
+
     }
+
+    public Rail getRail(ArrayList<Rail> rails, int x, int y) {
+	for (Rail r : rails) {
+	    if (r.getX() == x && r.getY() == y) {
+		return r;
+	    }
+	}
+	return null;
+    }
+
+    public ArrayList<Rail> getCloneRail(ArrayList<Rail> rails) {
+	// dupliquer la liste des rails (attention bien dupliquer la liste pour ne pas garder les references)
+	ArrayList<Rail> copyRails = new ArrayList<Rail>();
+	for (Rail trueRail : rails) {
+	    Rail railCopy = new Rail(trueRail.getX(), trueRail.getY(), null, null, null, null);
+	    copyRails.add(railCopy);
+	}
+
+	for (Rail trueRail : rails) {
+	    Rail copyRail = copyRails.get(rails.indexOf(trueRail));
+	    if (trueRail.getRightRail() != null)
+		copyRail.setRightRail(copyRails.get(rails.indexOf(trueRail.getRightRail())));
+	    else if (trueRail.getLeftRail() != null)
+		copyRail.setLeftRail(copyRails.get(rails.indexOf(trueRail.getLeftRail())));
+	}
+
+	return copyRails;
+    }
+
 }

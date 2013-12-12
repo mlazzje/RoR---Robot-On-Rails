@@ -70,9 +70,9 @@ public class OrderSource {
 
     public ArrayList<Order> getRandomOrders() {
 	ArrayList<Order> newOrders = new ArrayList<Order>();
-	Integer nbOrdersToCreate = 4; // 1 a 5 commande(s) crée(s)
+	Integer nbOrdersToCreate = 1; // 1 a 5 commande(s) crée(s)
 	// 1 chance sur 3 de créer les commandes
-	if (random(1, 1)==1) {
+	if (random(1, 2)==1) {
 	    // Création des commandes
 	    for (int i = 0; i < nbOrdersToCreate; i++) {
 		Order order = new Order();

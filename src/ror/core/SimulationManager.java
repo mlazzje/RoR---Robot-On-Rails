@@ -13,6 +13,7 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 import ror.core.algo.AlgDestockingFifo;
+import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.IAlgDestocking;
@@ -49,7 +50,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.orderSource = new OrderSource();
 	this.source = false;
 	this.iAlgStore = new AlgStoreFifo();
-	this.iAlgDestocking = new AlgDestockingFifo();
+	this.iAlgDestocking = new AlgDestockingOrder();
 	this.iAlgMove = new AlgMoveEco();
 	this.orders = new ArrayList<Order>();
 	this.stockProducts = new ArrayList<Product>();
@@ -92,7 +93,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	// add robots
 	if (!this.wasInPause) {
 	    for (int i = 0; i < nbRobot; i++) {
-		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1]);
+		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i);
 		r.addObserver(SimulationManager.this);
 		robots.add(r);
 	    }
@@ -148,13 +149,15 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		ArrayList<Action> newActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
-		/*
-		 * if (newActions == null) newActions = new ArrayList<Action>();
-		 */
-		// newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
-		/*
-		 * if (newActions == null) newActions = new ArrayList<Action>();
-		 */
+
+		if (newActions == null)
+		    newActions = new ArrayList<Action>();
+
+		newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
+
+		if (newActions == null)
+		    newActions = new ArrayList<Action>();
+
 		SimulationManager.this.iAlgMove.updateRobotsActions(newActions, SimulationManager.this.robots, this.map);
 
 		// update statistic indicators
@@ -226,16 +229,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// Traçage des actions des robots
 		if (robot.getCurrentAction() instanceof InputAction) {
 		    InputAction action = (InputAction) robot.getCurrentAction();
-		    this.newLogs.add("Robot prend " + action.getProduct().getName() + " au point d'entrée");
+		    this.newLogs.add(robot + " prend " + action.getProduct().getName() + " au point d'entrée");
 		} else if (robot.getCurrentAction() instanceof OutputAction) {
 		    OutputAction action = (OutputAction) robot.getCurrentAction();
-		    this.newLogs.add("Robot dépose " + action.getProduct().getName() + " au point de sortie");
+		    this.newLogs.add(robot + " dépose " + action.getProduct().getName() + " au point de sortie");
 		} else if (robot.getCurrentAction() instanceof StoreAction) {
 		    StoreAction action = (StoreAction) robot.getCurrentAction();
-		    this.newLogs.add("Robot dépose " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
+		    this.newLogs.add(robot + " dépose " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
 		} else if (robot.getCurrentAction() instanceof DestockingAction) {
 		    DestockingAction action = (DestockingAction) robot.getCurrentAction();
-		    this.newLogs.add("Robot prend " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
+		    this.newLogs.add(robot + " prend " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
 		}
 	    }
 	    // save the last action of the robot
@@ -254,35 +257,43 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// search if the next action is blocked by another robot
 		Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
-
 		// if no robot on the next rail
 		if (blockingRobot == null) {
 
 		    // execute next action
 		    robot.executeAction(robot.getCurrentAction());
 
-		    // get all robots waiting for the current robot to move
-		    ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
-
-		    // then unblocks all robots blocked by this robot
-		    for (Robot r : waitingRobots) {
-
-			// cancel the scheduling task of blocked robot
-			r.stopSchedule();
-
-			// remove the PauseAction of the blocked robot
-			r.removeCurrentAction();
-
-			// then launch the next action
-			r.executeAction(r.getCurrentAction());
-		    }
+		    /*
+		     * // get all robots waiting for the current robot to move ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
+		     * 
+		     * // then unblocks all robots blocked by this robot for (Robot r : waitingRobots) {
+		     * 
+		     * // cancel the scheduling task of blocked robot r.stopSchedule();
+		     * 
+		     * // remove the PauseAction of the blocked robot r.removeCurrentAction();
+		     * 
+		     * // then launch the next action r.executeAction(r.getCurrentAction()); }
+		     */
 		}
 		// else add long waiting action to robot (to be sure that the task
 		// will
 		// be cancel by the robot his waiting)
 		else {
-		    System.out.println("robot block");
-		    robot.executeAction(new PauseAction(1000, robot, blockingRobot));
+		    synchronized (blockingRobot.getActions()) {
+			if (blockingRobot.getActions().size() <= 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {
+			    blockingRobot.removeCurrentAction();
+			    blockingRobot.getActions().add(0, new MoveAction(1000, blockingRobot, blockingRobot.getRail(), blockingRobot.getRail().getRightRail()));
+			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
+			}
+		    }
+
+		    System.out.println(robot + " bloqué par " + blockingRobot);
+		    PauseAction pa = new PauseAction(1000, robot, blockingRobot);
+		    synchronized (robot.getActions()) {
+			robot.getActions().add(0, pa);
+			robot.executeAction(robot.getCurrentAction());
+		    }
+
 		}
 
 		// notify observers (UIController)
@@ -290,8 +301,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.notifyObservers();
 	    } else {
 		PauseAction pa = new PauseAction(1000, robot, null);
-		robot.addAction(pa);
-		robot.executeAction(robot.getCurrentAction());
+		synchronized (robot.getActions()) {
+		    robot.getActions().add(0, pa);
+		    robot.executeAction(robot.getCurrentAction());
+		}
 	    }
 	}
     }

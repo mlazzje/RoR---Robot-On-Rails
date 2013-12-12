@@ -4,29 +4,34 @@ import ror.core.Rail;
 import ror.core.Robot;
 
 public class MoveAction extends Action {
-	private Rail previous;
-	private Rail next;
+    private Rail previous;
+    private Rail next;
 
-	public MoveAction(Integer duration, Robot robot, Rail previous, Rail next) {
-		super(duration, robot);
-		this.setNext(next);
-		this.setPrevious(previous);
-	}
+    public MoveAction(Integer duration, Robot robot, Rail previous, Rail next) {
+	super(duration, robot);
+	this.setNext(next);
+	this.setPrevious(previous);
+    }
 
-	public Rail getPrevious() {
-		return previous;
-	}
+    @Override
+    public String toString() {
+	return "MoveAction : " + previous + " -> " + next;
+    }
 
-	public void setPrevious(Rail previous) {
-		this.previous = previous;
-	}
+    public Rail getPrevious() {
+	return previous;
+    }
 
-	public Rail getNext() {
-		return next;
-	}
+    public void setPrevious(Rail previous) {
+	this.previous = previous;
+    }
 
-	public void setNext(Rail next) {
-		this.next = next;
-	}
+    public Rail getNext() {
+	return next;
+    }
+
+    public void setNext(Rail next) {
+	this.next = next;
+    }
 
 }

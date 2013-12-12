@@ -13,7 +13,7 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 
-public class Robot extends Observable {
+public class Robot extends Observable{
 
     private Integer traveledDistance = 0;
     private Integer consumption = 0;
@@ -27,8 +27,9 @@ public class Robot extends Observable {
     private Timer timer = null;
     private TimerTask timerTask;
     private MoveAction lastMove;
-
-    public Robot(Rail initRail) {
+    private Integer number;
+    public Robot(Rail initRail, Integer num) {
+	number = num;
 	timer = new Timer();
 	actions = new ArrayList<Action>();
 	rail = initRail;
@@ -36,6 +37,27 @@ public class Robot extends Observable {
 	initRail.setRobot(this);
 	this.consumption = 0;
     }
+
+    
+    
+    @Override
+    public String toString() {
+	return "Robot "+getNumber();
+    }
+
+
+
+    public Integer getNumber() {
+        return number;
+    }
+
+
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+
 
     public void stopSchedule() {
 	if (timerTask != null) {
@@ -87,6 +109,8 @@ public class Robot extends Observable {
 		    storeAction.getProduct().setStatus(Product.STORED);
 		    Robot.this.removeProduct(storeAction.getProduct());
 		    drawer.setProduct(storeAction.getProduct());
+		    drawer.getProduct().setDrawer(drawer);
+
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
 		}
@@ -144,6 +168,7 @@ public class Robot extends Observable {
 	    this.setOrderInProgress(null);
 	    timerTask = new TimerTask() {
 		public void run() {
+		    System.out.println(Robot.this +" effectue une pause");
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
 		}

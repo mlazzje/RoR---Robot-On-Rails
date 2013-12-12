@@ -13,11 +13,11 @@ public class MoveActionTest {
 	@Test
 	public void test() {
 		MoveAction testAction = new MoveAction(0, null, null, null);
-		Robot testRobot = new Robot(null);
+		Robot testRobot = new Robot(null,1);
 		Rail testRail1 = new Rail(null, null, null, null, null, null);
 		Rail testRail2 = new Rail(null, null, null, null, null, null);
 		
-		// Test de la durée
+		// Test de la durï¿½e
 		assertTrue(testAction.getDuration() == 0);
 		assertFalse(testAction.getDuration() == 10);
 		

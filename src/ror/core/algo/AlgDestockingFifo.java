@@ -47,6 +47,7 @@ public class AlgDestockingFifo implements IAlgDestocking {
 								stockedProduct.setStatus(Product.BOOKED);
 								currentOrder.addProduct(stockedProduct);
 								DestockingAction currentAction = new DestockingAction(0, null, stockedProduct);
+								currentAction.setDrawer(stockedProduct.getDrawer());
 								actions.add(currentAction);
 								break;
 							}

@@ -33,6 +33,7 @@ public class AlgStoreFifo implements IAlgStore {
 		    }
 		}
 		if (drawer == null) {
+		   System.out.println("pas de colonne disponible");
 		    // Si on arrive ici c'est qu'il n'y a plus de columns disponibles
 		    return actions;
 		}
