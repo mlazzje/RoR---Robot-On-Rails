@@ -20,8 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
-import com.apple.eawt.Application;
-
 import ror.core.RoRElement;
 
 public class RoRFrame extends JFrame {
@@ -160,12 +158,13 @@ public class RoRFrame extends JFrame {
 	this.setLayout(new FlowLayout());
 	try {
 	    this.setIconImage(ImageIO.read(getClass().getResource("/ressources/robot.png")));
-	    Application application = Application.getApplication();
-	    application.setDockIconImage(ImageIO.read(getClass().getResource("/ressources/robot.png")));
+	    if (System.getProperty("os.name").contains("OS X")) {
+		com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
+		application.setDockIconImage(ImageIO.read(getClass().getResource("/ressources/robot.png")));
+	    }
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-
 
 	// Map
 	mapPanel = new JPanel();
