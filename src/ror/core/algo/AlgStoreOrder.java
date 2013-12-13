@@ -15,8 +15,6 @@ public class AlgStoreOrder implements IAlgStore {
 	public ArrayList<Action> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, Map map) {
 		
-		// TODO Recommencer cet algo !
-		
 		ArrayList<Action> actions = new ArrayList<Action>(); // init
 		Drawer drawer=null;
 		
@@ -30,6 +28,8 @@ public class AlgStoreOrder implements IAlgStore {
 					if(currentOrder.wantsProduct(currentProduct.getName())) {
 						// On cherche où on doit mettre le produit
 						
+						// appeller getDrawerFree
+						
 						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
 						actions.add(currentAction);
 						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts !
@@ -42,7 +42,7 @@ public class AlgStoreOrder implements IAlgStore {
 		return actions;
 	}
 	
-	public Drawer drawerFree(Order order,Map map) {
+	public Drawer getDrawerFree(Order order,Map map) {
 		Drawer drawer = null;
 		if(order.getDrawers().size()==0) { // Si aucun drawers réservé on va le faire
 			if(!this.bookDrawers(order,map)) { // Si on peut réserver des armoires
@@ -65,11 +65,12 @@ public class AlgStoreOrder implements IAlgStore {
 		//int nbDrawersDec = order.getProductsName().size();
 		int nbDrawersBooked = 0; // Simulation
 		Column firstColumn=null,secondColumn=null,thirdColumn=null; // 20 objets par commande ne peut pas être dans plus de 3 colonnes !
+		// Simulation here !
 		for( Column column : map.getColumns()) {
 			if(column.getAvailableDrawer()!=null) {
 				if(nbDrawersBooked==nbDrawersToBook) { break; }
-				if(nbDrawersBooked>0) { // Tkt pas ça marche ici
-					if (nbDrawersToBook-nbDrawersBooked >= 10 && column.getNbAvailableDrawers()!=10 && firstColumn!=null) { // pas assez de place dans la seconde colonne
+				if(nbDrawersBooked>0) { // Tkt pas ça marche ici & Première colonne rempli
+					if (nbDrawersToBook-nbDrawersBooked >= 10 && column.getNbAvailableDrawers()!=10 && firstColumn!=null) { // pas assez de place dans la seconde colonne car <10
 						nbDrawersBooked=0;
 						firstColumn=null; secondColumn=null; thirdColumn=null;
 					} else if (nbDrawersToBook-nbDrawersBooked < 10 && firstColumn != null && nbDrawersToBook-nbDrawersBooked>column.getNbAvailableDrawers()) { // pas assez de place dans la seconde colonne
@@ -88,8 +89,9 @@ public class AlgStoreOrder implements IAlgStore {
 							} else if(thirdColumn==null) {
 								thirdColumn=column;
 							}
-							if(nbDrawersToBook-nbDrawersBooked<10) {
-								nbDrawersBooked+=nbDrawersToBook-nbDrawersBooked;
+							// Maj nbDrawersBooked
+							if(nbDrawersToBook-nbDrawersBooked<10) { // Voilà
+								nbDrawersBooked+=nbDrawersToBook-nbDrawersBooked; // = nbDrawersBooked=nbDrawersToBook;
 							} else if (nbDrawersToBook-nbDrawersBooked>=10) {
 								nbDrawersBooked+=10;
 							}
@@ -101,12 +103,18 @@ public class AlgStoreOrder implements IAlgStore {
 							} else if(thirdColumn==null) {
 								thirdColumn=column;
 							}
-							nbDrawersBooked+=column.getNbAvailableDrawers();
+							// Maj nbDrawersBooked
+							nbDrawersBooked+=nbDrawersToBook-nbDrawersBooked; // = nbDrawersBooked=nbDrawersToBook; // Voilà
 						}	
 					}
 				}
 				else if (nbDrawersBooked==0) {
-					nbDrawersBooked=column.getNbAvailableDrawers();
+					if(column.getNbAvailableDrawers()>nbDrawersToBook) {
+						nbDrawersBooked=nbDrawersToBook;
+					}
+					else {
+						nbDrawersBooked=column.getNbAvailableDrawers();
+					}
 					firstColumn=column;
 				}
 			}
@@ -115,6 +123,10 @@ public class AlgStoreOrder implements IAlgStore {
 		if(nbDrawersBooked!=nbDrawersToBook) {
 			return false;
 		} else {
+			// Book Drawers really here !
+			
+			// TODO
+			
 			return true;
 		}
 	}
