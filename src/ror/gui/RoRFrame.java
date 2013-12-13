@@ -6,13 +6,21 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Image;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+
+import com.apple.eawt.Application;
 
 import ror.core.RoRElement;
 
@@ -150,6 +158,14 @@ public class RoRFrame extends JFrame {
 	this.menuBar.add(importButton);
 	this.setJMenuBar(this.menuBar);
 	this.setLayout(new FlowLayout());
+	try {
+	    this.setIconImage(ImageIO.read(getClass().getResource("/ressources/robot.png")));
+	    Application application = Application.getApplication();
+	    application.setDockIconImage(ImageIO.read(getClass().getResource("/ressources/robot.png")));
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
 
 	// Map
 	mapPanel = new JPanel();
@@ -237,11 +253,8 @@ public class RoRFrame extends JFrame {
 
     public void reColor() {
 	/*
-	for (Component jPanel : mapPanel.getComponents()) {	//TODO Implementer Observable/Observer sur les cases pour gagner en perf'
-	    RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel;
-	    rorElementPanel.reColor();
-	}
-	*/
+	 * for (Component jPanel : mapPanel.getComponents()) { //TODO Implementer Observable/Observer sur les cases pour gagner en perf' RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel; rorElementPanel.reColor(); }
+	 */
     }
 
     public ImportFileChooser getImportFileChooser() {
