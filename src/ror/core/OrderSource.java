@@ -27,8 +27,6 @@ public class OrderSource {
 	
 	File catalogFile = new File("xml/catalog.xml");
 	this.setCatalogFile(catalogFile);
-	//File scenarioFile = new File("xml/scenario-test.xml");
-	//this.setScenarioFile(scenarioFile);
     }
 
     public HashMap<Integer, ArrayList<Product>> getProducts() {
