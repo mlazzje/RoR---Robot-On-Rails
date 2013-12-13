@@ -13,6 +13,7 @@ public class StoreAction extends Action {
 		super(duration, robot);
 		this.setDrawer(drawer);
 		this.setProduct(product);
+		this.getProduct().setDrawer(drawer);
 	}
 
 	public Drawer getDrawer() {

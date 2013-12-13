@@ -20,6 +20,7 @@ public class AlgMoveEco implements IAlgMove {
 	// si des actions input ou store sont disponibles
 	while (newDestockActions.size() > 0) {
 	    Robot robot;
+		    
 	    robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
 
 	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
