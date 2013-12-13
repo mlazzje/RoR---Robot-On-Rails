@@ -174,14 +174,13 @@ public class UIController implements Observer {
 	else if (o instanceof Robot) {
 	    Font h1Font = new Font(UIManager.getDefaults().getFont("TabbedPane.font").getFontName(), Font.BOLD, UIManager.getDefaults().getFont("TabbedPane.font").getSize() + 2);
 	    Robot robot = (Robot) o;
-	    System.out.println("Robot detecte !");
 	    // Si on ne suit plus l'input
 	    if (!robot.equals(this.rorFrame.getCheckedElement())) {
 		robot.deleteObserver(this);
 	    } else {
 		this.rorFrame.getInformationsPanel().removeAll();
 		this.rorFrame.getInformationsPanel().setLayout(new GridLayout(13, 1));
-		JLabel title = new JLabel("Détails Robot");
+		JLabel title = new JLabel("Détails Robot #"+robot.getNumber());
 		title.setFont(h1Font);
 		title.setVerticalAlignment(JLabel.CENTER);
 		title.setHorizontalAlignment(JLabel.CENTER);

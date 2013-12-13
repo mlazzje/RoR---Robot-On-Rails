@@ -204,7 +204,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 
 		    frame.getInformationsPanel().removeAll();
 		    frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
-		    JLabel title = new JLabel("Détails Robot");
+		    JLabel title = new JLabel("Détails Robot #"+robot.getNumber());
 		    title.setFont(h1Font);
 		    title.setVerticalAlignment(JLabel.CENTER);
 		    title.setHorizontalAlignment(JLabel.CENTER);
