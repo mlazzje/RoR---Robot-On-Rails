@@ -72,7 +72,7 @@ public class Robot extends Observable{
 	// add action to the actions list if it no exist (only happens if we add
 	// a pause action)
 	synchronized (this.actions) {
-	    if (this.actions.size()>0 && action != this.actions.get(0) && action !=null)
+	    if (this.actions.size() > 0 && action != this.actions.get(0) && action != null)
 		this.actions.add(0, action);
 	}
 	// création d'un timer par action

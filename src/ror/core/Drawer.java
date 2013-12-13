@@ -1,6 +1,8 @@
 package ror.core;
 
-public class Drawer {
+import java.util.Observable;
+
+public class Drawer extends Observable {
 
 	public static final Integer FREE = 0;
 	public static final Integer BOOKED = 1;
@@ -15,6 +17,7 @@ public class Drawer {
 		this.positionInColumn = positionInColumn;
 		this.status = FREE;
 		this.product = null;
+		this.addObserver(column);
 	}
 
 	protected Integer getPositionInColumn() {
@@ -49,6 +52,8 @@ public class Drawer {
 		this.product = product;
 		if (product == null)
 			this.status = FREE;
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 }
