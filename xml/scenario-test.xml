@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation>
 	<Scenario>
-		<Order orderDate="10">
-			<Product productionDate="20">A1</Product>
-			<Product productionDate="15">A2</Product>
-			<Product productionDate="30">A3</Product>
-			<Product productionDate="40">A5</Product>
-			<Product productionDate="25">A6</Product>
-			<Product productionDate="35">B1</Product>
-		</Order>
-
-		<Order orderDate="40">
-			<Product productionDate="60">A1</Product>
-			<Product productionDate="10">C1</Product>
-			<Product productionDate="80">D1</Product>
-			<Product productionDate="20">A2</Product>
-			<Product productionDate="20">A1</Product>
-			<Product productionDate="20">A1</Product>
+		<Order orderDate="2">
+			<Product productionDate="5">A1</Product>
+			<Product productionDate="7">A2</Product>
 		</Order>
 	</Scenario>
 </Simulation>
