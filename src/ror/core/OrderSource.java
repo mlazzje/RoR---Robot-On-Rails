@@ -14,7 +14,7 @@ public class OrderSource {
 
     private File scenarioFile;
     private File catalogFile;
-    
+
     private ArrayList<String> catalog;
     private HashMap<Integer, ArrayList<Product>> products;
     private HashMap<Integer, ArrayList<Order>> orders;
@@ -24,7 +24,7 @@ public class OrderSource {
 	this.products = new HashMap<Integer, ArrayList<Product>>();
 	this.orders = new HashMap<Integer, ArrayList<Order>>();
 	this.catalog = new ArrayList<String>();
-	
+
 	File catalogFile = new File("xml/catalog.xml");
 	this.setCatalogFile(catalogFile);
     }
@@ -55,12 +55,10 @@ public class OrderSource {
 		    productNamesInStock.remove(product);
 		} else // Si le produit n'est pas disponible en stock
 		{
-		    if(cptProduct < nbProductToCreate)
-		    {
+		    if (cptProduct < nbProductToCreate) {
 			productNamesInOrder.add(product);
 			cptProduct++;
-		    }
-		    else {
+		    } else {
 			break;
 		    }
 		}
@@ -94,21 +92,42 @@ public class OrderSource {
 	return newOrders;
     }
 
-    public ArrayList<Order> getScenarioOrders(Long uptime) {	
+    public ArrayList<Order> getScenarioOrders(Long uptime) {
+/*	System.out.println("Commandes : \n");
+	System.out.println("Uptime : " + uptime);
+	System.out.println("Commandes : " + this.orders.toString());*/
 	ArrayList<Order> orders = new ArrayList<Order>();
-	if(this.orders.get(uptime) != null)
-	{
-	    orders.addAll(this.orders.get(uptime));
+	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
+
+	for (Integer key : this.orders.keySet()) {
+	    if (key <= uptime) {
+		orders.addAll(this.orders.get(key));
+		keyToRemove.add(key);
+	    }
 	}
+	
+	for (Integer key : keyToRemove) {
+	    this.orders.remove(key);
+	}
+	
 	return orders;
     }
 
     public ArrayList<Product> getScenarioProducts(Long uptime) {
 	ArrayList<Product> products = new ArrayList<Product>();
-	if(this.products.get(uptime) != null)
-	{
-	    products.addAll(this.products.get(uptime));
+	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
+	
+	for (Integer key : this.products.keySet()) {
+	    if (key <= uptime) {
+		products.addAll(this.products.get(key));
+		keyToRemove.add(key);
+	    }
 	}
+	
+	for (Integer key : keyToRemove) {
+	    this.products.remove(key);
+	}
+	
 	return products;
     }
 
@@ -116,10 +135,9 @@ public class OrderSource {
 	return min + (int) (Math.random() * ((max - min) + 1));
     }
 
-    public void setCatalogFile(File catalogFile) 
-    {
+    public void setCatalogFile(File catalogFile) {
 	this.catalogFile = catalogFile;
-	
+
 	// XML SAX parsing
 	Document document = null;
 	Element racine;
@@ -139,11 +157,12 @@ public class OrderSource {
 	    this.catalog.add(currentProduct.getValue());
 	}
     }
-    
-    public void setScenarioFile(File scenarioFile)
-    {
+
+    public void setScenarioFile(File scenarioFile) {
+	System.out.println("Chargement fichier scenario");
+
 	this.scenarioFile = scenarioFile;
-	
+
 	// XML SAX parsing
 	Document document = null;
 	Element racine;
@@ -162,36 +181,35 @@ public class OrderSource {
 	while (i.hasNext()) {
 	    Element currentOrder = i.next();
 	    Order newOrder = new Order();
+	    // Date de la commande en secondes
+	    int orderDate = Integer.parseInt(currentOrder.getAttribute("orderDate").getValue()) * 1000;
+	    if (this.orders.get(orderDate) == null)
+		this.orders.put(orderDate, new ArrayList<Order>());
+	    this.orders.get(orderDate).add(newOrder);
+	    // Liste de produits
 	    List<Element> productList = currentOrder.getChildren("Product");
 	    Iterator<Element> j = productList.iterator();
 	    // Boucle sur chaque produit de la commande
-	    while (j.hasNext()) 
-	    {
+	    while (j.hasNext()) {
 		// Création du produit
 		Element currentProduct = j.next();
 		Product newProduct = new Product(currentProduct.getValue());
 		newProduct.setOrder(newOrder);
 		// Date de production
-		int productionDate = Integer.parseInt(currentProduct.getAttributeValue("productionDate"));
+		int productionDate = Integer.parseInt(currentProduct.getAttributeValue("productionDate")) * 1000;
 		if (this.products.get(productionDate) == null)
 		    this.products.put(productionDate, new ArrayList<Product>());
 		this.products.get(productionDate).add(newProduct);
-		
+
 		newOrder.addProductName(newProduct.getName());
 	    }
-	    
-	    // Date de la commande
-	    int orderDate = Integer.parseInt(currentOrder.getAttribute("orderDate").getValue());
-	    if (this.orders.get(orderDate) == null)
-		this.orders.put(orderDate, new ArrayList<Order>());
-	    this.orders.get(orderDate).add(newOrder);
 	}
     }
 
     public ArrayList<String> getCatalog() {
 	return catalog;
     }
-    
+
     public void setCatalog(ArrayList<String> catalog) {
 	this.catalog = catalog;
     }
@@ -199,7 +217,7 @@ public class OrderSource {
     public File getScenarioFile() {
 	return this.scenarioFile;
     }
-    
+
     public File getCatalogFile1() {
 	return this.catalogFile;
     }
