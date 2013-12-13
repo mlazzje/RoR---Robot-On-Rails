@@ -178,6 +178,11 @@ public class Robot extends Observable {
 			Robot.this.removeProduct(outputAction.getProduct());
 			outputAction.getOutput().addProduct(outputAction.getProduct());
 			outputAction.getProduct().setStatus(Product.DONE);
+			// TODO : check mise à jour état commande
+			Order o = outputAction.getProduct().getOrder();
+			if (o != null) {
+			    o.setStatus(Order.DONE);
+			}
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
 		    }
