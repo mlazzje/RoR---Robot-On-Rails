@@ -45,17 +45,13 @@ public class AlgDestockingFifo implements IAlgDestocking {
 			    // action
 			    if (orderProductName.equals(stockedProduct.getName()) && stockedProduct.getStatus() == Product.STORED) {
 				stockedProduct.setStatus(Product.BOOKED);
-				currentOrder.addProduct(stockedProduct);
 				DestockingAction currentAction = new DestockingAction(0, null, stockedProduct);
 				actions.add(currentAction);
 				break;
 			    }
 			}
 		    }
-		    // On vérifie que tous les produits sont ok
-		    if (currentOrder.getProductsName().size() == currentOrder.getProducts().size()) {
-			actionsToSend.addAll(actions);
-		    }
+		actionsToSend.addAll(actions);
 		} else {
 		    return actionsToSend;
 		}
