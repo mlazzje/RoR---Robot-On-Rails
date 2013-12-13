@@ -338,7 +338,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     public void setFile(File file) {
 	source = true;
-	orderSource.setFile(file);
+	orderSource.setScenarioFile(file);
     }
 
     public void setSpeed(Float speed) {

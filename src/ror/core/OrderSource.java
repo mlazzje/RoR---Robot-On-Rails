@@ -12,8 +12,9 @@ import org.jdom2.input.SAXBuilder;
 
 public class OrderSource {
 
-    private File file;
+    private File scenarioFile;
     private File catalogFile;
+    
     private ArrayList<String> catalog;
     private HashMap<Integer, ArrayList<Product>> products;
     private HashMap<Integer, ArrayList<Order>> orders;
@@ -23,8 +24,11 @@ public class OrderSource {
 	this.products = new HashMap<Integer, ArrayList<Product>>();
 	this.orders = new HashMap<Integer, ArrayList<Order>>();
 	this.catalog = new ArrayList<String>();
-	File file = new File("xml/scenario-test.xml");
-	this.setFile(file);
+	
+	File catalogFile = new File("xml/catalog.xml");
+	File scenarioFile = new File("xml/scenario-test.xml");
+	this.setCatalogFile(catalogFile);
+	this.setScenarioFile(scenarioFile);
     }
 
     public HashMap<Integer, ArrayList<Product>> getProducts() {
@@ -92,32 +96,28 @@ public class OrderSource {
 	return newOrders;
     }
 
-    public ArrayList<Order> getScenarioOrders(Integer uptime) {
-	// TODO implement
-	return new ArrayList<Order>();
+    public ArrayList<Order> getScenarioOrders(Integer uptime) {	
+	return this.orders.get(uptime);
     }
 
     public ArrayList<Product> getScenarioProducts(Integer uptime) {
-	// TODO implement
-	return new ArrayList<Product>();
+	return this.products.get(uptime);
     }
 
     private Integer random(Integer min, Integer max) {
 	return min + (int) (Math.random() * ((max - min) + 1));
     }
 
-    public File getFile() {
-	return file;
-    }
-
-    public void setFile(File file) {
-
+    public void setCatalogFile(File catalogFile) 
+    {
+	this.catalogFile = catalogFile;
+	
 	Document document = null;
 	Element racine;
 
 	SAXBuilder sxb = new SAXBuilder();
 	try {
-	    document = sxb.build(file);
+	    document = sxb.build(catalogFile);
 	} catch (Exception e) {
 	}
 
@@ -127,14 +127,30 @@ public class OrderSource {
 	Element catalogElement = racine.getChild("Catalog");
 	List<Element> catalogProductList = catalogElement.getChildren("Product");
 	Iterator<Element> itpc = catalogProductList.iterator();
+	
 	// on boucle sur chaque produit
 	while (itpc.hasNext()) {
 	    Element currentProduct = itpc.next();
 	    this.catalog.add(currentProduct.getValue());
 	}
+    }
+    
+    public void setScenarioFile(File scenarioFile)
+    {
+	this.scenarioFile = scenarioFile;
+	
+	Document document = null;
+	Element racine;
 
-	// recuperation du scenario de la simulation
+	SAXBuilder sxb = new SAXBuilder();
+	try {
+	    document = sxb.build(scenarioFile);
+	} catch (Exception e) {
+	}
 
+	racine = document.getRootElement();
+
+	// recuperation du catalogue des produits
 	Element scenarioElement = racine.getChild("Scenario");
 	List<Element> orderList = scenarioElement.getChildren("Order");
 
@@ -164,24 +180,22 @@ public class OrderSource {
 
 	    this.orders.get(orderDate).add(newOrder);
 	}
-
-	this.file = file;
     }
 
     public ArrayList<String> getCatalog() {
 	return catalog;
     }
-
+    
     public void setCatalog(ArrayList<String> catalog) {
 	this.catalog = catalog;
     }
 
-    public File getCatalogFile() {
-	return catalogFile;
+    public File getScenarioFile() {
+	return this.scenarioFile;
     }
-
-    public void setCatalogFile(File catalogFile) {
-	this.catalogFile = catalogFile;
+    
+    public File getCatalogFile1() {
+	return this.catalogFile;
     }
 
 }
