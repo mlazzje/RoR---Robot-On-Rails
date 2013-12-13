@@ -37,31 +37,31 @@ public class AlgDestockingOrder implements IAlgDestocking {
 	    // On ne prend en compte que les commandes initialisées ou encore en
 	    // attente de produits
 	    if (currentOrder.getRatePerform() == 1 && currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
-		// On ne fait de traitement que si le stock contient tous les
-		// produits de la commande
-		if (stockProductsName.retainAll(currentOrder.getProductsName())) {
-		    // Pour chaque produit du stock
-		    for (Product stockedProduct : storedProducts) {
-			// Pour chaque produit de la commande
-			for (String orderProductName : currentOrder.getProductsName()) {
-			    // Si leur nom est identique et que le produit est
-			    // libre en stock, on le réserve et on ajoute une
-			    // action
-			    if (orderProductName.equals(stockedProduct.getName()) && stockedProduct.getStatus() == Product.STORED) {
-				stockedProduct.setStatus(Product.BOOKED);
-				DestockingAction currentAction = new DestockingAction(0, null, stockedProduct);
-				actions.add(currentAction);
-				break;
+			// On ne fait de traitement que si le stock contient tous les
+			// produits de la commande
+			if (stockProductsName.retainAll(currentOrder.getProductsName())) {
+			    // Pour chaque produit du stock
+			    for (Product stockedProduct : storedProducts) {
+					// Pour chaque produit de la commande
+					for (String orderProductName : currentOrder.getProductsName()) {
+					    // Si leur nom est identique et que le produit est
+					    // libre en stock, on le réserve et on ajoute une
+					    // action
+					    if (orderProductName.equals(stockedProduct.getName()) && stockedProduct.getStatus() == Product.STORED) {
+						stockedProduct.setStatus(Product.BOOKED);
+						DestockingAction currentAction = new DestockingAction(0, null, stockedProduct);
+						actions.add(currentAction);
+						break;
+					    }
+					}
 			    }
+			    // On vérifie que tous les produits sont ok
+			    if (currentOrder.getProductsName().size() == currentOrder.getProducts().size()) {
+			    	actionsToSend.addAll(actions);
+			    }
+			} else {
+			    return actionsToSend;
 			}
-		    }
-		    // On vérifie que tous les produits sont ok
-		    if (currentOrder.getProductsName().size() == currentOrder.getProducts().size()) {
-			actionsToSend.addAll(actions);
-		    }
-		} else {
-		    return actionsToSend;
-		}
 	    }
 	}
 	return actionsToSend;
