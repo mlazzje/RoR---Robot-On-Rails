@@ -90,7 +90,7 @@ public class Robot extends Observable {
 			}
 		    }
 		    System.out.println("Erreur :  " + Robot.this + " " + moveAction.getPrevious() + " <- " + lastMove.getPrevious() + " -- Nombre d'actions : " + countActions + " en cours " + Robot.this.getCurrentAction().getClass().getSimpleName());
-
+		    
 		}
 	    }
 	    lastMove = moveAction;
@@ -108,7 +108,7 @@ public class Robot extends Observable {
 			Robot.this.notifyObservers();
 		    }
 		};
-		timer.schedule(timerTask, (int)(action.getDuration()*Robot.this.speed));
+		timer.schedule(timerTask, (int) (action.getDuration() * Robot.this.speed));
 	    }
 	} else if (action instanceof StoreAction) {
 	    final StoreAction storeAction = ((StoreAction) action);
@@ -346,4 +346,14 @@ public class Robot extends Observable {
 
 	return lastAction.getNext().getRightRail();
     }
+
+    public Float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Float speed) {
+        this.speed = speed;
+    }
+    
+    
 }
