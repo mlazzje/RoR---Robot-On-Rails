@@ -166,7 +166,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// sleep
 		try {
 		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
-		    uptime = (System.currentTimeMillis() - startTime);
+		    uptime += (System.currentTimeMillis() - startTime);
 		    
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
