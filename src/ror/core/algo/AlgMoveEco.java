@@ -165,13 +165,13 @@ public class AlgMoveEco implements IAlgMove {
     }
 
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
-	if(rails.isEmpty())
+	if (rails.isEmpty())
 	    return new ArrayList<MoveAction>();
-	
+
 	ArrayList<MoveAction> moves = new ArrayList<MoveAction>();
 	Rail previous = rails.get(0);
 	for (Rail rail : rails) {
-	    if(rails.get(0)==rail)
+	    if (rails.get(0) == rail)
 		continue;
 	    MoveAction move = new MoveAction(1000, null, previous, rail);
 	    moves.add(move);
