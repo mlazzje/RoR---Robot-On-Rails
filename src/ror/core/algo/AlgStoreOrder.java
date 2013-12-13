@@ -33,8 +33,6 @@ public class AlgStoreOrder implements IAlgStore {
 						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
 						actions.add(currentAction);
 						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts !
-						
-						currentOrder.addProductStored(currentProduct);
 					}
 				}	
 			}
