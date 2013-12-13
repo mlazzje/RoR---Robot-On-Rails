@@ -13,7 +13,7 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 
-public class Robot extends Observable{
+public class Robot extends Observable {
 
     private Integer traveledDistance = 0;
     private Integer consumption = 0;
@@ -28,7 +28,7 @@ public class Robot extends Observable{
     private TimerTask timerTask = null;
     private MoveAction lastMove;
     private Integer number;
-    
+
     public Robot(Rail initRail, Integer num) {
 	number = num;
 	timer = new Timer();
@@ -315,4 +315,32 @@ public class Robot extends Observable{
 	}
     }
 
+    /**
+     * Retourne la prochaine rail libre sur laquelle peut se positioner un robot bloquant
+     * 
+     * @return Rail la rail
+     */
+    public Rail getOpositeRailAtNextIntersection() {
+	    Rail intersectionRail = null;
+	    MoveAction lastAction = null;
+	synchronized (this.actions) {
+	    // Parcours des actions
+
+	    for (Action action : this.actions) {
+		intersectionRail = ((MoveAction) action).getNext();
+		if (action instanceof MoveAction) {
+		    // Le rail est une intersection
+		    if (intersectionRail.getLeftRail() != null && rail.getRightRail() != null) {
+			if (intersectionRail.getLeftRail() == ((MoveAction) action).getNext())
+			    return rail.getRightRail();
+			else
+			    return rail.getLeftRail();
+		    }
+		    lastAction = (MoveAction) action;
+		}
+	    }
+	}
+
+	return lastAction.getNext().getRightRail();
+    }
 }
