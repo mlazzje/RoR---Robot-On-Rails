@@ -31,7 +31,7 @@ public class AlgMoveEco implements IAlgMove {
 		newDestockActions.remove(newDestockActions.get(0));
 		freeSpace--;
 	    }
-
+	    
 	    // ajout des actions de mouvements et de destockage au robot
 	    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
 	    for (Action action : actionMoveAndDestock) {
@@ -52,6 +52,7 @@ public class AlgMoveEco implements IAlgMove {
 		DestockingAction destockingAction = (DestockingAction) action;
 		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
 		outputAction.setProduct(destockingAction.getProduct());
+		System.out.println("ajout de produit en sortie");
 		robot.addAction(outputAction);
 	    }
 
@@ -113,23 +114,23 @@ public class AlgMoveEco implements IAlgMove {
 	Rail firstRail = startRail;
 	Action nextBestAction = null;
 	ArrayList<Rail> rails = null;
-
+	ArrayList<Action> copyActions = new ArrayList<Action>(storeOrDestockActions);
 	// tant qu'il reste des actions a traiter
-	while (storeOrDestockActions.size() > 0) {
+	while (copyActions.size() > 0) {
 
-	    if (storeOrDestockActions.get(0) instanceof StoreAction) {
-		nextBestAction = (StoreAction) storeOrDestockActions.get(0);
+	    if (copyActions.get(0) instanceof StoreAction) {
+		nextBestAction = (StoreAction) copyActions.get(0);
 		rails = map.getPath(firstRail, ((StoreAction) nextBestAction).getDrawer().getColumn().getAccess());
-	    } else if (storeOrDestockActions.get(0) instanceof DestockingAction) {
-		nextBestAction = (DestockingAction) storeOrDestockActions.get(0);
+	    } else if (copyActions.get(0) instanceof DestockingAction) {
+		nextBestAction = (DestockingAction) copyActions.get(0);
 		rails = map.getPath(firstRail, ((DestockingAction) nextBestAction).getDrawer().getColumn().getAccess());
 	    }
 
-	    for (Action action : storeOrDestockActions) {
+	    for (Action action : copyActions) {
 		ArrayList<Rail> tmpRails = null;
-		if (storeOrDestockActions.get(0) instanceof StoreAction)
+		if (copyActions.get(0) instanceof StoreAction)
 		    tmpRails = map.getPath(firstRail, ((StoreAction) action).getDrawer().getColumn().getAccess());
-		else if (storeOrDestockActions.get(0) instanceof DestockingAction)
+		else if (copyActions.get(0) instanceof DestockingAction)
 		    tmpRails = map.getPath(firstRail, ((DestockingAction) action).getDrawer().getColumn().getAccess());
 
 		if (tmpRails!=null && tmpRails.size() < rails.size()) {
@@ -144,12 +145,12 @@ public class AlgMoveEco implements IAlgMove {
 	    // ajout de l'action au total
 	    actions.add(nextBestAction);
 
-	    if (storeOrDestockActions.get(0) instanceof StoreAction)
+	    if (copyActions.get(0) instanceof StoreAction)
 		firstRail = ((StoreAction) nextBestAction).getDrawer().getColumn().getAccess();
-	    else if (storeOrDestockActions.get(0) instanceof DestockingAction)
+	    else if (copyActions.get(0) instanceof DestockingAction)
 		firstRail = ((DestockingAction) nextBestAction).getDrawer().getColumn().getAccess();
 
-	    storeOrDestockActions.remove(nextBestAction);
+	    copyActions.remove(nextBestAction);
 	}
 	return actions;
     }
@@ -172,6 +173,8 @@ public class AlgMoveEco implements IAlgMove {
 
     
     public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
+	
+	
 	// prend en compte le fait qu'un robot peut se trouver sur le chemin d'un autre pour une destination donnée
 	Robot bestRobot = null;
 	Integer minRailCount = null;
