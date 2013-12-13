@@ -13,7 +13,6 @@ public class DestockingAction extends Action {
 		super(duration, robot);
 		this.setDrawer(product.getDrawer());
 		this.setProduct(product);
-		this.getProduct().setDrawer(drawer);
 	}
 
 	public Drawer getDrawer() {

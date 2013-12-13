@@ -80,7 +80,7 @@ public class Robot extends Observable{
 	    MoveAction moveAction = (MoveAction) action;
 	    if (lastMove != null) {
 		if (!moveAction.getPrevious().getPreviousRail().contains(lastMove.getPrevious()))
-		    System.out.println("Erreur : " + moveAction.getPrevious() + "<-" + lastMove.getPrevious());
+		    System.out.println("Erreur :  "+ Robot.this +" "+ moveAction.getPrevious() + "<-" + lastMove.getPrevious());
 	    }
 	    lastMove = moveAction;
 	    this.setOrderInProgress(null);

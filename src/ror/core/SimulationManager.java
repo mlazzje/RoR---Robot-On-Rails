@@ -50,7 +50,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.orderSource = new OrderSource();
 	this.source = false;
 	this.iAlgStore = new AlgStoreFifo();
-	this.iAlgDestocking = new AlgDestockingOrder();
+	this.iAlgDestocking = new AlgDestockingFifo();
 	this.iAlgMove = new AlgMoveEco();
 	this.orders = new ArrayList<Order>();
 	this.stockProducts = new ArrayList<Product>();
