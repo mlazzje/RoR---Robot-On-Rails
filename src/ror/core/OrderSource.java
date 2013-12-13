@@ -41,7 +41,7 @@ public class OrderSource {
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
 	ArrayList<String> productNamesInOrder = new ArrayList<String>();
-	Integer cpt = 0, cptProduct = 0;
+	Integer cpt = 0, cptProduct = 0, nbProductToCreate = 2;
 	// Add all product name to productNamesInStock
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());
@@ -53,9 +53,14 @@ public class OrderSource {
 		    productNamesInStock.remove(product);
 		} else // Si le produit n'est pas disponible en stock
 		{
-			    productNamesInOrder.add(product);
-			    cptProduct++;
-			
+		    if(cptProduct < nbProductToCreate)
+		    {
+			productNamesInOrder.add(product);
+			cptProduct++;
+		    }
+		    else {
+			break;
+		    }
 		}
 	    }
 	    cpt++;
@@ -72,7 +77,7 @@ public class OrderSource {
 	ArrayList<Order> newOrders = new ArrayList<Order>();
 	Integer nbOrdersToCreate = 1; // 1 a 5 commande(s) crée(s)
 	// 1 chance sur 3 de créer les commandes
-	if (random(1, 2)==1) {
+	if (random(1, 2) == 1) {
 	    // Création des commandes
 	    for (int i = 0; i < nbOrdersToCreate; i++) {
 		Order order = new Order();

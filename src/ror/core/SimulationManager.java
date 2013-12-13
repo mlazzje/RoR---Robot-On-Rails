@@ -130,13 +130,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
 		    SimulationManager.this.orders.addAll(newOrders);
-		    if (this.map.getInput().getProductList().size() < 12)
+		    if (this.map.getInput().getProductList().size() < 10)
 			newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
 		    SimulationManager.this.orders.addAll(newOrders);
-		    if (this.map.getInput().getProductList().size() < 12)
+		    if (this.map.getInput().getProductList().size() < 10)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		}
 		for (Product product : newProducts) {
