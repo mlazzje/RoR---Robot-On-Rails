@@ -15,11 +15,15 @@ import ror.core.actions.StoreAction;
 
 public class Robot extends Observable {
 
+    public static final float SPEED_1 = 1;
+    public static final float SPEED_2 = 0.5f;
+    public static final float SPEED_3 = 0.25f;
+
     private Integer traveledDistance = 0;
     private Integer consumption = 0;
     private ArrayList<Action> actions = null;
     private Rail rail = null;
-    private Integer speed = 1;
+    private Float speed = SPEED_1;
     private Boolean working = false;
     private Order orderInProgress = null;
     private Integer status = 0;
@@ -86,27 +90,25 @@ public class Robot extends Observable {
 			}
 		    }
 		    System.out.println("Erreur :  " + Robot.this + " " + moveAction.getPrevious() + " <- " + lastMove.getPrevious() + " -- Nombre d'actions : " + countActions + " en cours " + Robot.this.getCurrentAction().getClass().getSimpleName());
-
+		    
 		}
 	    }
 	    lastMove = moveAction;
 	    this.setOrderInProgress(null);
 	    synchronized (timer) {
-
 		timerTask = new TimerTask() {
 		    public void run() {
 			Robot.this.rail.setRobot(null);
 			if (((MoveAction) action).getNext() != null)
 			    Robot.this.rail = ((MoveAction) action).getNext();
 			Robot.this.rail.setRobot(Robot.this);
-			Robot.this.consumption += 20 * speed; // TODO vérifier le calcul
+			Robot.this.consumption += (int) (20 / speed); // TODO vérifier le calcul
 			Robot.this.traveledDistance++;
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
 		    }
 		};
-
-		timer.schedule(timerTask, action.getDuration());
+		timer.schedule(timerTask, (int) (action.getDuration() * Robot.this.speed));
 	    }
 	} else if (action instanceof StoreAction) {
 	    final StoreAction storeAction = ((StoreAction) action);
@@ -321,8 +323,8 @@ public class Robot extends Observable {
      * @return Rail la rail
      */
     public Rail getOpositeRailAtNextIntersection() {
-	    Rail intersectionRail = null;
-	    MoveAction lastAction = null;
+	Rail intersectionRail = null;
+	MoveAction lastAction = null;
 	synchronized (this.actions) {
 	    // Parcours des actions
 
@@ -344,4 +346,14 @@ public class Robot extends Observable {
 
 	return lastAction.getNext().getRightRail();
     }
+
+    public Float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Float speed) {
+        this.speed = speed;
+    }
+    
+    
 }

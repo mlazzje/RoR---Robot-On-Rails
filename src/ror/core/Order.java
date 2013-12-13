@@ -74,6 +74,7 @@ public class Order implements Comparable<Order> {
 		this.time = 0;
 		this.productsName = new ArrayList<String>();
 		this.products = new ArrayList<Product>();
+		this.productsStored = new ArrayList<Product>();
 		this.drawers = new ArrayList<Drawer>();
 	}
 	
@@ -93,6 +94,13 @@ public class Order implements Comparable<Order> {
 	 */
 	public void setDrawers(List<Drawer> drawers) {
 		this.drawers = drawers;
+	}
+	
+	/**
+	 * @param drawer
+	 */
+	public void addDrawer(Drawer drawer) {
+		this.drawers.add(drawer);
 	}
 
 	/**

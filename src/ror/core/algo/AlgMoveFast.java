@@ -20,7 +20,8 @@ public class AlgMoveFast implements IAlgMove {
 	    Robot robot;
 
 	    robot = getBestRobot(robots);
-
+	    robot.setSpeed(Robot.SPEED_3);
+	    
 	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
 	    int freeSpace = robot.getLastActionSpaceAvailability();
 

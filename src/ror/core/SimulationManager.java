@@ -113,7 +113,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    robot.executeAction(robot.getCurrentAction());
 	}
 	uptime = 0;
-	
+
 	status = 1;
 	while (status != 0) {
 	    Long startTime = System.currentTimeMillis();
@@ -166,8 +166,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// sleep
 		try {
 		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
-		    uptime = (System.currentTimeMillis() - startTime);
-		    
+		    uptime += (System.currentTimeMillis() - startTime);
+
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
@@ -285,12 +285,15 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 			    // on fait avancer le robot jusqu'a une intersection
 
-			    
 			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
 
 			    blockingRobot.getActions().addAll(movesBlockingRobot);
 
-			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
+			    PauseAction pa = new PauseAction(0, robot, blockingRobot);
+			    synchronized (blockingRobot.getActions()) {
+				blockingRobot.getActions().add(0, pa);
+				blockingRobot.executeAction(blockingRobot.getCurrentAction());
+			    }
 			}
 		    }
 

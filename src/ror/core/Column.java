@@ -86,7 +86,7 @@ public class Column extends RoRElement implements Observer {
 		return this.drawerList;
 	}
 	
-	public boolean bookNDrawersOrder(int nb) {
+	public boolean bookNDrawersOrder(Order order, int nb) {
 		Drawer drawer;
 		for (; nb>0; nb--) {
 			drawer = this.getAvailableDrawer();
@@ -95,6 +95,7 @@ public class Column extends RoRElement implements Observer {
 				return false; 
 			}
 			drawer.setStatus(Drawer.BOOKED_FOR_ORDER);
+			order.addDrawer(drawer);
 		}
 		return true;
 	}
