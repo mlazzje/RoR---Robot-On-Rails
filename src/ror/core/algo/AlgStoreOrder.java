@@ -151,25 +151,25 @@ public class AlgStoreOrder implements IAlgStore {
 				} else if (nbDrawersToBook-nbDrawersBookedReally>nbDrawersAvailable) {
 					nbDrawersBookedReally+=nbDrawersToBookForColumn=nbDrawersAvailable;
 				}
-				firstColumn.bookNDrawersOrder(nbDrawersToBookForColumn);
+				firstColumn.bookNDrawersOrder(order, nbDrawersToBookForColumn);
 			} 
 			if(secondColumn!=null) {
-				nbDrawersAvailable=firstColumn.getNbAvailableDrawers();
+				nbDrawersAvailable=secondColumn.getNbAvailableDrawers();
 				if(nbDrawersToBook-nbDrawersBookedReally<nbDrawersAvailable) { // Voilà
 					nbDrawersBookedReally+=nbDrawersToBookForColumn=nbDrawersToBook-nbDrawersBookedReally; // = nbDrawersBooked=nbDrawersToBook;
 				} else if (nbDrawersToBook-nbDrawersBookedReally>nbDrawersAvailable) {
 					nbDrawersBookedReally+=nbDrawersToBookForColumn=nbDrawersAvailable;
 				}
-				secondColumn.bookNDrawersOrder(nbDrawersToBookForColumn);
+				secondColumn.bookNDrawersOrder(order, nbDrawersToBookForColumn);
 			}
 			if(thirdColumn!=null) {
-				nbDrawersAvailable=firstColumn.getNbAvailableDrawers();
+				nbDrawersAvailable=thirdColumn.getNbAvailableDrawers();
 				if(nbDrawersToBook-nbDrawersBookedReally<nbDrawersAvailable) { // Voilà
 					nbDrawersBookedReally+=nbDrawersToBookForColumn=nbDrawersToBook-nbDrawersBookedReally; // = nbDrawersBooked=nbDrawersToBook;
 				} else if (nbDrawersToBook-nbDrawersBookedReally>nbDrawersAvailable) {
 					nbDrawersBookedReally+=nbDrawersToBookForColumn=nbDrawersAvailable;
 				}
-				thirdColumn.bookNDrawersOrder(nbDrawersToBookForColumn);
+				thirdColumn.bookNDrawersOrder(order, nbDrawersToBookForColumn);
 			}
 			return true;
 		}

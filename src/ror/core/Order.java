@@ -95,6 +95,13 @@ public class Order implements Comparable<Order> {
 	public void setDrawers(List<Drawer> drawers) {
 		this.drawers = drawers;
 	}
+	
+	/**
+	 * @param drawer
+	 */
+	public void addDrawer(Drawer drawer) {
+		this.drawers.add(drawer);
+	}
 
 	/**
 	 * @return Id Order
