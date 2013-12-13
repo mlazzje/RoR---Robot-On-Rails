@@ -108,7 +108,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	for (Robot robot : this.robots) {
 
-	    PauseAction p = new PauseAction(1000, robot, null);
+	    PauseAction p = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, null);
 	    robot.addAction(p);
 	    robot.executeAction(robot.getCurrentAction());
 	}
@@ -283,7 +283,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    }
 
 		    System.out.println(robot + " bloqué par " + blockingRobot);
-		    PauseAction pa = new PauseAction(1000, robot, blockingRobot);
+		    PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, blockingRobot);
 		    synchronized (robot.getActions()) {
 			robot.getActions().add(0, pa);
 			robot.executeAction(robot.getCurrentAction());
@@ -295,7 +295,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.setChanged();
 		this.notifyObservers();
 	    } else {
-		PauseAction pa = new PauseAction(1000, robot, null);
+		PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, null);
 		synchronized (robot.getActions()) {
 		    robot.getActions().add(0, pa);
 		    robot.executeAction(robot.getCurrentAction());
