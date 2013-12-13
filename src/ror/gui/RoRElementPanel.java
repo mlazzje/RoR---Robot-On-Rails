@@ -274,7 +274,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 		    label.setHorizontalAlignment(JLabel.CENTER);
 		    frame.getInformationsPanel().add(label);
 		} else {
-		    Iterator<Product> it = ((Input) this.rorElement).getProductList().iterator();
+		    Iterator<Product> it = ((Output) this.rorElement).getProductList().iterator();
 		    while (it.hasNext()) {
 			Product next = it.next();
 			JLabel label = new JLabel(next.getName());
