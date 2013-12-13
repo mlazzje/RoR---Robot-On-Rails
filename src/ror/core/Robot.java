@@ -109,7 +109,6 @@ public class Robot extends Observable{
 		    storeAction.getProduct().setStatus(Product.STORED);
 		    Robot.this.removeProduct(storeAction.getProduct());
 		    drawer.setProduct(storeAction.getProduct());
-		    drawer.getProduct().setDrawer(drawer);
 
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
