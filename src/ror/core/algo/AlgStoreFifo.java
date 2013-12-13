@@ -11,9 +11,9 @@ import ror.core.actions.Action;
 import ror.core.actions.StoreAction;
 
 public class AlgStoreFifo implements IAlgStore {
-    public ArrayList<Action> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
+    public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
 
-	ArrayList<Action> actions = new ArrayList<Action>();
+	ArrayList<StoreAction> actions = new ArrayList<StoreAction>();
 	// TODO Eventuellement prioriser les colonnes dans le XML pour qu'elle soient triées selon les souhaits du client
 	Iterator<Product> itProduct = inputProducts.iterator();
 	Drawer drawer = null;
@@ -33,7 +33,7 @@ public class AlgStoreFifo implements IAlgStore {
 		    }
 		}
 		if (drawer == null) {
-		   System.out.println("pas de colonne disponible");
+		    System.out.println("pas de colonne disponible");
 		    // Si on arrive ici c'est qu'il n'y a plus de columns disponibles
 		    return actions;
 		}

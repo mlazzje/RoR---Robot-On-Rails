@@ -6,8 +6,9 @@ import ror.core.Map;
 import ror.core.Order;
 import ror.core.Product;
 import ror.core.actions.Action;
+import ror.core.actions.StoreAction;
 
 public interface IAlgStore {
 
-	public ArrayList<Action> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map);
+    public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map);
 }

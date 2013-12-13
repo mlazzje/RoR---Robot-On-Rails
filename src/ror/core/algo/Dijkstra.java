@@ -84,9 +84,9 @@ public class Dijkstra {
     public List<Rail> getPath(Rail start, Rail end) {
 
 	if (start.getX() == end.getX() && start.getY() == end.getY()) {
-		return new ArrayList<Rail>();
+	    return new ArrayList<Rail>();
 	}
-	
+
 	vertices = new ArrayList<Vertex>();
 
 	for (Rail rail : rails) {
@@ -106,14 +106,14 @@ public class Dijkstra {
 
 	this.computePaths(vertices.get(rails.indexOf(start)));
 	List<Vertex> path = getShortestPathTo(vertices.get(rails.indexOf(end)));
-	if(path.isEmpty() || (path.size()==1 && path.get(0).rail==end))
+	if (path.isEmpty() || (path.size() == 1 && path.get(0).rail == end))
 	    return null;
 	List<Rail> finalPath = new ArrayList<Rail>();
 
 	for (Vertex v : path) {
 	    finalPath.add(v.rail);
 	}
-	
+
 	return finalPath;
     }
 }

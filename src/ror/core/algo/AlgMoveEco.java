@@ -15,30 +15,19 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.StoreAction;
 
 public class AlgMoveEco implements IAlgMove {
-    public void updateRobotsActions(ArrayList<Action> newActions, ArrayList<Robot> robots, Map map) {
-
-	ArrayList<StoreAction> storeActions = new ArrayList<StoreAction>();
-	ArrayList<DestockingAction> destockingActions = new ArrayList<DestockingAction>();
-	for (Action action : newActions) {
-	    if (action instanceof StoreAction) {
-		storeActions.add((StoreAction) action);
-	    }
-	    if (action instanceof DestockingAction) {
-		destockingActions.add((DestockingAction) action);
-	    }
-	}
+    public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
 
 	// si des actions input ou store sont disponibles
-	while (destockingActions.size() > 0) {
+	while (newDestockActions.size() > 0) {
 	    Robot robot;
-	    robot = getBestRobot(robots, map, destockingActions.get(0).getProduct().getDrawer().getColumn().getAccess());
+	    robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
 
 	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
 	    int freeSpace = robot.getLastActionSpaceAvailability();
 
-	    while (freeSpace > 0 && destockingActions.size() > 0) {
-		destockingActionToAffect.add(destockingActions.get(0));
-		destockingActions.remove(destockingActions.get(0));
+	    while (freeSpace > 0 && newDestockActions.size() > 0) {
+		destockingActionToAffect.add(newDestockActions.get(0));
+		newDestockActions.remove(newDestockActions.get(0));
 		freeSpace--;
 	    }
 
@@ -68,12 +57,12 @@ public class AlgMoveEco implements IAlgMove {
 	}
 
 	// si des actions input ou store sont disponibles
-	while (storeActions.size() > 0) {
+	while (newStoreActions.size() > 0) {
 
 	    Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
 
 	    ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
-	    for (StoreAction storeAction : storeActions) {
+	    for (StoreAction storeAction : newStoreActions) {
 		InputAction inputaction = new InputAction(1000, null, map.getInput());
 		inputaction.setProduct(storeAction.getProduct());
 		inputActions.add(inputaction);
@@ -101,13 +90,13 @@ public class AlgMoveEco implements IAlgMove {
 
 	    // on parcours les actions affectees pour recuperer les storeactions associées
 	    for (InputAction inputAction : affectedInputAction) {
-		for (StoreAction storeAction : storeActions) {
+		for (StoreAction storeAction : newStoreActions) {
 		    if (inputAction.getProduct() == storeAction.getProduct()) {
 			storeActionsToAffect.add(storeAction);
 		    }
 		}
 	    }
-	    storeActions.removeAll(storeActionsToAffect);
+	    newStoreActions.removeAll(storeActionsToAffect);
 
 	    // ajout des actions de mouvements et de stockage au robot
 	    ArrayList<Action> actionMoveAndStore = sortActionsAndMoves(storeActionsToAffect, map, map.getInput().getAccess());

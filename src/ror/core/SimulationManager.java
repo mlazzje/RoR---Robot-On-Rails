@@ -148,17 +148,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		SimulationManager.this.stockProducts.addAll(newProducts);
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
-		ArrayList<Action> newActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
+		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
 
-		if (newActions == null)
-		    newActions = new ArrayList<Action>();
+		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts);
 
-		newActions.addAll(SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts));
-
-		if (newActions == null)
-		    newActions = new ArrayList<Action>();
-
-		SimulationManager.this.iAlgMove.updateRobotsActions(newActions, SimulationManager.this.robots, this.map);
+		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 
 		// update statistic indicators
 		SimulationManager.this.updateIndicators();
