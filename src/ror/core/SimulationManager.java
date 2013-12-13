@@ -12,6 +12,7 @@ import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
+import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgStoreFifo;
