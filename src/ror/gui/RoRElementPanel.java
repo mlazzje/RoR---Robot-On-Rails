@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,7 +29,7 @@ import ror.core.Rail;
 import ror.core.RoRElement;
 import ror.core.Robot;
 
-public class RoRElementPanel extends JLabel implements MouseListener {
+public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 
     private static final long serialVersionUID = 1L;
     private static int size = 32;
@@ -69,8 +71,8 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	    RoRElementPanel.input = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/input.png")), size));
 	    RoRElementPanel.outputFill = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/output-fill.png")), size));
 	    RoRElementPanel.inputFill = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/input-fill.png")), size));
-	    RoRElementPanel.robot = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/robot.png")), size/2));
-	    RoRElementPanel.roboti = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/robot-i.png")), size/2));
+	    RoRElementPanel.robot = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/robot.png")), size / 2));
+	    RoRElementPanel.roboti = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/robot-i.png")), size / 2));
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -83,12 +85,16 @@ public class RoRElementPanel extends JLabel implements MouseListener {
 	this.setPreferredSize(dim);
 	this.addMouseListener(this);
 	this.setBorder(null);
-	this.rorElement = element;
-	// this.setBorder(BorderFactory.createLineBorder(Color.black));
-	reColor();
+	if (element != null) {
+	    this.rorElement = element;
+	    this.rorElement.addObserver(this);
+	} else {
+	    this.setIcon(RoRElementPanel.railEmpty);
+	}
+	update(this.rorElement, null);
     }
 
-    public void reColor() {
+    public void update(Observable rorElement, Object o) {
 	if (rorElement instanceof Rail) {
 	    Rail rail = (Rail) rorElement;
 	    // Rail Simple
