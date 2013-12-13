@@ -6,6 +6,7 @@ public class Drawer extends Observable {
 
 	public static final Integer FREE = 0;
 	public static final Integer BOOKED = 1;
+	public static final Integer BOOKED_FOR_ORDER = 2; // Algo Stocking Order
 
 	private Integer positionInColumn;
 	private Integer status;

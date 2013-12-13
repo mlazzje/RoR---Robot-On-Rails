@@ -85,6 +85,19 @@ public class Column extends RoRElement implements Observer {
 	public List<Drawer> getDrawerList() {
 		return this.drawerList;
 	}
+	
+	public boolean bookNDrawersOrder(int nb) {
+		Drawer drawer;
+		for (; nb>0; nb--) {
+			drawer = this.getAvailableDrawer();
+			if(drawer==null) { 
+				System.out.println("Problem with booking Drawer");
+				return false; 
+			}
+			drawer.setStatus(Drawer.BOOKED_FOR_ORDER);
+		}
+		return true;
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
