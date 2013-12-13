@@ -41,7 +41,7 @@ public class OrderSource {
 	ArrayList<Product> newProducts = new ArrayList<Product>();
 	ArrayList<String> productNamesInStock = new ArrayList<String>();
 	ArrayList<String> productNamesInOrder = new ArrayList<String>();
-	Integer cpt = 0, cptProduct = 0, nbProductToCreate = 2;
+	Integer cpt = 0, cptProduct = 0, nbProductToCreate = 8;
 	// Add all product name to productNamesInStock
 	for (Product product : stock) {
 	    productNamesInStock.add(product.getName());

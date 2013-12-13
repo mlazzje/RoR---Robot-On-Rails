@@ -12,7 +12,6 @@ import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
-import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgStoreFifo;
@@ -130,13 +129,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
 		    SimulationManager.this.orders.addAll(newOrders);
-		    if (this.map.getInput().getProductList().size() < 10)
+		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
 		    SimulationManager.this.orders.addAll(newOrders);
-		    if (this.map.getInput().getProductList().size() < 10)
+		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		}
 		for (Product product : newProducts) {
@@ -274,7 +273,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// be cancel by the robot his waiting)
 		else {
 		    synchronized (blockingRobot.getActions()) {
-			if (blockingRobot.getActions().size() <= 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {
+			// Si le robot de devant n'a pas d'action affectée
+			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {			    
 			    blockingRobot.removeCurrentAction();
 			    blockingRobot.getActions().add(0, new MoveAction(1000, blockingRobot, blockingRobot.getRail(), blockingRobot.getRail().getRightRail()));
 			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
