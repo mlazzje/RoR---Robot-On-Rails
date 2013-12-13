@@ -281,7 +281,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 			    // on fait avancer le robot jusqu'a une intersection
 
-			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getRail()));
+			    
+			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
 
 			    blockingRobot.getActions().addAll(movesBlockingRobot);
 

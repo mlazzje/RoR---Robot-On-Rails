@@ -327,14 +327,15 @@ public class Robot extends Observable {
 	    // Parcours des actions
 
 	    for (Action action : this.actions) {
-		intersectionRail = ((MoveAction) action).getNext();
 		if (action instanceof MoveAction) {
+		    intersectionRail = ((MoveAction) action).getNext();
+
 		    // Le rail est une intersection
 		    if (intersectionRail.getLeftRail() != null && rail.getRightRail() != null) {
 			if (intersectionRail.getLeftRail() == ((MoveAction) action).getNext())
-			    return rail.getRightRail();
+			    return intersectionRail.getRightRail();
 			else
-			    return rail.getLeftRail();
+			    return intersectionRail.getLeftRail();
 		    }
 		    lastAction = (MoveAction) action;
 		}
