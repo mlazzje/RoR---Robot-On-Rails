@@ -295,6 +295,7 @@ public class UIController implements Observer {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	simulationManager.setStop();
+	this.thread=null;
     }
 
     public void pauseSimulation() {
@@ -306,8 +307,12 @@ public class UIController implements Observer {
     public void startSimulation() {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
-	this.thread = new Thread(this.simulationManager);
-	this.thread.start();
+	if (thread == null) {
+	    this.thread = new Thread(this.simulationManager);
+	    this.thread.start();
+	} else
+	    this.simulationManager.setPlay();
+
     }
 
     public void setSpeed(Float speed) {
