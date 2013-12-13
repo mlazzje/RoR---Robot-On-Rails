@@ -39,7 +39,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     private boolean wasInPause = false;
     private boolean source;
     private Integer coeff = 3000; // <==> 1 second
-    private long startTime;
+    private long uptime;
     private ArrayList<Product> stockProducts;
     private ArrayList<String> newLogs;
 
@@ -84,8 +84,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.nbRobot;
     }
 
-    public Integer getUptime() {
-	return ((int) ((System.currentTimeMillis() - startTime) / 1000));
+    public Long getUptime() {
+	return this.uptime;
     }
 
     @Override
@@ -112,10 +112,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    robot.addAction(p);
 	    robot.executeAction(robot.getCurrentAction());
 	}
-
-	startTime = System.currentTimeMillis();
+	uptime = 0;
+	
 	status = 1;
 	while (status != 0) {
+	    Long startTime = System.currentTimeMillis();
+
 	    if (status == 1) // running
 	    {
 		if (wasInPause) {
@@ -164,6 +166,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// sleep
 		try {
 		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
+		    uptime = (System.currentTimeMillis() - startTime);
+		    
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}

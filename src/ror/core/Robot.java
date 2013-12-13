@@ -175,7 +175,7 @@ public class Robot extends Observable {
 
 			Robot.this.removeProduct(outputAction.getProduct());
 			outputAction.getOutput().addProduct(outputAction.getProduct());
-
+			outputAction.getProduct().setStatus(Product.DONE);
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
 		    }

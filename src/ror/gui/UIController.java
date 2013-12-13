@@ -180,7 +180,7 @@ public class UIController implements Observer {
 	    } else {
 		this.rorFrame.getInformationsPanel().removeAll();
 		this.rorFrame.getInformationsPanel().setLayout(new GridLayout(13, 1));
-		JLabel title = new JLabel("Détails Robot #"+robot.getNumber());
+		JLabel title = new JLabel("Détails Robot #" + robot.getNumber());
 		title.setFont(h1Font);
 		title.setVerticalAlignment(JLabel.CENTER);
 		title.setHorizontalAlignment(JLabel.CENTER);
@@ -237,13 +237,14 @@ public class UIController implements Observer {
     public void setAlgMove(Integer algId) {
 	switch (algId) {
 	case 0:
-	    simulationManager.setiAlgMove(new AlgMoveEco());
+	    simulationManager.setiAlgMove(new AlgMoveAuto());
 	    break;
 	case 1:
-	    simulationManager.setiAlgMove(new AlgMoveFast());
+	    simulationManager.setiAlgMove(new AlgMoveEco());
+
 	    break;
 	case 2:
-	    simulationManager.setiAlgMove(new AlgMoveAuto());
+	    simulationManager.setiAlgMove(new AlgMoveFast());
 	    break;
 	default:
 	    break;
