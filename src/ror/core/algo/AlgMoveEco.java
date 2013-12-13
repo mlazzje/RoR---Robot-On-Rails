@@ -132,7 +132,7 @@ public class AlgMoveEco implements IAlgMove {
 		else if (storeOrDestockActions.get(0) instanceof DestockingAction)
 		    tmpRails = map.getPath(firstRail, ((DestockingAction) action).getDrawer().getColumn().getAccess());
 
-		if (tmpRails.size() < rails.size()) {
+		if (tmpRails!=null && tmpRails.size() < rails.size()) {
 		    nextBestAction = action;
 		    rails = tmpRails;
 		}
@@ -153,7 +153,7 @@ public class AlgMoveEco implements IAlgMove {
 	}
 	return actions;
     }
-
+    
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
 	if (rails.isEmpty())
 	    return new ArrayList<MoveAction>();
@@ -170,6 +170,7 @@ public class AlgMoveEco implements IAlgMove {
 	return moves;
     }
 
+    
     public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
 	// prend en compte le fait qu'un robot peut se trouver sur le chemin d'un autre pour une destination donnée
 	Robot bestRobot = null;
@@ -210,17 +211,15 @@ public class AlgMoveEco implements IAlgMove {
 	    // System.out.println(path);
 
 	    if (minRailCount != null) {
-		if (path.size() < minRailCount) {
+		if (railsToMoveActions(path).size() < minRailCount) {
 		    bestRobot = robot;
-		    minRailCount = path.size();
+		    minRailCount = railsToMoveActions(path).size();
 		}
 	    } else {
 		bestRobot = robot;
-		minRailCount = path.size();
+		minRailCount = railsToMoveActions(path).size();
 	    }
-
 	}
-
 	// System.out.println(bestRobot);
 	return bestRobot;// robotNotBeblocked.get(0);//getBestRobot(robotNotBeblocked, map, destination);
 

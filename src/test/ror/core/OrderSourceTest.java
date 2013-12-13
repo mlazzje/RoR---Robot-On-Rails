@@ -71,7 +71,7 @@ public class OrderSourceTest {
 		File file = new File("xml/scenario-test.xml");
 		System.out.println(file.getAbsolutePath());
 		
-		orderSourceTest.setFile(file);
+		orderSourceTest.setScenarioFile(file);
 
 		HashMap<Integer, ArrayList<Product>> products = orderSourceTest.getProducts();
 		HashMap<Integer,ArrayList<Order>> orders = orderSourceTest.getOrders();
