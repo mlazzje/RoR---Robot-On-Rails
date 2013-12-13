@@ -181,7 +181,15 @@ public class Robot extends Observable {
 			// TODO : check mise à jour état commande
 			Order o = outputAction.getProduct().getOrder();
 			if (o != null) {
-			    o.setStatus(Order.DONE);
+			    Boolean orderDone = true;
+			    for (Product p : o.getProducts()) {
+				if (p.getStatus() != Product.DONE) {
+				    orderDone = false;
+				}
+			    }
+			    if (orderDone) {
+				o.setStatus(Order.DONE);
+			    }
 			}
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
