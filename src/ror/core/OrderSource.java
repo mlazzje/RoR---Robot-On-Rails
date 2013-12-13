@@ -96,7 +96,7 @@ public class OrderSource {
 	return newOrders;
     }
 
-    public ArrayList<Order> getScenarioOrders(Integer uptime) {	
+    public ArrayList<Order> getScenarioOrders(Long uptime) {	
 	ArrayList<Order> orders = new ArrayList<Order>();
 	if(this.orders.get(uptime) != null)
 	{
@@ -105,7 +105,7 @@ public class OrderSource {
 	return orders;
     }
 
-    public ArrayList<Product> getScenarioProducts(Integer uptime) {
+    public ArrayList<Product> getScenarioProducts(Long uptime) {
 	ArrayList<Product> products = new ArrayList<Product>();
 	if(this.products.get(uptime) != null)
 	{
@@ -188,7 +188,6 @@ public class OrderSource {
 		this.orders.put(orderDate, new ArrayList<Order>());
 	    this.orders.get(orderDate).add(newOrder);
 	}
-	System.out.println(this.orders);
     }
 
     public ArrayList<String> getCatalog() {
