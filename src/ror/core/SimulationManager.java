@@ -275,12 +275,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		else {
 		    synchronized (blockingRobot.getActions()) {
 			// Si le robot de devant n'a pas d'action affectée
-			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {			    
+			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {
+			    blockingRobot.stopSchedule();
 			    blockingRobot.removeCurrentAction();
-			    ArrayList<MoveAction> movesBlockingRobot= iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getRail()));
-			   
+
+			    // on fait avancer le robot jusqu'a une intersection
+
+			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getRail()));
+
 			    blockingRobot.getActions().addAll(movesBlockingRobot);
-			    
+
 			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
 			}
 		    }
