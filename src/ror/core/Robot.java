@@ -106,10 +106,16 @@ public class Robot extends Observable{
 		public void run() {
 
 		    Drawer drawer = storeAction.getDrawer();
-		    storeAction.getProduct().setStatus(Product.STORED);
 		    Robot.this.removeProduct(storeAction.getProduct());
 		    drawer.setProduct(storeAction.getProduct());
-
+		    storeAction.getProduct().setStatus(Product.STORED);
+		    
+		    //dans le cas du stockage par commande
+		    if(storeAction.getProduct().getOrder()!=null)
+		    {
+			storeAction.getProduct().getOrder().addProduct(storeAction.getProduct());
+		    }
+		    
 		    Robot.this.setChanged();
 		    Robot.this.notifyObservers();
 		}

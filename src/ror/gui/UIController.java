@@ -71,13 +71,15 @@ public class UIController implements Observer {
 		    label.setHorizontalAlignment(JLabel.CENTER);
 		    this.rorFrame.getInformationsPanel().add(label);
 		} else {
-		    Iterator<Product> it = input.getProductList().iterator();
-		    while (it.hasNext()) {
-			Product next = it.next();
-			JLabel label = new JLabel(next.getName());
-			label.setVerticalAlignment(JLabel.CENTER);
-			label.setHorizontalAlignment(JLabel.CENTER);
-			this.rorFrame.getInformationsPanel().add(label);
+		    synchronized (input.getProductList()) {
+			Iterator<Product> it = input.getProductList().iterator();
+			while (it.hasNext()) {
+			    Product next = it.next();
+			    JLabel label = new JLabel(next.getName());
+			    label.setVerticalAlignment(JLabel.CENTER);
+			    label.setHorizontalAlignment(JLabel.CENTER);
+			    this.rorFrame.getInformationsPanel().add(label);
+			}
 		    }
 		}
 		this.rorFrame.pack();
@@ -295,7 +297,7 @@ public class UIController implements Observer {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	simulationManager.setStop();
-	this.thread=null;
+	this.thread = null;
     }
 
     public void pauseSimulation() {
