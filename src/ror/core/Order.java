@@ -28,7 +28,7 @@ public class Order implements Comparable<Order> {
 		this.time = 0;
 		this.productsName = new ArrayList<String>();
 		this.products = new ArrayList<Product>();
-
+		this.drawers = new ArrayList<Drawer>();
 	}
 
 	public List<Drawer> getDrawers() {
@@ -168,4 +168,17 @@ public class Order implements Comparable<Order> {
 
 		return resultat;
 	}
+	
+	public String toString()
+	{
+	    String s = "\n";
+	    s += "Commande "+this.idOrder+"\n";
+	    s += "Status : "+this.status+"\n";
+	    s += "Time : "+this.time+"\n";
+	    s += "ProductsName : "+this.productsName.toString()+"\n";
+	    s += "Produits en stocks : " +this.products.toString()+"\n";
+	    s += "Drawers associés : "+this.drawers.toString()+"\n";
+	    return s;
+	}
+	
 }

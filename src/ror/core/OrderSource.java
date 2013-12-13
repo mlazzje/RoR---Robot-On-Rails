@@ -26,9 +26,9 @@ public class OrderSource {
 	this.catalog = new ArrayList<String>();
 	
 	File catalogFile = new File("xml/catalog.xml");
-	File scenarioFile = new File("xml/scenario-test.xml");
 	this.setCatalogFile(catalogFile);
-	this.setScenarioFile(scenarioFile);
+	//File scenarioFile = new File("xml/scenario-test.xml");
+	//this.setScenarioFile(scenarioFile);
     }
 
     public HashMap<Integer, ArrayList<Product>> getProducts() {
@@ -97,11 +97,21 @@ public class OrderSource {
     }
 
     public ArrayList<Order> getScenarioOrders(Integer uptime) {	
-	return this.orders.get(uptime);
+	ArrayList<Order> orders = new ArrayList<Order>();
+	if(this.orders.get(uptime) != null)
+	{
+	    orders.addAll(this.orders.get(uptime));
+	}
+	return orders;
     }
 
     public ArrayList<Product> getScenarioProducts(Integer uptime) {
-	return this.products.get(uptime);
+	ArrayList<Product> products = new ArrayList<Product>();
+	if(this.products.get(uptime) != null)
+	{
+	    products.addAll(this.products.get(uptime));
+	}
+	return products;
     }
 
     private Integer random(Integer min, Integer max) {
@@ -112,23 +122,20 @@ public class OrderSource {
     {
 	this.catalogFile = catalogFile;
 	
+	// XML SAX parsing
 	Document document = null;
 	Element racine;
-
 	SAXBuilder sxb = new SAXBuilder();
 	try {
 	    document = sxb.build(catalogFile);
 	} catch (Exception e) {
 	}
-
 	racine = document.getRootElement();
 
-	// recuperation du catalogue des produits
+	// Récupération du catalogue de produits
 	Element catalogElement = racine.getChild("Catalog");
 	List<Element> catalogProductList = catalogElement.getChildren("Product");
 	Iterator<Element> itpc = catalogProductList.iterator();
-	
-	// on boucle sur chaque produit
 	while (itpc.hasNext()) {
 	    Element currentProduct = itpc.next();
 	    this.catalog.add(currentProduct.getValue());
@@ -139,47 +146,49 @@ public class OrderSource {
     {
 	this.scenarioFile = scenarioFile;
 	
+	// XML SAX parsing
 	Document document = null;
 	Element racine;
-
 	SAXBuilder sxb = new SAXBuilder();
 	try {
 	    document = sxb.build(scenarioFile);
 	} catch (Exception e) {
 	}
-
 	racine = document.getRootElement();
 
-	// recuperation du catalogue des produits
+	// Récupération des commandes
 	Element scenarioElement = racine.getChild("Scenario");
 	List<Element> orderList = scenarioElement.getChildren("Order");
-
 	Iterator<Element> i = orderList.iterator();
-	// on boucle sur chaque commande
+	// Boucle sur chaque commande
 	while (i.hasNext()) {
-	    Order newOrder = new Order();
-	    ArrayList<String> orderProductsName = new ArrayList<String>();
-
 	    Element currentOrder = i.next();
+	    Order newOrder = new Order();
 	    List<Element> productList = currentOrder.getChildren("Product");
 	    Iterator<Element> j = productList.iterator();
-	    while (j.hasNext()) {
+	    // Boucle sur chaque produit de la commande
+	    while (j.hasNext()) 
+	    {
+		// Création du produit
 		Element currentProduct = j.next();
 		Product newProduct = new Product(currentProduct.getValue());
+		newProduct.setOrder(newOrder);
+		// Date de production
 		int productionDate = Integer.parseInt(currentProduct.getAttributeValue("productionDate"));
-
 		if (this.products.get(productionDate) == null)
 		    this.products.put(productionDate, new ArrayList<Product>());
 		this.products.get(productionDate).add(newProduct);
+		
+		newOrder.addProductName(newProduct.getName());
 	    }
-	    newOrder.setProductsName(orderProductsName);
+	    
+	    // Date de la commande
 	    int orderDate = Integer.parseInt(currentOrder.getAttribute("orderDate").getValue());
-
 	    if (this.orders.get(orderDate) == null)
 		this.orders.put(orderDate, new ArrayList<Order>());
-
 	    this.orders.get(orderDate).add(newOrder);
 	}
+	System.out.println(this.orders);
     }
 
     public ArrayList<String> getCatalog() {
