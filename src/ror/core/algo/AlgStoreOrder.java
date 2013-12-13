@@ -12,6 +12,9 @@ import ror.core.actions.Action;
 import ror.core.actions.StoreAction;
 
 public class AlgStoreOrder implements IAlgStore {
+	/* (non-Javadoc)
+	 * @see ror.core.algo.IAlgStore#getActions(java.util.ArrayList, java.util.ArrayList, ror.core.Map)
+	 */
 	public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts,
 			ArrayList<Order> orders, Map map) {
 		
@@ -29,10 +32,14 @@ public class AlgStoreOrder implements IAlgStore {
 						// On cherche où on doit mettre le produit
 						
 						drawer=this.getDrawerFree(currentOrder, map);
-						drawer.setStatus(Drawer.BOOKED);
-						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
-						actions.add(currentAction);
-						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts !
+						if(drawer!=null) {
+        						drawer.setStatus(Drawer.BOOKED);
+        						StoreAction currentAction = new StoreAction(null, null, drawer, currentProduct);
+        						actions.add(currentAction);
+        						currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts !
+						} else {
+						    System.out.println("No Drawer free");
+						}
 					}
 				}	
 			}
@@ -40,6 +47,12 @@ public class AlgStoreOrder implements IAlgStore {
 		return actions;
 	}
 	
+	
+	/**
+	 * @param order
+	 * @param map
+	 * @return drawer free / null
+	 */
 	public Drawer getDrawerFree(Order order,Map map) {
 		Drawer drawer = null;
 		if(order.getDrawers().size()==0) { // Si aucun drawers réservé on va le faire
@@ -48,7 +61,7 @@ public class AlgStoreOrder implements IAlgStore {
 				return null;
 			}
 		}
-		if(order.getDrawers().size() != order.getProductsName().size()) { System.out.println("Eror Algo Destockage : Order ID "+ order.getIdOrder() + " | nb Drawers réservé "+ order.getDrawers().size() + " & nb products Name "+order.getProductsName().size() ) ; }
+		if(order.getDrawers().size() != order.getProductsName().size()) { System.out.println("Eror Algo Destockage : Order ID "+ order.getIdOrder() + " | nb Drawers réservé "+ order.getDrawers().size() + " & nb products Name "+order.getProductsName().size()+" " ) ; }
 		// On parcours les drawers de la commande
 		for(Drawer drawerTest : order.getDrawers()) {
 			if(drawerTest.getStatus()==Drawer.BOOKED_FOR_ORDER) { // Si drawer booked n'as pas de produit
@@ -59,6 +72,11 @@ public class AlgStoreOrder implements IAlgStore {
 		return drawer;
 	}
 	
+	/**
+	 * @param order
+	 * @param map
+	 * @return
+	 */
 	public boolean bookDrawers (Order order,Map map) {
 		int nbDrawersToBook = order.getProductsName().size();
 		//int nbDrawersDec = order.getProductsName().size();

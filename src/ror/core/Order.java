@@ -74,6 +74,7 @@ public class Order implements Comparable<Order> {
 		this.time = 0;
 		this.productsName = new ArrayList<String>();
 		this.products = new ArrayList<Product>();
+		this.productsStored = new ArrayList<Product>();
 		this.drawers = new ArrayList<Drawer>();
 	}
 	
