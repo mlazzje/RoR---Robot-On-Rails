@@ -277,7 +277,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			// Si le robot de devant n'a pas d'action affectée
 			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {			    
 			    blockingRobot.removeCurrentAction();
-			    blockingRobot.getActions().add(0, new MoveAction(1000, blockingRobot, blockingRobot.getRail(), blockingRobot.getRail().getRightRail()));
+			    ArrayList<MoveAction> movesBlockingRobot= iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getRail()));
+			   
+			    blockingRobot.getActions().addAll(movesBlockingRobot);
+			    
 			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
 			}
 		    }
