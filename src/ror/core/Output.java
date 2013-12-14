@@ -27,6 +27,7 @@ public class Output extends RoRElement {
     // Methods
     public boolean addProduct(Product p) {
 	boolean returned = this.productList.add(p);
+	p.setStatus(Product.DONE);
 	this.setChanged();
 	this.notifyObservers();
 	return returned;

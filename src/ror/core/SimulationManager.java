@@ -152,7 +152,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
 
-		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(newOrders, stockProducts);
+		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
 
 		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 
@@ -297,7 +297,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			}
 		    }
 
-		    System.out.println(robot + " bloqué par " + blockingRobot);
+		    //System.out.println(robot + " bloqué par " + blockingRobot);
 		    PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, blockingRobot);
 		    synchronized (robot.getActions()) {
 			robot.getActions().add(0, pa);

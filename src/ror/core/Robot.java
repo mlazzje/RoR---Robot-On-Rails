@@ -90,7 +90,7 @@ public class Robot extends Observable {
 			}
 		    }
 		    System.out.println("Erreur :  " + Robot.this + " " + moveAction.getPrevious() + " <- " + lastMove.getPrevious() + " -- Nombre d'actions : " + countActions + " en cours " + Robot.this.getCurrentAction().getClass().getSimpleName());
-		    
+
 		}
 	    }
 	    lastMove = moveAction;
@@ -177,10 +177,11 @@ public class Robot extends Observable {
 
 			Robot.this.removeProduct(outputAction.getProduct());
 			outputAction.getOutput().addProduct(outputAction.getProduct());
-			outputAction.getProduct().setStatus(Product.DONE);
 			// TODO : check mise à jour état commande
 			Order o = outputAction.getProduct().getOrder();
-			if (o != null) {
+
+			synchronized (o.getProducts()) {
+
 			    Boolean orderDone = true;
 			    for (Product p : o.getProducts()) {
 				if (p.getStatus() != Product.DONE) {
@@ -188,9 +189,11 @@ public class Robot extends Observable {
 				}
 			    }
 			    if (orderDone) {
+				System.out.println("ORDER DONE !!!!!!!!!!!!!!!!!");
 				o.setStatus(Order.DONE);
 			    }
 			}
+
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
 		    }
@@ -237,7 +240,9 @@ public class Robot extends Observable {
     }
 
     private void removeProduct(Product product) {
-	products.remove(product);
+	synchronized (this.products) {
+	    products.remove(product);
+	}
     }
 
     public ArrayList<Product> getProducts() {
@@ -361,12 +366,11 @@ public class Robot extends Observable {
     }
 
     public Float getSpeed() {
-        return speed;
+	return speed;
     }
 
     public void setSpeed(Float speed) {
-        this.speed = speed;
+	this.speed = speed;
     }
-    
-    
+
 }

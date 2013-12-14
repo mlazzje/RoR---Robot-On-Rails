@@ -52,7 +52,6 @@ public class AlgMoveEco implements IAlgMove {
 		DestockingAction destockingAction = (DestockingAction) action;
 		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
 		outputAction.setProduct(destockingAction.getProduct());
-		System.out.println("ajout de produit en sortie");
 		robot.addAction(outputAction);
 	    }
 

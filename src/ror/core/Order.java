@@ -185,8 +185,12 @@ public class Order implements Comparable<Order> {
 
 	/**
 	 * @param product
+	 * Add product to the list of product of the order, set the order of the product and set status of product to BOOKED
 	 */
 	public void addProduct(Product product) {
+		product.setStatus(Product.BOOKED);
+		product.setOrder(this);
+
 		this.products.add(product);
 	}
 

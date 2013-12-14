@@ -102,6 +102,7 @@ public class Column extends RoRElement implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+	    System.out.println("Drawer maj");
 	    this.setChanged();
 	    this.notifyObservers();
 	}

@@ -204,7 +204,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 
 		    frame.getInformationsPanel().removeAll();
 		    frame.getInformationsPanel().setLayout(new GridLayout(13, 1));
-		    JLabel title = new JLabel("Détails Robot #"+robot.getNumber());
+		    JLabel title = new JLabel("Détails Robot #" + robot.getNumber());
 		    title.setFont(h1Font);
 		    title.setVerticalAlignment(JLabel.CENTER);
 		    title.setHorizontalAlignment(JLabel.CENTER);
@@ -216,13 +216,16 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 			label.setHorizontalAlignment(JLabel.CENTER);
 			frame.getInformationsPanel().add(label);
 		    } else {
-			Iterator<Product> it = robot.getProducts().iterator();
-			while (it.hasNext()) {
-			    Product next = it.next();
-			    JLabel label = new JLabel(next.getName());
-			    label.setVerticalAlignment(JLabel.CENTER);
-			    label.setHorizontalAlignment(JLabel.CENTER);
-			    frame.getInformationsPanel().add(label);
+			synchronized (robot.getProducts()) {
+
+			    Iterator<Product> it = robot.getProducts().iterator();
+			    while (it.hasNext()) {
+				Product next = it.next();
+				JLabel label = new JLabel(next.getName());
+				label.setVerticalAlignment(JLabel.CENTER);
+				label.setHorizontalAlignment(JLabel.CENTER);
+				frame.getInformationsPanel().add(label);
+			    }
 			}
 		    }
 		    frame.pack();

@@ -1,6 +1,7 @@
 package ror.core.algo;
 
 import java.util.ArrayList;
+
 import ror.core.Order;
 import ror.core.Product;
 import ror.core.actions.Action;
@@ -35,28 +36,48 @@ public class AlgDestockingFifo implements IAlgDestocking {
 	    if (currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
 		// On ne fait de traitement que si le stock contient tous les
 		// produits de la commande
-		if (stockProductsName.retainAll(currentOrder.getProductsName())) {
-		    // Pour chaque produit du stock
-		    for (Product stockedProduct : storedProducts) {
-			// Pour chaque produit de la commande
-			for (String orderProductName : currentOrder.getProductsName()) {
+		if (containsAllWithDoublon(stockProductsName, (ArrayList<String>) currentOrder.getProductsName())) {
+		    System.out.println(currentOrder.getProductsName());
+		    // Pour chaque produit de la commande
+		    for (String orderProductName : currentOrder.getProductsName()) {
+			Product productAdded = null;
+			// Pour chaque produit du stock
+			for (Product stockedProduct : storedProducts) {
 			    // Si leur nom est identique et que le produit est
 			    // libre en stock, on le réserve et on ajoute une
 			    // action
-			    if (orderProductName.equals(stockedProduct.getName()) && stockedProduct.getStatus() == Product.STORED) {
-				stockedProduct.setStatus(Product.BOOKED);
+			    if (orderProductName.equals(stockedProduct.getName())) {
+				productAdded = stockedProduct;
+				currentOrder.addProduct(stockedProduct);
 				DestockingAction currentAction = new DestockingAction(1000, null, stockedProduct);
 				actions.add(currentAction);
 				break;
 			    }
+			    // on supprime le produit du stock
+			    if (productAdded != null)
+				storedProducts.remove(productAdded);
 			}
 		    }
+
 		    actionsToSend.addAll(actions);
+		    System.out.println("Destock commande " + currentOrder);
+		    break;
 		} else {
 		    return actionsToSend;
 		}
 	    }
 	}
 	return actionsToSend;
+    }
+
+    public static Boolean containsAllWithDoublon(ArrayList<String> container, ArrayList<String> testList) {
+	ArrayList<String> copy = new ArrayList<String>(container);
+	for (String test : testList) {
+	    if (copy.contains(test))
+		copy.remove(test);
+	    else
+		return false;
+	}
+	return true;
     }
 }

@@ -15,6 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
+
 import ror.core.Column;
 import ror.core.Drawer;
 import ror.core.Input;
@@ -192,13 +194,16 @@ public class UIController implements Observer {
 		    label.setHorizontalAlignment(JLabel.CENTER);
 		    this.rorFrame.getInformationsPanel().add(label);
 		} else {
-		    Iterator<Product> it = robot.getProducts().iterator();
-		    while (it.hasNext()) {
-			Product next = it.next();
-			JLabel label = new JLabel(next.getName());
-			label.setVerticalAlignment(JLabel.CENTER);
-			label.setHorizontalAlignment(JLabel.CENTER);
-			this.rorFrame.getInformationsPanel().add(label);
+		    synchronized (robot.getProducts()) {
+
+			Iterator<Product> it = robot.getProducts().iterator();
+			while (it.hasNext()) {
+			    Product next = it.next();
+			    JLabel label = new JLabel(next.getName());
+			    label.setVerticalAlignment(JLabel.CENTER);
+			    label.setHorizontalAlignment(JLabel.CENTER);
+			    this.rorFrame.getInformationsPanel().add(label);
+			}
 		    }
 		}
 		this.rorFrame.pack();
