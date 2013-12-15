@@ -152,6 +152,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 		    robotLabel.setIcon(roboti);
 		}
 		this.add(robotLabel);
+		
 		this.repaint();
 	    } else if (this.getComponentCount() > 0) // on supprime le robot sur les rails precedents
 	    {
@@ -217,7 +218,6 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 			frame.getInformationsPanel().add(label);
 		    } else {
 			synchronized (robot.getProducts()) {
-
 			    Iterator<Product> it = robot.getProducts().iterator();
 			    while (it.hasNext()) {
 				Product next = it.next();

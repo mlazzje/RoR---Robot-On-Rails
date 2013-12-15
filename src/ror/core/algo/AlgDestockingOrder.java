@@ -36,7 +36,6 @@ public class AlgDestockingOrder implements IAlgDestocking {
 		// On ne fait de traitement que si le stock contient tous les
 		// produits de la commande
 		if (containsAllWithDoublon(stockProductsName, (ArrayList<String>) currentOrder.getProductsName())) {
-		    System.out.println(currentOrder.getProductsName());
 		    // Pour chaque produit de la commande
 		    for (String orderProductName : currentOrder.getProductsName()) {
 			Product productAdded = null;
@@ -52,14 +51,17 @@ public class AlgDestockingOrder implements IAlgDestocking {
 				actions.add(currentAction);
 				break;
 			    }
-			    // on supprime le produit du stock
-			    if (productAdded != null)
-				storedProducts.remove(productAdded);
+			}
+			// on supprime le produit du stock
+			if (productAdded != null)
+			{
+			    storedProducts.remove(productAdded);
+			    synchronized (stockProducts) {
+				stockProducts.remove(productAdded);
+			    }
 			}
 		    }
-
 		    actionsToSend.addAll(actions);
-		    System.out.println("Destock commande " + currentOrder);
 		} else {
 		    return actionsToSend;
 		}

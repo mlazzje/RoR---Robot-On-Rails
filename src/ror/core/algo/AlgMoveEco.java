@@ -20,7 +20,7 @@ public class AlgMoveEco implements IAlgMove {
 	// si des actions input ou store sont disponibles
 	while (newDestockActions.size() > 0) {
 	    Robot robot;
-		    
+
 	    robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
 
 	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
@@ -31,7 +31,7 @@ public class AlgMoveEco implements IAlgMove {
 		newDestockActions.remove(newDestockActions.get(0));
 		freeSpace--;
 	    }
-	    
+
 	    // ajout des actions de mouvements et de destockage au robot
 	    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
 	    for (Action action : actionMoveAndDestock) {
@@ -76,7 +76,6 @@ public class AlgMoveEco implements IAlgMove {
 	    for (MoveAction move : movesToInput) {
 		robot.addAction(move);
 	    }
-	    System.out.println(movesToInput);
 
 	    ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
 
@@ -132,7 +131,7 @@ public class AlgMoveEco implements IAlgMove {
 		else if (copyActions.get(0) instanceof DestockingAction)
 		    tmpRails = map.getPath(firstRail, ((DestockingAction) action).getDrawer().getColumn().getAccess());
 
-		if (tmpRails!=null && tmpRails.size() < rails.size()) {
+		if (tmpRails != null && tmpRails.size() < rails.size()) {
 		    nextBestAction = action;
 		    rails = tmpRails;
 		}
@@ -153,7 +152,7 @@ public class AlgMoveEco implements IAlgMove {
 	}
 	return actions;
     }
-    
+
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
 	if (rails.isEmpty())
 	    return new ArrayList<MoveAction>();
@@ -170,10 +169,8 @@ public class AlgMoveEco implements IAlgMove {
 	return moves;
     }
 
-    
     public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
-	
-	
+
 	// prend en compte le fait qu'un robot peut se trouver sur le chemin d'un autre pour une destination donnée
 	Robot bestRobot = null;
 	Integer minRailCount = null;

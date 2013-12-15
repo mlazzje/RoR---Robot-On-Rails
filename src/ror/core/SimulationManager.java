@@ -127,7 +127,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    wasInPause = false;
 		}
 		ArrayList<Order> newOrders;
-		ArrayList<Product> newProducts = new ArrayList<Product>();
+		ArrayList<Product> newProducts = null;
 		if (!source) // random mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
@@ -141,13 +141,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		}
-		for (Product product : newProducts) {
-		    this.map.getInput().addProduct(product);
-		    this.stockProducts.add(product);
+		if (newProducts != null) {
+		    for (Product product : newProducts) {
+			this.map.getInput().addProduct(product);
+			this.stockProducts.add(product);
+		    }
 		}
-
-		// add new products to stockProducts list
-		SimulationManager.this.stockProducts.addAll(newProducts);
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
 		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
@@ -297,7 +296,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			}
 		    }
 
-		    //System.out.println(robot + " bloqué par " + blockingRobot);
+		    // System.out.println(robot + " bloqué par " + blockingRobot);
 		    PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, blockingRobot);
 		    synchronized (robot.getActions()) {
 			robot.getActions().add(0, pa);

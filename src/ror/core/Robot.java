@@ -116,15 +116,19 @@ public class Robot extends Observable {
 	    synchronized (timer) {
 		timerTask = new TimerTask() {
 		    public void run() {
-
 			Drawer drawer = storeAction.getDrawer();
-			Robot.this.removeProduct(storeAction.getProduct());
-			drawer.setProduct(storeAction.getProduct());
-			storeAction.getProduct().setStatus(Product.STORED);
+			Product product = storeAction.getProduct();
+
+			if (drawer.getProduct() != null)
+			    System.out.println("\nErreur tiroir plein\n " + drawer);
+
+			Robot.this.removeProduct(product); // on supprimer le produit du plateau
+			drawer.setProduct(product); // on associe le tiroir au produit
+			product.setDrawer(drawer); // on associe le produit au tiroir
 
 			// dans le cas du stockage par commande
-			if (storeAction.getProduct().getOrder() != null) {
-			    storeAction.getProduct().getOrder().addProduct(storeAction.getProduct());
+			if (product.getOrder() != null) {
+			    product.getOrder().addProduct(storeAction.getProduct());
 			}
 
 			Robot.this.setChanged();
@@ -140,9 +144,16 @@ public class Robot extends Observable {
 		timerTask = new TimerTask() {
 		    public void run() {
 			Drawer drawer = destockingAction.getDrawer();
-			Robot.this.addProduct(drawer.getProduct());
-			drawer.setStatus(Drawer.FREE);
-			drawer.setProduct(null);
+			Product product = destockingAction.getProduct();
+
+			drawer.getStatus();
+			if (drawer.getProduct() == null) {
+			    System.out.println("\n" + Robot.this + " Erreur destocking " + drawer + " : product null \n");
+			}
+
+			Robot.this.addProduct(product);
+			drawer.setProduct(null); // status is set to free in setProduct
+			product.setDrawer(null); // on supprime le tiroir au produit
 
 			Robot.this.setChanged();
 			Robot.this.notifyObservers();
@@ -158,6 +169,9 @@ public class Robot extends Observable {
 
 		timerTask = new TimerTask() {
 		    public void run() {
+			if (inputAction.getProduct() == null) {
+			    System.out.println("\n Erreur input action product null " + Robot.this + "\n");
+			}
 			Robot.this.addProduct(inputAction.getProduct());
 			inputAction.getInput().removeProduct(inputAction.getProduct());
 
@@ -189,7 +203,6 @@ public class Robot extends Observable {
 				}
 			    }
 			    if (orderDone) {
-				System.out.println("ORDER DONE !!!!!!!!!!!!!!!!!");
 				o.setStatus(Order.DONE);
 			    }
 			}
@@ -236,6 +249,7 @@ public class Robot extends Observable {
     }
 
     private void addProduct(Product product) {
+
 	products.add(product);
     }
 

@@ -2,8 +2,10 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 
+import ror.core.Drawer;
 import ror.core.Order;
 import ror.core.Product;
+import ror.core.Robot;
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.algo.IAlgDestocking;
@@ -31,21 +33,16 @@ public class AlgDestockingFifo implements IAlgDestocking {
 	for (Order currentOrder : orders) {
 	    // On réinitialise les actions
 	    actions.clear();
-	    // On ne prend en compte que les commandes initialisées ou encore en
-	    // attente de produits
+	    // On ne prend en compte que les commandes initialisées ou encore en attente de produits
 	    if (currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
-		// On ne fait de traitement que si le stock contient tous les
-		// produits de la commande
+		// On ne fait de traitement que si le stock contient tous les produits de la commande
 		if (containsAllWithDoublon(stockProductsName, (ArrayList<String>) currentOrder.getProductsName())) {
-		    System.out.println(currentOrder.getProductsName());
 		    // Pour chaque produit de la commande
 		    for (String orderProductName : currentOrder.getProductsName()) {
 			Product productAdded = null;
 			// Pour chaque produit du stock
 			for (Product stockedProduct : storedProducts) {
-			    // Si leur nom est identique et que le produit est
-			    // libre en stock, on le réserve et on ajoute une
-			    // action
+			    // Si leur nom est identique et que le produit est libre en stock, on le réserve et on ajoute une action
 			    if (orderProductName.equals(stockedProduct.getName())) {
 				productAdded = stockedProduct;
 				currentOrder.addProduct(stockedProduct);
@@ -53,14 +50,16 @@ public class AlgDestockingFifo implements IAlgDestocking {
 				actions.add(currentAction);
 				break;
 			    }
-			    // on supprime le produit du stock
-			    if (productAdded != null)
-				storedProducts.remove(productAdded);
+			}
+			// on supprime le produit du stock
+			if (productAdded != null) {
+			    storedProducts.remove(productAdded);
+			    synchronized (stockProducts) {
+				stockProducts.remove(productAdded);
+			    }
 			}
 		    }
-
 		    actionsToSend.addAll(actions);
-		    System.out.println("Destock commande " + currentOrder);
 		    break;
 		} else {
 		    return actionsToSend;

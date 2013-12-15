@@ -95,14 +95,16 @@ public class Dijkstra {
 	    vertices.add(v);
 	}
 	synchronized (vertices) {
+	    synchronized (rails) {
 
-	    for (Vertex v : vertices) {
-		ArrayList<Edge> edges = new ArrayList<Edge>();
-		if (v.rail.getLeftRail() != null)
-		    edges.add(new Edge(vertices.get(rails.indexOf(v.rail.getLeftRail())), 1));
-		if (v.rail.getRightRail() != null)
-		    edges.add(new Edge(vertices.get(rails.indexOf(v.rail.getRightRail())), 1));
-		v.adjacencies = edges.toArray(new Edge[edges.size()]);
+		for (Vertex v : vertices) {
+		    ArrayList<Edge> edges = new ArrayList<Edge>();
+		    if (v.rail.getLeftRail() != null)
+			edges.add(new Edge(vertices.get(rails.indexOf(v.rail.getLeftRail())), 1));
+		    if (v.rail.getRightRail() != null)
+			edges.add(new Edge(vertices.get(rails.indexOf(v.rail.getRightRail())), 1));
+		    v.adjacencies = edges.toArray(new Edge[edges.size()]);
+		}
 	    }
 	}
 

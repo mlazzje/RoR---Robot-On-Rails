@@ -21,7 +21,7 @@ public class AlgMoveFast implements IAlgMove {
 
 	    robot = getBestRobot(robots);
 	    robot.setSpeed(Robot.SPEED_3);
-	    
+
 	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
 	    int freeSpace = robot.getLastActionSpaceAvailability();
 
@@ -50,7 +50,6 @@ public class AlgMoveFast implements IAlgMove {
 		DestockingAction destockingAction = (DestockingAction) action;
 		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
 		outputAction.setProduct(destockingAction.getProduct());
-		System.out.println("ajout de produit en sortie");
 		robot.addAction(outputAction);
 	    }
 
@@ -60,6 +59,7 @@ public class AlgMoveFast implements IAlgMove {
 	while (newStoreActions.size() > 0) {
 
 	    Robot robot = getBestRobot(robots);
+	    robot.setSpeed(Robot.SPEED_3);
 
 	    ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 	    for (StoreAction storeAction : newStoreActions) {
@@ -75,7 +75,6 @@ public class AlgMoveFast implements IAlgMove {
 	    for (MoveAction move : movesToInput) {
 		robot.addAction(move);
 	    }
-	    System.out.println(movesToInput);
 
 	    ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
 
