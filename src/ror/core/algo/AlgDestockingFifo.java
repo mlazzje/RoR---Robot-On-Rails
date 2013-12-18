@@ -59,6 +59,7 @@ public class AlgDestockingFifo implements IAlgDestocking {
 			    }
 			}
 		    }
+		    currentOrder.setStatus(Order.READY_FOR_DESTOCKING);
 		    actionsToSend.addAll(actions);
 		    break;
 		} else {

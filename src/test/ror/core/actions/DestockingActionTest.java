@@ -14,7 +14,7 @@ public class DestockingActionTest {
 	@Test
 	public void test() {
 		DestockingAction testAction = new DestockingAction(0, null, null);
-		Robot testRobot = new Robot(null,1);
+		Robot testRobot = new Robot(null,1,null);
 		Drawer testDrawer = new Drawer(null, null);
 		Product testProduct = new Product(null);
 		

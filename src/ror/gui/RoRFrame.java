@@ -271,4 +271,22 @@ public class RoRFrame extends JFrame {
     public void setTotalConsumptionLabel(JLabel label) {
 	this.totalConsumptionLabel = label;
     }
+    
+    public void setAverageConsumptionLabel(JLabel label) {
+	this.avgConsumptionLabel = label;
+    }
+    
+    public void setNbOrderDoneLabel(JLabel label) {
+	this.nbOrderLabel = label;
+    }
+    
+    public void setAvgTimeOrder(JLabel label)
+    {
+	this.avgTimeOrderLabel=label;
+    }
+    
+    public void setTotalTimeOrderLabel(JLabel label)
+    {
+	this.totalTimeOrderLabel=label;
+    }
 }

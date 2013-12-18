@@ -14,7 +14,7 @@ public class StoreActionTest {
 	@Test
 	public void test() {
 		StoreAction testAction = new StoreAction(0, null, null, null);
-		Robot testRobot = new Robot(null,1);
+		Robot testRobot = new Robot(null,1,null);
 		Drawer testDrawer = new Drawer(null, null);
 		Product testProduct = new Product(null);
 		

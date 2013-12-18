@@ -46,7 +46,8 @@ public class Order implements Comparable<Order> {
     /**
 	 * 
 	 */
-    private Integer time;
+    private Long processingTime;
+
     /**
 	 * 
 	 */
@@ -71,7 +72,7 @@ public class Order implements Comparable<Order> {
 	Order.lastIdOrder++;
 	this.setIdOrder(Order.lastIdOrder);
 	this.status = 0;
-	this.time = 0;
+	this.processingTime = (long) 0;
 	this.productsName = new ArrayList<String>();
 	this.products = new ArrayList<Product>();
 	this.productsStored = new ArrayList<Product>();
@@ -83,6 +84,14 @@ public class Order implements Comparable<Order> {
      */
     public List<Drawer> getDrawers() {
 	return drawers;
+    }
+
+    public Long getProcessingTime() {
+	return processingTime;
+    }
+
+    public void setProcessingTime(Long processingTime) {
+	this.processingTime = processingTime;
     }
 
     /**
@@ -131,20 +140,6 @@ public class Order implements Comparable<Order> {
      */
     public void setStatus(int status) {
 	this.status = status;
-    }
-
-    /**
-     * @return
-     */
-    public Integer getTime() {
-	return time;
-    }
-
-    /**
-     * @param time
-     */
-    public void setTime(int time) {
-	this.time = time;
     }
 
     /**
@@ -269,11 +264,13 @@ public class Order implements Comparable<Order> {
 
 	}
 
-	if (status == 0) {
+	if (status == Order.INIT) {
 	    statusString = "Initialisée";
-	} else if (status == 1) {
+	} else if (status == Order.WAITING) {
 	    statusString = "En attente";
-	} else if (status == 2) {
+	} else if (status == Order.READY_FOR_DESTOCKING) {
+	    statusString = "Prêt à être destocké";
+	} else if (status == Order.BEING_DESTOCKED) {
 	    statusString = "En cours";
 	} else {
 	    statusString = "Terminé";
@@ -316,7 +313,6 @@ public class Order implements Comparable<Order> {
 	String s = "\n";
 	s += "Commande " + this.idOrder + "\n";
 	s += "Status : " + this.status + "\n";
-	s += "Time : " + this.time + "\n";
 	s += "ProductsName : " + this.productsName.toString() + "\n";
 	s += "Produits en stocks : " + this.products.toString() + "\n";
 	s += "Drawers associés : " + this.drawers.toString() + "\n";

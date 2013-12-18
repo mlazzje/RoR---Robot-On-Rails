@@ -13,7 +13,7 @@ public class InputActionTest {
 	@Test
 	public void test() {
 		InputAction testAction = new InputAction(0, null, null);
-		Robot testRobot = new Robot(null,1);
+		Robot testRobot = new Robot(null,1,null);
 		Product testProduct = new Product(null);
 		
 		// Test de la durée

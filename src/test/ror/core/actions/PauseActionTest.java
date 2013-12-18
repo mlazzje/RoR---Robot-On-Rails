@@ -12,7 +12,7 @@ public class PauseActionTest {
 	@Test
 	public void test() {
 		PauseAction testAction = new PauseAction(0, null, null);
-		Robot testRobot = new Robot(null,1);
+		Robot testRobot = new Robot(null,1,null);
 		
 		// Test de la dur�e
 		assertTrue(testAction.getDuration() == 0);

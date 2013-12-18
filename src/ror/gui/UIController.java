@@ -227,13 +227,37 @@ public class UIController implements Observer {
 	    simulationManager.setNewLogs(new ArrayList<String>());
 
 	}
-	int cons = 0;
-	for (Robot robot : this.simulationManager.getRobots()) {
-	    cons += robot.getConsumption();
-	}
+
+	// update total electric consumption
 	JLabel label = this.rorFrame.getTotalConsumptionLabel();
-	label.setText(cons + "W");
+	label.setText(this.simulationManager.getTotalConsumption() + "W");
 	this.rorFrame.setTotalConsumptionLabel(label);
+
+	// update average electric consumption
+	label = this.rorFrame.getAvgConsumptionLabel();
+	label.setText(this.simulationManager.getAverageConsumption() + "W");
+	this.rorFrame.setAverageConsumptionLabel(label);
+
+	// update number of order done
+	label = this.rorFrame.getNbOrderLabel();
+	label.setText(String.valueOf(this.simulationManager.getOrdersDoneCount()));
+	this.rorFrame.setNbOrderDoneLabel(label);
+
+	// update average time
+	label = this.rorFrame.getAvgTimeOrderLabel();
+	Long seconds = (Long)(this.simulationManager.getAverageOrderProcessingTime()/1000);
+	Long minutes = (Long)(seconds /60);
+	seconds = seconds%60;
+	label.setText(minutes+"mn"+seconds%60+"s");	
+	this.rorFrame.setAvgTimeOrder(label);
+
+	// update total time
+	label = this.rorFrame.getTotalTimeOrderLabel();
+	seconds = (Long)(this.simulationManager.getUptime()/1000);
+	minutes = (Long)(seconds /60);
+	seconds = seconds%60;
+	label.setText(minutes+"mn"+seconds+"s");
+	this.rorFrame.setTotalTimeOrderLabel(label);
 
 	// TODO Mise à jours des indicateurs
 	this.rorFrame.reColor();

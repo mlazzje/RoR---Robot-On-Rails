@@ -93,7 +93,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	// add robots
 	if (!this.wasInPause) {
 	    for (int i = 0; i < nbRobot; i++) {
-		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i);
+		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i, this);
 		r.addObserver(SimulationManager.this);
 		robots.add(r);
 	    }
@@ -131,12 +131,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		if (!source) // random mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
+		    for (Order order : newOrders)
+			order.setProcessingTime(this.getUptime());
 		    SimulationManager.this.orders.addAll(newOrders);
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
+		    for (Order order : newOrders)
+			order.setProcessingTime(this.getUptime());
 		    SimulationManager.this.orders.addAll(newOrders);
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
@@ -152,9 +156,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
 
 		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
-
-		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
-
+		synchronized (map) {
+		    SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
+		}
 		// update statistic indicators
 		SimulationManager.this.updateIndicators();
 
@@ -165,6 +169,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// sleep
 		try {
 		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
+
 		    uptime += (System.currentTimeMillis() - startTime);
 
 		} catch (InterruptedException e) {
@@ -284,10 +289,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 			    // on fait avancer le robot jusqu'a une intersection
 
-			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
-
-			    blockingRobot.getActions().addAll(movesBlockingRobot);
-
+			    synchronized (map) {
+				ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
+				blockingRobot.getActions().addAll(movesBlockingRobot);
+			    }
 			    PauseAction pa = new PauseAction(0, robot, blockingRobot);
 			    synchronized (blockingRobot.getActions()) {
 				blockingRobot.getActions().add(0, pa);
@@ -396,5 +401,53 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     public void setNewLogs(ArrayList<String> newLogs) {
 	this.newLogs = newLogs;
+    }
+
+    public int getAverageConsumption() {
+	int count = 0;
+	for (Order order : this.orders) {
+	    if (order.getStatus() != Order.INIT)
+		count++;
+	}
+	int totalConsumption = this.getTotalConsumption();
+	if (totalConsumption != 0 && count != 0)
+	    return (int) (totalConsumption / count);
+	else
+	    return 0;
+    }
+
+    public long getAverageOrderProcessingTime() {
+	if (orders.size() > 0) {
+	    long count = 0;
+	    int orderCount = 0;
+	    for (Order order : this.orders) {
+		if (order.getStatus() == order.DONE) {
+		    orderCount++;
+		    count += order.getProcessingTime();
+		}
+	    }
+	    if (count != 0 && orderCount != 0)
+		return (long) (count / orderCount);
+	    else
+		return 0;
+	} else
+	    return 0;
+    }
+
+    public int getTotalConsumption() {
+	int cons = 0;
+	for (Robot robot : this.getRobots()) {
+	    cons += robot.getConsumption();
+	}
+	return cons;
+    }
+
+    public int getOrdersDoneCount() {
+	int count = 0;
+	for (Order order : this.orders) {
+	    if (order.getStatus() == Order.DONE)
+		count++;
+	}
+	return count;
     }
 }

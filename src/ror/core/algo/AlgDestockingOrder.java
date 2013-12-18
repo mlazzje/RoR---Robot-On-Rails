@@ -61,6 +61,7 @@ public class AlgDestockingOrder implements IAlgDestocking {
 			    }
 			}
 		    }
+		    currentOrder.setStatus(Order.READY_FOR_DESTOCKING);
 		    actionsToSend.addAll(actions);
 		} else {
 		    return actionsToSend;

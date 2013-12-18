@@ -12,6 +12,7 @@ import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
+import ror.core.Order;
 
 public class Robot extends Observable {
 
@@ -32,8 +33,9 @@ public class Robot extends Observable {
     private TimerTask timerTask = null;
     private MoveAction lastMove;
     private Integer number;
-
-    public Robot(Rail initRail, Integer num) {
+    private SimulationManager simulationManager;
+    
+    public Robot(Rail initRail, Integer num, SimulationManager simulationManager) {
 	number = num;
 	timer = new Timer();
 	actions = new ArrayList<Action>();
@@ -41,6 +43,7 @@ public class Robot extends Observable {
 	products = new ArrayList<Product>();
 	initRail.setRobot(this);
 	this.consumption = 0;
+	this.simulationManager = simulationManager;
     }
 
     @Override
@@ -146,6 +149,7 @@ public class Robot extends Observable {
 			Drawer drawer = destockingAction.getDrawer();
 			Product product = destockingAction.getProduct();
 
+			product.getOrder().setStatus(Order.BEING_DESTOCKED);
 			drawer.getStatus();
 			if (drawer.getProduct() == null) {
 			    System.out.println("\n" + Robot.this + " Erreur destocking " + drawer + " : product null \n");
@@ -204,6 +208,7 @@ public class Robot extends Observable {
 			    }
 			    if (orderDone) {
 				o.setStatus(Order.DONE);
+				o.setProcessingTime(simulationManager.getUptime()-o.getProcessingTime());
 			    }
 			}
 

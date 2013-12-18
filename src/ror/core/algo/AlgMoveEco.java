@@ -22,37 +22,38 @@ public class AlgMoveEco implements IAlgMove {
 	    Robot robot;
 
 	    robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
+	    if (robot != null) {
+		ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
+		int freeSpace = robot.getLastActionSpaceAvailability();
 
-	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
-	    int freeSpace = robot.getLastActionSpaceAvailability();
+		while (freeSpace > 0 && newDestockActions.size() > 0) {
+		    destockingActionToAffect.add(newDestockActions.get(0));
+		    newDestockActions.remove(newDestockActions.get(0));
+		    freeSpace--;
+		}
 
-	    while (freeSpace > 0 && newDestockActions.size() > 0) {
-		destockingActionToAffect.add(newDestockActions.get(0));
-		newDestockActions.remove(newDestockActions.get(0));
-		freeSpace--;
-	    }
+		// ajout des actions de mouvements et de destockage au robot
+		ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
+		for (Action action : actionMoveAndDestock) {
+		    robot.addAction(action);
+		}
 
-	    // ajout des actions de mouvements et de destockage au robot
-	    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
-	    for (Action action : actionMoveAndDestock) {
-		robot.addAction(action);
-	    }
+		Rail start = robot.getLastActionRail();
+		Rail end = map.getOutput().getAccess();
 
-	    Rail start = robot.getLastActionRail();
-	    Rail end = map.getOutput().getAccess();
+		// ajout des actions des mouvements jusqu'a l'output au robot
+		ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
+		for (MoveAction move : movesToOutput) {
+		    robot.addAction(move);
+		}
 
-	    // ajout des actions des mouvements jusqu'a l'output au robot
-	    ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
-	    for (MoveAction move : movesToOutput) {
-		robot.addAction(move);
-	    }
-
-	    // ajout des actions d'output
-	    for (Action action : destockingActionToAffect) {
-		DestockingAction destockingAction = (DestockingAction) action;
-		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
-		outputAction.setProduct(destockingAction.getProduct());
-		robot.addAction(outputAction);
+		// ajout des actions d'output
+		for (Action action : destockingActionToAffect) {
+		    DestockingAction destockingAction = (DestockingAction) action;
+		    OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
+		    outputAction.setProduct(destockingAction.getProduct());
+		    robot.addAction(outputAction);
+		}
 	    }
 
 	}

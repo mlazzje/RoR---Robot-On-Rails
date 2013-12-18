@@ -13,7 +13,7 @@ public class MoveActionTest {
 	@Test
 	public void test() {
 		MoveAction testAction = new MoveAction(0, null, null, null);
-		Robot testRobot = new Robot(null,1);
+		Robot testRobot = new Robot(null,1,null);
 		Rail testRail1 = new Rail(null, null, null, null, null, null);
 		Rail testRail2 = new Rail(null, null, null, null, null, null);
 		
