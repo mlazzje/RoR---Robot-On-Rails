@@ -93,15 +93,13 @@ public class OrderSource {
     }
 
     public ArrayList<Order> getScenarioOrders(Long uptime) {
-/*	System.out.println("Commandes : \n");
-	System.out.println("Uptime : " + uptime);
-	System.out.println("Commandes : " + this.orders.toString());*/
 	ArrayList<Order> orders = new ArrayList<Order>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
-
+	
 	for (Integer key : this.orders.keySet()) {
 	    if (key <= uptime) {
 		orders.addAll(this.orders.get(key));
+		System.out.println("Nouvelle commande : "+this.orders.get(key).toString());
 		keyToRemove.add(key);
 	    }
 	}
@@ -116,9 +114,10 @@ public class OrderSource {
     public ArrayList<Product> getScenarioProducts(Long uptime) {
 	ArrayList<Product> products = new ArrayList<Product>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
-	
+		
 	for (Integer key : this.products.keySet()) {
 	    if (key <= uptime) {
+		System.out.println("Production de : "+this.products.get(key).toString());
 		products.addAll(this.products.get(key));
 		keyToRemove.add(key);
 	    }
