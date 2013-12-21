@@ -17,6 +17,7 @@ public class AlgStoreComboBox extends JComboBox implements ActionListener {
 		String[] algStore = { "FIFO", "Par commande" };
 		DefaultComboBoxModel algModel = new DefaultComboBoxModel(algStore);
 		this.setModel(algModel);
+		this.setSelectedIndex(0);
 		this.addActionListener(this);
 		// TODO Faire en reflexif
 	}

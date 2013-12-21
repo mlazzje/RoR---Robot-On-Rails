@@ -17,6 +17,7 @@ public class RobotComboBox extends JComboBox implements ActionListener {
 		String[] algStore = { "1", "2", "3" };
 		DefaultComboBoxModel algModel = new DefaultComboBoxModel(algStore);
 		this.setModel(algModel);
+		this.setSelectedIndex(3);
 		this.addActionListener(this);
 		// TODO Faire en reflexif
 	}

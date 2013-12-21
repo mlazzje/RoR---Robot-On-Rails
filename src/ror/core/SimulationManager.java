@@ -193,6 +193,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	for (Robot r : this.robots) {
 	    r.stopSchedule();
 	}
+	this.robots = new ArrayList<Robot>();
     }
 
     public Map getMap() {
@@ -205,6 +206,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     public void setStop() {
 	status = 0;
+	this.map = new Map();
+	this.setNewLogs(new ArrayList<String>());
+	this.orderSource = new OrderSource();
+	this.orders = new ArrayList<Order>();
+	this.stockProducts = new ArrayList<Product>();
     }
 
     public void setPause() {
