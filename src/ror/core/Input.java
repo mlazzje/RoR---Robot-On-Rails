@@ -47,5 +47,11 @@ public class Input extends RoRElement {
     public List<Product> getProductList() {
 	return this.productList;
     }
+    
+    public void clearProducts() {
+	this.productList.clear();
+	this.setChanged();
+	this.notifyObservers();
+    }
 
 }

@@ -48,4 +48,10 @@ public class Output extends RoRElement {
 	return this.productList;
     }
 
+    public void clearProducts() {
+	this.productList.clear();
+	this.setChanged();
+	this.notifyObservers();
+    }
+
 }

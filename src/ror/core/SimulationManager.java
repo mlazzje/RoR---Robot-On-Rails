@@ -13,7 +13,6 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 import ror.core.algo.AlgDestockingFifo;
-import ror.core.algo.AlgDestockingOrder;
 import ror.core.algo.AlgMoveEco;
 import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.IAlgDestocking;
@@ -117,7 +116,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	status = 1;
 	while (status != 0) {
 	    Long startTime = System.currentTimeMillis();
-
 	    if (status == 1) // running
 	    {
 		if (wasInPause) {
@@ -193,6 +191,15 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	for (Robot r : this.robots) {
 	    r.stopSchedule();
 	}
+	// Suppression des robots des rails
+	for(Rail rail : this.map.getRails()) {
+	    rail.setRobot(null);
+	}
+	for(Column col : this.map.getColumns()) {
+	    for(Drawer dra : col.getDrawerList()) {
+		dra.setProduct(null);
+	    }
+	}
 	this.robots = new ArrayList<Robot>();
     }
 
@@ -206,11 +213,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     public void setStop() {
 	status = 0;
-	this.map = new Map();
+	this.map.getInput().clearProducts();
+	this.map.getOutput().clearProducts();
 	this.setNewLogs(new ArrayList<String>());
 	this.orderSource = new OrderSource();
 	this.orders = new ArrayList<Order>();
 	this.stockProducts = new ArrayList<Product>();
+	Order.resetLastId();
     }
 
     public void setPause() {

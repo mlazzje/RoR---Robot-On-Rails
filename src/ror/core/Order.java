@@ -36,7 +36,6 @@ public class Order implements Comparable<Order> {
 	 */
     private Integer idOrder;
     /**
-     * TODO Bug : L'ID commence à 3 si cette variable est à 0
      */
     private static Integer lastIdOrder = 0;
     /**
@@ -319,4 +318,7 @@ public class Order implements Comparable<Order> {
 	return s;
     }
 
+    public static void resetLastId() {
+	Order.lastIdOrder = 0;
+    }
 }
