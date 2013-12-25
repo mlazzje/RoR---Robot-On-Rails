@@ -23,7 +23,7 @@ public class AlgStoreOrder implements IAlgStore {
 	Drawer drawer = null;
 
 	Iterator<Product> itProduct = inputProducts.iterator();
-	while (itProduct.hasNext()) { // Parcours les produits a stocker
+	while (itProduct.hasNext()) { // Parcours les produits à stocker
 	    Product currentProduct = itProduct.next();
 	    if (currentProduct.getStatus() == Product.FREE) { // Si produit PAS déjà réservé à une action
 		Iterator<Order> itOrder = orders.iterator();
@@ -31,7 +31,7 @@ public class AlgStoreOrder implements IAlgStore {
 		    Order currentOrder = itOrder.next(); // Commande actuelle
 		    if (currentOrder.wantsProduct(currentProduct.getName())) {
 			// On cherche où on doit mettre le produit
-
+			System.out.println("Affiche moi ce putain de SOP !");
 			drawer = this.getDrawerFree(currentOrder, map);
 			if (drawer != null) {
 			    drawer.setStatus(Drawer.BOOKED);
@@ -54,6 +54,7 @@ public class AlgStoreOrder implements IAlgStore {
      * @return drawer free / null
      */
     public Drawer getDrawerFree(Order order, Map map) {
+	System.out.println("Enter in getDrawerFree");
 	Drawer drawer = null;
 	if (order.getDrawers().size() == 0) { // Si aucun drawers réservé on va le faire
 	    if (!this.bookDrawers(order, map)) { // Si on peut réserver des armoires
@@ -66,7 +67,7 @@ public class AlgStoreOrder implements IAlgStore {
 	}
 	// On parcours les drawers de la commande
 	for (Drawer drawerTest : order.getDrawers()) {
-	    if (drawerTest.getStatus() == Drawer.BOOKED_FOR_ORDER) { // Si drawer booked n'as pas de produit
+	    if (drawerTest.getStatus() == Drawer.BOOKED_FOR_ORDER && drawerTest.getStatus() != Drawer.BOOKED && drawerTest.getProduct()==null) { // Si drawer booked et n'as pas de produit
 		drawer = drawerTest;
 		break;
 	    }
@@ -88,24 +89,31 @@ public class AlgStoreOrder implements IAlgStore {
 	for (Column column : map.getColumns()) {
 	    if (column.getAvailableDrawer() != null) {
 		if (nbDrawersBooked == nbDrawersToBook) {
+		    System.out.println("BREAK !");
 		    break;
 		}
-		if (nbDrawersBooked > 0) { // Tkt pas ça marche ici & Première colonne rempli
-		    if (nbDrawersToBook - nbDrawersBooked >= 10 && column.getNbAvailableDrawers() != 10 && firstColumn != null) { // pas assez de place dans la seconde colonne car <10
+		if (nbDrawersBooked > 0 && nbDrawersBooked < nbDrawersToBook) { // Tkt pas ça marche ici & Première colonne rempli, on rentre ici dans la deuxième colonne
+		    if (nbDrawersToBook - nbDrawersBooked >= 10 && nbDrawersToBook > nbDrawersBooked && column.getNbAvailableDrawers() != 10 && firstColumn != null) { // pas assez de place dans la seconde colonne car <10
 			nbDrawersBooked = 0;
 			firstColumn = null;
 			secondColumn = null;
 			thirdColumn = null;
-		    } else if (nbDrawersToBook - nbDrawersBooked < 10 && firstColumn != null && nbDrawersToBook - nbDrawersBooked > column.getNbAvailableDrawers()) { // pas assez de place dans la seconde colonne
+			System.out.println("BREAK 2nd COL > 10 Order ID "+order.getIdOrder()+" book 1st column | nb drawer booked = "+nbDrawersBooked+"/"+nbDrawersToBook);
+			break;
+		    } else if (nbDrawersToBook - nbDrawersBooked < 10 && nbDrawersToBook > nbDrawersBooked && firstColumn != null && nbDrawersToBook - nbDrawersBooked > column.getNbAvailableDrawers()) { // pas assez de place dans la seconde colonne
 			nbDrawersBooked = 0;
 			firstColumn = null;
 			secondColumn = null;
 			thirdColumn = null;
-		    } else if (nbDrawersToBook - nbDrawersBooked < 10 && firstColumn != null && secondColumn != null && nbDrawersToBook - nbDrawersBooked > column.getNbAvailableDrawers()) { // Pas assez de place dans la troisième colonne
+			System.out.println("BREAK 2nd COL < 10 Order ID "+order.getIdOrder()+" book 1st column | nb drawer booked = "+nbDrawersBooked+"/"+nbDrawersToBook);
+			break;
+		    } else if (nbDrawersToBook - nbDrawersBooked < 10 && nbDrawersToBook > nbDrawersBooked && firstColumn != null && secondColumn != null && nbDrawersToBook - nbDrawersBooked > column.getNbAvailableDrawers()) { // Pas assez de place dans la troisième colonne
 			nbDrawersBooked = 0;
 			firstColumn = null;
 			secondColumn = null;
 			thirdColumn = null;
+			System.out.println("BREAK 3rd COL Order ID "+order.getIdOrder()+" book 1st column | nb drawer booked = "+nbDrawersBooked+"/"+nbDrawersToBook);
+			break;
 		    } else {
 			// Book drawers
 			if (column.getNbAvailableDrawers() == 10) { // Si colonne peut se remplir entièrement
@@ -134,20 +142,23 @@ public class AlgStoreOrder implements IAlgStore {
 			    nbDrawersBooked += nbDrawersToBook - nbDrawersBooked; // = nbDrawersBooked=nbDrawersToBook; // Voilà
 			}
 		    }
-		} else if (nbDrawersBooked == 0) {
+		} else if (nbDrawersBooked == 0) { // Réservation première colonne
 		    if (column.getNbAvailableDrawers() > nbDrawersToBook) {
 			nbDrawersBooked = nbDrawersToBook;
 		    } else {
 			nbDrawersBooked = column.getNbAvailableDrawers();
 		    }
 		    firstColumn = column;
+		    System.out.println("Order ID "+order.getIdOrder()+" book 1st column | nb drawer booked = "+nbDrawersBooked+"/"+nbDrawersToBook);
 		}
 	    }
 	}
 
 	if (nbDrawersBooked != nbDrawersToBook) {
+	    System.out.println("Return false");
 	    return false;
 	} else {
+	    System.out.println("Begin to Book !");
 	    // Book Drawers really here !
 	    int nbDrawersBookedReally = 0; // Reality
 	    int nbDrawersToBookForColumn = 0;

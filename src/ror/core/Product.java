@@ -51,7 +51,7 @@ public class Product {
     /**
      * Return the status of products
      * 
-     * 0 = Free 1 = Waiting (not in stock) 2 = Booked (for an order) 3 = In progress (assigned to an action of destocking) 4 = Done (in Ouput !)
+     * -1 = Waiting 0 = Free 1 = Being stored 2 = Stored 3 = Booked (for an order) 4 = Done (in Ouput !)
      * 
      * @return The status 0 = Free, 1 = Waiting, 2 = Booked, 3 = In progress, 4 = Done
      * @see Diagramme Etats-transitions "Statut product"
@@ -63,9 +63,8 @@ public class Product {
     /**
      * Set the status of products
      * 
-     * 0 = Free 1 = Waiting (not in stock) 2 = Booked (for an order) 3 = In progress (assigned to an action of destocking) 4 = Done (in Ouput !)
+     * -1 = Waiting 0 = Free 1 = Being stored 2 = Stored 3 = Booked (for an order) 4 = Done (in Ouput !)
      * 
-     * @return The status 0 = Free, 1 = Waiting, 2 = Booked, 3 = In progress, 4 = Done
      * @see Diagramme Etats-transitions "Statut product"
      */
     public void setStatus(Integer status) {
