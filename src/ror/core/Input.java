@@ -27,17 +27,22 @@ public class Input extends RoRElement {
 
     // Methods
     public boolean addProduct(Product p) {
-	boolean returned = this.productList.add(p);
-	this.setChanged();
-	this.notifyObservers();
-	return returned;
+	synchronized (this.productList) {
+	    boolean returned = this.productList.add(p);
+	    this.setChanged();
+	    this.notifyObservers();
+	    return returned;
+	}
     }
 
     public boolean removeProduct(Product p) {
-	boolean returned = this.productList.remove(p);
-	this.setChanged();
-	this.notifyObservers();
-	return returned;
+	synchronized (this.productList) {
+	    boolean returned = this.productList.remove(p);
+	    this.setChanged();
+	    this.notifyObservers();
+	    return returned;
+	}
+
     }
 
     public Integer inputProductsCount() {
@@ -47,11 +52,13 @@ public class Input extends RoRElement {
     public List<Product> getProductList() {
 	return this.productList;
     }
-    
+
     public void clearProducts() {
-	this.productList.clear();
-	this.setChanged();
-	this.notifyObservers();
+	synchronized (this.productList) {
+	    this.productList.clear();
+	    this.setChanged();
+	    this.notifyObservers();
+	}	
     }
 
 }
