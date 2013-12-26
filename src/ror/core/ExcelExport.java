@@ -13,6 +13,9 @@ import org.apache.poi.*;
 
 public class ExcelExport {
 
+    /**
+     * @param simulationManager
+     */
     public ExcelExport(SimulationManager simulationManager) {
 
 	// Blank workbook

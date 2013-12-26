@@ -4,64 +4,61 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author mlazzje
- * 
- */
 public class Order implements Comparable<Order> {
 
     /**
-     * Commande passée
+     * Order placed
      */
     public static final Integer INIT = 0;
     /**
-     * Tous les produits ne sont pas dispo
+     * All products aren't ready
      */
     public static final Integer WAITING = 1;
     /**
-     * Tous les produits sont disponibles et stockés
+     * All products are stocked and ready for destocking
      */
     public static final Integer READY_FOR_DESTOCKING = 2;
     /**
-     * Toutes les actions sont créés
+     * All actions are created for all products in order, being destocked
      */
     public static final Integer BEING_DESTOCKED = 3;
     /**
-     * La commande a été livrée
+     * Order shipped
      */
     public static final Integer DONE = 4;
 
     /**
-	 * 
-	 */
+     * Id Order
+     */
     private Integer idOrder;
     /**
+     * Last If Order
      */
     private static Integer lastIdOrder = 0;
     /**
-	 * 
-	 */
+     * Order status
+     */
     private Integer status;
     /**
-	 * 
-	 */
+     * Time of processing order
+     */
     private Long processingTime;
 
     /**
-	 * 
-	 */
+     * List of products name in Order
+     */
     private List<String> productsName;
     /**
-	 * 
-	 */
+     * List of real products booked for order
+     */
     private List<Product> products;
     /**
      * for algoStoreOrder ! DON'T TOUCH THIS ! OR MLAZZJE WILL KILL YOU !
      */
     private List<Product> productsStored;
     /**
-	 * 
-	 */
+     * List of drawers booked for order
+     */
     private List<Drawer> drawers;
 
     /**
@@ -85,17 +82,25 @@ public class Order implements Comparable<Order> {
 	return drawers;
     }
 
+    /**
+     * @return the processing time
+     */
     public Long getProcessingTime() {
 	return processingTime;
     }
 
+    /**
+     * Set processing Time
+     * 
+     * @param processingTime
+     */
     public void setProcessingTime(Long processingTime) {
 	this.processingTime = processingTime;
     }
 
     /**
      * 
-     * Set a drawers booked by Order
+     * Set drawers booked by Order
      * 
      * @param drawers
      */

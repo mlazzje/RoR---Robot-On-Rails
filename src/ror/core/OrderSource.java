@@ -12,13 +12,31 @@ import org.jdom2.input.SAXBuilder;
 
 public class OrderSource {
 
+    /**
+     * Scenario file for orders
+     */
     private File scenarioFile;
+    /**
+     * Cataog file for products
+     */
     private File catalogFile;
 
+    /**
+     * ArrayList string for catalog
+     */
     private ArrayList<String> catalog;
+    /**
+     * Hashmaps of products
+     */
     private HashMap<Integer, ArrayList<Product>> products;
+    /**
+     * Hashmap of orders
+     */
     private HashMap<Integer, ArrayList<Order>> orders;
 
+    /**
+     * Constructor of OrderSource
+     */
     public OrderSource() {
 	super();
 	this.products = new HashMap<Integer, ArrayList<Product>>();
@@ -29,14 +47,25 @@ public class OrderSource {
 	this.setCatalogFile(catalogFile);
     }
 
+    /**
+     * @return the Hastmap of products
+     */
     public HashMap<Integer, ArrayList<Product>> getProducts() {
 	return products;
     }
 
+    /**
+     * @return the Hashmap of orders
+     */
     public HashMap<Integer, ArrayList<Order>> getOrders() {
 	return orders;
     }
 
+    /**
+     * @param orders
+     * @param stock
+     * @return a random products
+     */
     public ArrayList<Product> getRandomProducts(ArrayList<Order> orders, ArrayList<Product> stock) {
 	if (orders.isEmpty())
 	    return new ArrayList<Product>();
@@ -73,6 +102,9 @@ public class OrderSource {
 	return newProducts;
     }
 
+    /**
+     * @return random orders
+     */
     public ArrayList<Order> getRandomOrders() {
 	ArrayList<Order> newOrders = new ArrayList<Order>();
 	Integer nbOrdersToCreate = 1; // 1 a 5 commande(s) crée(s)
@@ -92,6 +124,10 @@ public class OrderSource {
 	return newOrders;
     }
 
+    /**
+     * @param uptime
+     * @return scenario of orders
+     */
     public ArrayList<Order> getScenarioOrders(Long uptime) {
 	ArrayList<Order> orders = new ArrayList<Order>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
@@ -111,6 +147,10 @@ public class OrderSource {
 	return orders;
     }
 
+    /**
+     * @param uptime
+     * @return scenario of products created
+     */
     public ArrayList<Product> getScenarioProducts(Long uptime) {
 	ArrayList<Product> products = new ArrayList<Product>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
@@ -130,10 +170,20 @@ public class OrderSource {
 	return products;
     }
 
+    /**
+     * @param min integer
+     * @param max integer
+     * @return random integer between a minimum and a maximum
+     */
     private Integer random(Integer min, Integer max) {
 	return min + (int) (Math.random() * ((max - min) + 1));
     }
 
+    /**
+     * Set a catalog file
+     * 
+     * @param catalogFile
+     */
     public void setCatalogFile(File catalogFile) {
 	this.catalogFile = catalogFile;
 
@@ -157,6 +207,11 @@ public class OrderSource {
 	}
     }
 
+    /**
+     * Set a scenario File
+     * 
+     * @param scenarioFile
+     */
     public void setScenarioFile(File scenarioFile) {
 	System.out.println("Chargement fichier scenario");
 
@@ -205,18 +260,32 @@ public class OrderSource {
 	}
     }
 
+    /**
+     * @return the catalog of products
+     */
     public ArrayList<String> getCatalog() {
 	return catalog;
     }
 
+    /**
+     * Set the catalog of products
+     * 
+     * @param catalog
+     */
     public void setCatalog(ArrayList<String> catalog) {
 	this.catalog = catalog;
     }
 
+    /**
+     * @return the scenario file of orders
+     */
     public File getScenarioFile() {
 	return this.scenarioFile;
     }
 
+    /**
+     * @return the catalog file of products
+     */
     public File getCatalogFile1() {
 	return this.catalogFile;
     }

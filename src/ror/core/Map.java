@@ -14,13 +14,34 @@ import ror.core.algo.Dijkstra;
 
 public class Map {
 
+    /**
+     * ArrayList of columns
+     */
     private ArrayList<Column> columns;
+    /**
+     * ArrayList of rails
+     */
     private ArrayList<Rail> rails;
+    /**
+     * Two dimensionnals array of RoRElement
+     */
     private RoRElement[][] map;
+    /**
+     * The input spot
+     */
     private Input input;
+    /**
+     * The output spot
+     */
     private Output output;
+    /**
+     * Algorithm Djikstra for moves
+     */
     private Dijkstra djikstra;
 
+    /**
+     * Constructor of the map
+     */
     public Map() {
 	this.map = new RoRElement[1][1]; // Taille par defaut
 	this.input = null;
@@ -32,52 +53,102 @@ public class Map {
 	this.djikstra = new Dijkstra(this.rails);
     }
 
+    /**
+     * @param start
+     * @param end
+     * @return the path from a Rail to another rail
+     */
     public ArrayList<Rail> getPath(Rail start, Rail end) {
 	return (ArrayList<Rail>) djikstra.getPath(start, end);
     }/*
       * public ArrayList<Rail> getPath(Rail start, Rail end) { ArrayList<Rail> path = (ArrayList<Rail>) djikstra.getPath(start, end); if (path.size() > 0 && path.get(0) == start) path.remove(0); return path; }
       */
 
+    /**
+     * @return Arraylist of Rails in the map
+     */
     public ArrayList<Rail> getRails() {
 	return rails;
     }
 
+    /**
+     * Set the rails in the map
+     * 
+     * @param rails
+     */
     public void setRails(ArrayList<Rail> rails) {
 	this.rails = rails;
     }
 
+    /**
+     * @return ArrayList of columns in the map
+     */
     public ArrayList<Column> getColumns() {
 	return columns;
     }
 
+    /**
+     * Set the columns of the map
+     * 
+     * @param columns
+     */
     public void setColumns(ArrayList<Column> columns) {
 	this.columns = columns;
     }
 
+    /**
+     * @return the map in two dimensional array of RoRElement
+     */
     public RoRElement[][] getMap() {
 	return map;
     }
 
+    /**
+     * Set the map with a two dimensional array of RoRElement
+     * 
+     * @param two dimensional array of RoRElement
+     */
     public void setMap(RoRElement[][] map) {
 	this.map = map;
     }
 
+    /**
+     * @return the input
+     */
     public Input getInput() {
 	return input;
     }
 
+    /**
+     * Set the input spot
+     * 
+     * @param input
+     */
     public void setInput(Input input) {
 	this.input = input;
     }
 
+    /**
+     * @return the output
+     */
     public Output getOutput() {
 	return output;
     }
 
+    /**
+     * Set the output spot
+     * 
+     * @param output
+     */
     public void setOutput(Output output) {
 	this.output = output;
     }
 
+    /**
+     * @param startNode rail
+     * @param endPoint rail
+     * @return the best Path between two rails
+     */
     public ArrayList<Rail> CalculateBestPath(Rail startNode, Rail endPoint) {
 
 	ArrayList<Rail> open = new ArrayList<Rail>();
@@ -114,6 +185,12 @@ public class Map {
 	return null;
     }
 
+    /**
+     * Generate weight of path between two rails
+     * 
+     * @param start rail
+     * @param end rail
+     */
     public void generateWeightTable(Rail start, Rail end) {
 
 	Object[][] weights = new Object[rails.size()][3];
@@ -137,6 +214,11 @@ public class Map {
 
     }
 
+    /**
+     * Generate the WareHouse with an XML File
+     * 
+     * @param file
+     */
     public void setWareHouse(File file) {
 
 	Document document = null;
