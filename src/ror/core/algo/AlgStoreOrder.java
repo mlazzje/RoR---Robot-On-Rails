@@ -19,6 +19,9 @@ public class AlgStoreOrder implements IAlgStore {
      */
     public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
 
+	if(inputProducts==null)
+	    return null;
+	
 	ArrayList<StoreAction> actions = new ArrayList<StoreAction>(); // init
 	Drawer drawer = null;
 
