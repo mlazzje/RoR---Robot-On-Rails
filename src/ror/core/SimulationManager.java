@@ -22,26 +22,77 @@ import ror.core.algo.IAlgStore;
 public class SimulationManager extends Observable implements Observer, Runnable {
 
     // relationship
+    /**
+     * Interface store algorithm
+     */
     private IAlgStore iAlgStore;
+    /**
+     * Interface move algorithm
+     */
     private IAlgMove iAlgMove;
+    /**
+     * Interface destocking algorithm
+     */
     private IAlgDestocking iAlgDestocking;
 
+    /**
+     * ArrayList of robots
+     */
     private ArrayList<Robot> robots;
+    /**
+     * ArrayList of orders
+     */
     private ArrayList<Order> orders;
+    /**
+     * Order source
+     */
     private OrderSource orderSource;
+    /**
+     * Map
+     */
     private Map map;
 
     // own attributes
+    /**
+     * Speed 
+     */
     private Float speed = (float) 1;
+    /**
+     * Number of robots
+     */
     private Integer nbRobot = 3;
+    /**
+     * Status
+     */
     private Integer status = 0;
+    /**
+     * Boolean was in pause (by default = false)
+     */
     private boolean wasInPause = false;
+    /**
+     * Boolean source
+     */
     private boolean source;
+    /**
+     * Coeff for speed and/or timer
+     */
     private Integer coeff = 3000; // <==> 1 second
+    /**
+     * Uptime of simulation manager
+     */
     private long uptime;
+    /**
+     * ArrayList of stockProducts
+     */
     private ArrayList<Product> stockProducts;
+    /**
+     * ArrayList of new logs
+     */
     private ArrayList<String> newLogs;
 
+    /**
+     * Constructor of simulation manager
+     */
     public SimulationManager() {
 	this.map = new Map();
 	this.setNewLogs(new ArrayList<String>());
@@ -55,38 +106,65 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.stockProducts = new ArrayList<Product>();
     }
 
+    /**
+     * @return status
+     */
     public Integer getStatus() {
 	return this.status;
     }
 
+    /**
+     * @return source
+     */
     public boolean getSource() {
 	return this.source;
     }
 
+    /**
+     * @return speed
+     */
     public Float getSpeed() {
 	return this.speed;
     }
 
+    /**
+     * @return store algorithm
+     */
     public IAlgStore getiAlgStore() {
 	return this.iAlgStore;
     }
 
+    /**
+     * @return move algorithm
+     */
     public IAlgMove getiAlgMove() {
 	return this.iAlgMove;
     }
 
+    /**
+     * @return destocking algorithm
+     */
     public IAlgDestocking getiAlgDestocking() {
 	return this.iAlgDestocking;
     }
 
+    /**
+     * @return number of robots
+     */
     public Integer getNbRobot() {
 	return this.nbRobot;
     }
 
+    /**
+     * @return uptime
+     */
     public Long getUptime() {
 	return this.uptime;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
     @Override
     public void run() {
 	// add robots
@@ -203,14 +281,23 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.robots = new ArrayList<Robot>();
     }
 
+    /**
+     * @return map
+     */
     public Map getMap() {
 	return map;
     }
 
+    /**
+     * Update indicators // TODO TO Complete
+     */
     public void updateIndicators() {
 	// TODO to implement and create indicators attributes
     }
 
+    /**
+     * Set stop
+     */
     public void setStop() {
 	status = 0;
 	this.map.getInput().clearProducts();
@@ -222,10 +309,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	Order.resetLastId();
     }
 
+    /**
+     * Set pause
+     */
     public void setPause() {
 	status = 2;
     }
 
+    /**
+     * Set play 
+     */
     public void setPlay() {
 	if (status == 2) {
 	    this.wasInPause = true;
@@ -236,6 +329,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
     }
 
+    /* (non-Javadoc)
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
     @Override
     public void update(Observable o, Object arg) { // called by a robot
 	if (o instanceof Robot) {
@@ -338,8 +434,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
     }
 
-    // retourne la liste des robots dont le mouvement est bloque par le robot
-    // passé paramètre
+    /**
+     * Return ArrayList of robots blocked by robot passed in parameter
+     * 
+     * @param blocking robot
+     * @return robots blocked
+     */
     private ArrayList<Robot> getWaitingRobots(Robot blockingRobot) {
 	ArrayList<Robot> waitingRobots = new ArrayList<Robot>();
 
@@ -354,44 +454,88 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return waitingRobots;
     }
 
+    /**
+     * Set store algorithm
+     * 
+     * @param iAlgStore
+     */
     public void setiAlgStore(IAlgStore iAlgStore) {
 	this.iAlgStore = iAlgStore;
     }
 
+    /**
+     * Set move algorithm
+     * 
+     * @param iAlgMove
+     */
     public void setiAlgMove(IAlgMove iAlgMove) {
 	this.iAlgMove = iAlgMove;
     }
 
+    /**
+     * Set destocking algorithm
+     * 
+     * @param iAlgDestocking
+     */
     public void setiAlgDestocking(IAlgDestocking iAlgDestocking) {
 	this.iAlgDestocking = iAlgDestocking;
     }
 
+    /**
+     * Set random mode
+     */
     public void setRandomMode() {
 	source = false;
     }
 
+    /**
+     * Set scenario file
+     * 
+     * @param file
+     */
     public void setFile(File file) {
 	source = true;
 	orderSource.setScenarioFile(file);
     }
 
+    /**
+     * Set speed
+     * 
+     * @param speed
+     */
     public void setSpeed(Float speed) {
 	this.speed = (speed >= 0) ? speed : 0.0f;
     }
 
+    /**
+     * Set number of robots
+     * 
+     * @param nbRobot
+     */
     public void setNbRobot(Integer nbRobot) {
 	this.nbRobot = (nbRobot >= 0) ? nbRobot : 0;
     }
 
+    /**
+     * Set end of simulation
+     */
     public void setEndSimulation() {
 	coeff = 0;
 	this.setPlay();
     }
 
+    /**
+     * @return ArrayList of robots
+     */
     public ArrayList<Robot> getRobots() {
 	return this.robots;
     }
 
+    /**
+     * @param robot
+     * @param action
+     * @return nextAction of robot and action passed in parameter
+     */
     private Robot checkNextAction(Robot robot, Action action) {
 	if (action instanceof MoveAction) {
 	    MoveAction moveAction = (MoveAction) action;
@@ -406,18 +550,32 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return null;
     }
 
+    /**
+     * @return ArrayList of orders
+     */
     public ArrayList<Order> getOrders() {
 	return this.orders;
     }
 
+    /**
+     * @return ArrayList of new logs
+     */
     public ArrayList<String> getNewLogs() {
 	return newLogs;
     }
 
+    /**
+     * Set new logs
+     * 
+     * @param newLogs
+     */
     public void setNewLogs(ArrayList<String> newLogs) {
 	this.newLogs = newLogs;
     }
 
+    /**
+     * @return average consumption by order
+     */
     public int getAverageConsumption() {
 	int count = 0;
 	for (Order order : this.orders) {
@@ -431,6 +589,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    return 0;
     }
 
+    /**
+     * @return average processing time to prepare order
+     */
     public long getAverageOrderProcessingTime() {
 	if (orders.size() > 0) {
 	    long count = 0;
@@ -449,6 +610,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    return 0;
     }
 
+    /**
+     * @return total consumption of robots
+     */
     public int getTotalConsumption() {
 	int cons = 0;
 	for (Robot robot : this.getRobots()) {
@@ -457,6 +621,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return cons;
     }
 
+    /**
+     * @return numbers of orders prepared
+     */
     public int getOrdersDoneCount() {
 	int count = 0;
 	for (Order order : this.orders) {
