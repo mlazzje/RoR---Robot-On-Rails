@@ -16,25 +16,83 @@ import ror.core.Order;
 
 public class Robot extends Observable {
 
+    /**
+     * First speed
+     */
     public static final float SPEED_1 = 1;
+    /**
+     * Second speed
+     */
     public static final float SPEED_2 = 0.5f;
+    /**
+     * Third speed
+     */
     public static final float SPEED_3 = 0.25f;
 
+    /**
+     * Traveled distance
+     */
     private Integer traveledDistance = 0;
+    /**
+     * Consumption in watts
+     */
     private Integer consumption = 0;
+    /**
+     * Actions list
+     */
     private ArrayList<Action> actions = null;
+    /**
+     * Robot on Rail !!!
+     */
     private Rail rail = null;
+    /**
+     * Speed default
+     */
     private Float speed = SPEED_1;
+    /**
+     * Working or not (false by default)
+     */
     private Boolean working = false;
+    /**
+     * Order in progress
+     */
     private Order orderInProgress = null;
+    /**
+     * Robot status
+     */
     private Integer status = 0;
+    /**
+     * Products list
+     */
     private ArrayList<Product> products = null;
+    /**
+     * Timer
+     */
     private Timer timer = null;
+    /**
+     * Timer task
+     */
     private TimerTask timerTask = null;
+    /**
+     * Last robot move
+     */
     private MoveAction lastMove;
+    /**
+     * Robot number
+     */
     private Integer number;
+    /**
+     * Simulation manager
+     */
     private SimulationManager simulationManager;
     
+    /**
+     * Constructor
+     * 
+     * @param initRail
+     * @param num
+     * @param simulationManager
+     */
     public Robot(Rail initRail, Integer num, SimulationManager simulationManager) {
 	number = num;
 	timer = new Timer();
@@ -46,19 +104,33 @@ public class Robot extends Observable {
 	this.simulationManager = simulationManager;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
 	return "Robot " + getNumber();
     }
 
+    /**
+     * @return robot number
+     */
     public Integer getNumber() {
 	return number;
     }
 
+    /**
+     * Set robot number
+     * 
+     * @param number
+     */
     public void setNumber(Integer number) {
 	this.number = number;
     }
 
+    /**
+     * Stop schedule timer
+     */
     public void stopSchedule() {
 	synchronized (timer) {
 
@@ -71,6 +143,11 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * Execute action passed in parameter
+     * 
+     * @param action
+     */
     public void executeAction(final Action action) {
 	// add action to the actions list if it no exist (only happens if we add
 	// a pause action)
@@ -235,6 +312,9 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * @return current action
+     */
     public Action getCurrentAction() {
 	synchronized (this.actions) {
 
@@ -245,6 +325,9 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * Remove current action
+     */
     public void removeCurrentAction() {
 	synchronized (this.actions) {
 
@@ -253,21 +336,39 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * Add product on robot platform
+     * 
+     * @param product
+     */
     private void addProduct(Product product) {
 
 	products.add(product);
     }
 
+    /**
+     * Remove product on robot platform
+     * 
+     * @param product
+     */
     private void removeProduct(Product product) {
 	synchronized (this.products) {
 	    products.remove(product);
 	}
     }
 
+    /**
+     * @return ArrayList of products on the platform
+     */
     public ArrayList<Product> getProducts() {
 	return products;
     }
 
+    /**
+     * Add an action passed in parameter
+     * 
+     * @param action
+     */
     public void addAction(Action action) {
 
 	synchronized (this.actions) {
@@ -276,38 +377,67 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * @return Traveled distance
+     */
     public Integer getTraveledDistance() {
 	return traveledDistance;
     }
 
+    /**
+     * @return consumption in watts
+     */
     public Integer getConsumption() {
 	return consumption;
     }
 
+    /**
+     * @return ArrayList of actions
+     */
     public ArrayList<Action> getActions() {
 	return actions;
     }
 
+    /**
+     * @return Rail under robot
+     */
     public Rail getRail() {
 	return rail;
     }
 
+    /**
+     * @return Working state
+     */
     public Boolean getWorking() {
 	return working;
     }
 
+    /**
+     * @return robot status
+     */
     public Integer getStatus() {
 	return status;
     }
 
+    /**
+     * @return Order in progress
+     */
     public Order getOrderInProgress() {
 	return orderInProgress;
     }
 
+    /**
+     * Set an order in progress
+     * 
+     * @param orderInProgress
+     */
     public void setOrderInProgress(Order orderInProgress) {
 	this.orderInProgress = orderInProgress;
     }
 
+    /**
+     * @return Last action rail
+     */
     public Rail getLastActionRail() {
 	Action lastAction;
 	synchronized (this.actions) {
@@ -332,6 +462,9 @@ public class Robot extends Observable {
 	}
     }
 
+    /**
+     * @return Number of products that robot can transport
+     */
     public Integer getLastActionSpaceAvailability() {
 	int count = this.products.size();
 
@@ -355,9 +488,9 @@ public class Robot extends Observable {
     }
 
     /**
-     * Retourne la prochaine rail libre sur laquelle peut se positioner un robot bloquant
+     * For a robot which block
      * 
-     * @return Rail la rail
+     * @return the next available rail
      */
     public Rail getOpositeRailAtNextIntersection() {
 	Rail intersectionRail = null;
@@ -384,10 +517,18 @@ public class Robot extends Observable {
 	return lastAction.getNext().getRightRail();
     }
 
+    /**
+     * @return robot speed
+     */
     public Float getSpeed() {
 	return speed;
     }
 
+    /**
+     * Set robot speed
+     * 
+     * @param speed
+     */
     public void setSpeed(Float speed) {
 	this.speed = speed;
     }
