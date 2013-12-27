@@ -48,7 +48,7 @@ public class OrderSource {
     }
 
     /**
-     * @return the Hastmap of products
+     * @return the Hashmap of products
      */
     public HashMap<Integer, ArrayList<Product>> getProducts() {
 	return products;
@@ -131,19 +131,19 @@ public class OrderSource {
     public ArrayList<Order> getScenarioOrders(Long uptime) {
 	ArrayList<Order> orders = new ArrayList<Order>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
-	
+
 	for (Integer key : this.orders.keySet()) {
 	    if (key <= uptime) {
 		orders.addAll(this.orders.get(key));
-		System.out.println("Nouvelle commande : "+this.orders.get(key).toString());
+		System.out.println("Nouvelle commande : " + this.orders.get(key).toString());
 		keyToRemove.add(key);
 	    }
 	}
-	
+
 	for (Integer key : keyToRemove) {
 	    this.orders.remove(key);
 	}
-	
+
 	return orders;
     }
 
@@ -152,27 +152,29 @@ public class OrderSource {
      * @return scenario of products created
      */
     public ArrayList<Product> getScenarioProducts(Long uptime) {
-	ArrayList<Product> products = new ArrayList<Product>();
+	ArrayList<Product> returnedProducts = new ArrayList<Product>();
 	ArrayList<Integer> keyToRemove = new ArrayList<Integer>();
-		
+
 	for (Integer key : this.products.keySet()) {
 	    if (key <= uptime) {
-		System.out.println("Production de : "+this.products.get(key).toString());
-		products.addAll(this.products.get(key));
+		System.out.println("Production de : " + this.products.get(key).toString());
+		returnedProducts.addAll(this.products.get(key));
 		keyToRemove.add(key);
 	    }
 	}
-	
+
 	for (Integer key : keyToRemove) {
 	    this.products.remove(key);
 	}
-	
-	return products;
+
+	return returnedProducts;
     }
 
     /**
-     * @param min integer
-     * @param max integer
+     * @param min
+     *            integer
+     * @param max
+     *            integer
      * @return random integer between a minimum and a maximum
      */
     private Integer random(Integer min, Integer max) {
