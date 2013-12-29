@@ -84,6 +84,7 @@ public class AlgStoreOrder implements IAlgStore {
      * @return
      */
     public boolean bookDrawers(Order order, Map map) {
+	System.out.println("Booking Drawer !");
 	int nbDrawersToBook = order.getProductsName().size();
 	// int nbDrawersDec = order.getProductsName().size();
 	int nbDrawersBooked = 0; // Simulation
