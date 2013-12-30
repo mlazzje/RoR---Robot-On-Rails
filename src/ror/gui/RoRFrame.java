@@ -22,105 +22,242 @@ import javax.swing.UIManager;
 
 import ror.core.RoRElement;
 
+/**
+ * @author mlazzje
+ *
+ */
 public class RoRFrame extends JFrame {
 
+    /**
+     * serialVersionUID
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * menuBar
+     */
     private JMenuBar menuBar;
+    /**
+     * startButton
+     */
     private StartButton startButton;
+    /**
+     * acceleratedButton
+     */
     private AcceleratedButton acceleratedButton;
+    /**
+     * stopButton
+     */
     private StopButton stopButton;
+    /**
+     * speedSlider
+     */
     private SpeedSlider speedSlider;
+    /**
+     * Algo store ComboBox
+     */
     private AlgStoreComboBox algStoreComboBox;
+    /**
+     * Algo destocking ComboBox
+     */
     private AlgDestockingComboBox algDestockingComboBox;
+    /**
+     * Algo move ComboBox
+     */
     private AlgMoveComboBox algMoveComboBox;
+    /**
+     * robotComboBox
+     */
     private RobotComboBox robotComboBox;
+    /**
+     * randomCheckBox
+     */
     private RandomCheckBox randomCheckBox;
+    /**
+     * importButton
+     */
     private ImportButton importButton;
+    /**
+     * orderList
+     */
     private OrderList orderList;
+    /**
+     * logList
+     */
     private LogList logList;
+    /**
+     * nbOrderLabel
+     */
     private JLabel nbOrderLabel;
+    /**
+     * avgTimeOrderLabel
+     */
     private JLabel avgTimeOrderLabel;
+    /**
+     * totalTimeOrderLabel
+     */
     private JLabel totalTimeOrderLabel;
+    /**
+     * avgConsumptionLabel
+     */
     private JLabel avgConsumptionLabel;
+    /**
+     * totalConsumptionLabel
+     */
     private JLabel totalConsumptionLabel;
+    /**
+     * informationsPanel
+     */
     private JPanel informationsPanel;
+    /**
+     * importFileChooser
+     */
     private ImportFileChooser importFileChooser;
+    /**
+     * uiController
+     */
     private UIController uiController;
+    /**
+     * mapPanel
+     */
     private JPanel mapPanel;
+    /**
+     * checkedElement
+     */
     private Object checkedElement;
 
+    /**
+     * @return startButton
+     */
     public StartButton getStartButton() {
 	return startButton;
     }
 
+    /**
+     * @return acceleratedButton
+     */
     public AcceleratedButton getAcceleratedButton() {
 	return acceleratedButton;
     }
 
+    /**
+     * @return stopButton
+     */
     public StopButton getStopButton() {
 	return stopButton;
     }
 
+    /**
+     * @return speedSlider
+     */
     public SpeedSlider getSpeedSlider() {
 	return speedSlider;
     }
 
+    /**
+     * @return algStoreComboBox
+     */
     public AlgStoreComboBox getAlgStoreComboBox() {
 	return algStoreComboBox;
     }
 
+    /**
+     * @return algDestockingComboBox
+     */
     public AlgDestockingComboBox getAlgDestockingComboBox() {
 	return algDestockingComboBox;
     }
 
+    /**
+     * @return algMoveComboBox
+     */
     public AlgMoveComboBox getAlgMoveComboBox() {
 	return algMoveComboBox;
     }
 
+    /**
+     * @return robotComboBox
+     */
     public RobotComboBox getRobotComboBox() {
 	return robotComboBox;
     }
 
+    /**
+     * @return randomCheckBox
+     */
     public RandomCheckBox getRandomCheckBox() {
 	return randomCheckBox;
     }
 
+    /**
+     * @return importButton
+     */
     public ImportButton getImportButton() {
 	return importButton;
     }
 
+    /**
+     * @return orderList
+     */
     public OrderList getOrderList() {
 	return orderList;
     }
 
+    /**
+     * @return logList
+     */
     public LogList getLogList() {
 	return logList;
     }
 
+    /**
+     * @return nbOrderLabel
+     */
     public JLabel getNbOrderLabel() {
 	return nbOrderLabel;
     }
 
+    /**
+     * @return avgTimeOrderLabel
+     */
     public JLabel getAvgTimeOrderLabel() {
 	return avgTimeOrderLabel;
     }
 
+    /**
+     * @return totalTimeOrderLabel
+     */
     public JLabel getTotalTimeOrderLabel() {
 	return totalTimeOrderLabel;
     }
 
+    /**
+     * @return avgConsumptionLabel
+     */
     public JLabel getAvgConsumptionLabel() {
 	return avgConsumptionLabel;
     }
 
+    /**
+     * @return totalConsumptionLabel
+     */
     public JLabel getTotalConsumptionLabel() {
 	return totalConsumptionLabel;
     }
 
+    /**
+     * @return informationsPanel
+     */
     public JPanel getInformationsPanel() {
 	return informationsPanel;
     }
 
+    /**
+     * Constructor RoRFrame
+     * 
+     * @param uiController
+     * @param title
+     * @throws HeadlessException
+     */
     public RoRFrame(UIController uiController, String title) throws HeadlessException {
 	super(title);
 	this.uiController = uiController;
@@ -246,45 +383,75 @@ public class RoRFrame extends JFrame {
 	this.reColor();
     }
 
+    /**
+     * reColor
+     */
     public void reColor() {
 	/*
 	 * for (Component jPanel : mapPanel.getComponents()) { //TODO Implementer Observable/Observer sur les cases pour gagner en perf' RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel; rorElementPanel.reColor(); }
 	 */
     }
 
+    /**
+     * @return importFileChooser
+     */
     public ImportFileChooser getImportFileChooser() {
 	return importFileChooser;
     }
 
+    /**
+     * @return uiController
+     */
     public UIController getUiController() {
 	return uiController;
     }
 
+    /**
+     * @return checkedElement
+     */
     public Object getCheckedElement() {
 	return checkedElement;
     }
 
+    /**
+     * @param checkedElement
+     */
     public void setCheckedElement(Object checkedElement) {
 	this.checkedElement = checkedElement;
     }
 
+    /**
+     * @param label
+     */
     public void setTotalConsumptionLabel(JLabel label) {
 	this.totalConsumptionLabel = label;
     }
     
+    /**
+     * @param label
+     */
     public void setAverageConsumptionLabel(JLabel label) {
 	this.avgConsumptionLabel = label;
     }
     
+    /**
+     * @param label
+     */
     public void setNbOrderDoneLabel(JLabel label) {
 	this.nbOrderLabel = label;
     }
     
+    /**
+     * @param label
+     */
     public void setAvgTimeOrder(JLabel label)
     {
 	this.avgTimeOrderLabel=label;
     }
     
+    /**
+     * @param label
+     */
     public void setTotalTimeOrderLabel(JLabel label)
     {
 	this.totalTimeOrderLabel=label;
