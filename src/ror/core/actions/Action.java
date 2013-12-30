@@ -3,19 +3,20 @@ package ror.core.actions;
 import ror.core.Robot;
 
 /**
- * Classe abstraite Action Représente une action d'un robot
+ * Abstract Class 
+ * Represent a robot action
  */
 public abstract class Action {
     private Integer duration;
     private Robot robot;
 
     /**
-     * Constructeur de la classe Action appelée par les classes filles
+     * Constructor of the Action class called by child classess
      * 
      * @param duration
-     *            Durée de l'action
+     *            Duration of the action
      * @param robot
-     *            Robot associée à l'action
+     *            Robot which does the action
      */
     public Action(Integer duration, Robot robot) {
 	this.setDuration(duration);
@@ -23,19 +24,19 @@ public abstract class Action {
     }
 
     /**
-     * Retourne la durée de l'action
+     * Return the duration of the action
      * 
-     * @return La durée de l'action
+     * @return The duration of the action
      */
     public Integer getDuration() {
 	return duration;
     }
 
     /**
-     * Défini la durée de l'action
+     * Set the duration of the action
      * 
      * @param duration
-     *            La durée de l'action
+     *            The duration of the action
      */
     public void setDuration(Integer duration) {
 	if (duration != null && duration > 0)
@@ -45,22 +46,21 @@ public abstract class Action {
     }
 
     /**
-     * Retourne le robot associé à l'action
+     * Return the robot wich does the action
      * 
-     * @return Le robot associé à l'action
+     * @return The robot wich does the action
      */
     public Robot getRobot() {
 	return robot;
     }
 
     /**
-     * Défini le robot associé à l'action
+     * Set the robot wich does the action
      * 
      * @param robot
-     *            Le robot associé à l'action
+     *            The robot wich does the action
      */
     public void setRobot(Robot robot) {
 	this.robot = robot;
     }
-
 }

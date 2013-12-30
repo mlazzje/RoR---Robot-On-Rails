@@ -5,7 +5,8 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * Classe DestockingAction Représente l'action de destocker un produit d'une armoire
+ * DestockingAction class
+ * Represent the destocking action
  */
 public class DestockingAction extends Action {
 
@@ -13,14 +14,14 @@ public class DestockingAction extends Action {
     private Product product;
 
     /**
-     * Constructeur de la classe DestockingAction
+     * Constructor of the DestockingAction class
      * 
      * @param duration
-     *            La durée de l'action
+     *            The duration of the action
      * @param robot
-     *            Le robot associé à l'action
+     *            The robot which does the action
      * @param product
-     *            Le produit à destocker
+     *            The destocking product
      */
     public DestockingAction(Integer duration, Robot robot, Product product) {
 	super(duration, robot);
@@ -29,38 +30,38 @@ public class DestockingAction extends Action {
     }
 
     /**
-     * Retourne l'emplacement où se situe le produit
+     * Return the drawer where is the product
      * 
-     * @return Le drawer où se situe le produit
+     * @return The drawer where is the product
      */
     public Drawer getDrawer() {
 	return drawer;
     }
 
     /**
-     * Défini l'emplacement où se situe le produit
+     * Define the drawer where is the product
      * 
      * @param drawer
-     *            Le drawer où se situe le produit
+     *            The drawer where is the product
      */
     public void setDrawer(Drawer drawer) {
 	this.drawer = drawer;
     }
 
     /**
-     * Retourne le produit à aller chercher
+     * Return the product to go to fetch
      * 
-     * @return Le produit à aller chercher
+     * @return The product to go to fetch
      */
     public Product getProduct() {
 	return product;
     }
 
     /**
-     * Défini le produit à aller chercher
+     * Define the product to go to fetch
      * 
      * @param product
-     *            Le prodit à aller chercher
+     *            The product to go to fetch
      */
     public void setProduct(Product product) {
 	this.product = product;

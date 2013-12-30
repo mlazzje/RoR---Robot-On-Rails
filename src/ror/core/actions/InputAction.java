@@ -5,7 +5,8 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * Classe InputAction Représente l'action de récuperer un produit de l'Input
+ * InputAction class
+ * Represent a Input Action
  */
 public class InputAction extends Action {
 
@@ -13,14 +14,14 @@ public class InputAction extends Action {
     private Input input;
 
     /**
-     * Constructeur de la classe InputAction
+     * Constructor of the InputAction class
      * 
      * @param duration
-     *            La durée de l'action
+     *            The duration of the action
      * @param robot
-     *            Le robot associé à l'action
+     *            The robot which does the action
      * @param input
-     *            L'input associé à l'action
+     *            The input where is the product
      */
     public InputAction(Integer duration, Robot robot, Input input) {
 	super(duration, robot);
@@ -28,38 +29,38 @@ public class InputAction extends Action {
     }
 
     /**
-     * Retourne le produit à aller chercher
+     * Return the product to go to fetch
      * 
-     * @return Le produit à aller chercher
+     * @return The product to go to fetch
      */
     public Product getProduct() {
 	return product;
     }
 
     /**
-     * Défini le produit à aller chercher
+     * Set the product to go to fetch
      * 
      * @param product
-     *            Le prodit à aller chercher
+     *            The product to go to fetch
      */
     public void setProduct(Product product) {
 	this.product = product;
     }
 
     /**
-     * Retourne l'Input associé à l'action
+     * Return the input where is the product
      * 
-     * @return L'Input associé à l'action
+     * @return The input where is the product
      */
     public Input getInput() {
 	return this.input;
     }
 
     /**
-     * Défini l'Input associé à l'action
+     * Set the input where is the product
      * 
      * @param input
-     *            L'input associé à l'action
+     *            The input where is the product
      */
     public void setInput(Input input) {
 	this.input = input;
