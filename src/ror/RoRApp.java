@@ -2,9 +2,18 @@ package ror;
 
 import ror.gui.*;
 
+/**
+ * Main's class
+ */
 public class RoRApp {
 
-    public static void main(String[] args) {
-	new UIController();
-    }
+	/**
+	 * Entry point of the program
+	 * 
+	 * @param args
+	 *            command line arguments (useless in this app)
+	 */
+	public static void main(String[] args) {
+		new UIController();
+	}
 }

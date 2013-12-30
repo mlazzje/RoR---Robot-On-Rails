@@ -4,24 +4,24 @@ import ror.core.Rail;
 import ror.core.Robot;
 
 /**
- * Classe MoveAction représente un déplacement d'un robot
- * 
+ * MoveAction class
+ * Represent a move of a robot
  */
 public class MoveAction extends Action {
     private Rail previous;
     private Rail next;
 
     /**
-     * Constructeur de la classe InputAction
+     * Constructor of the InputAction class
      * 
      * @param duration
-     *            La durée de l'action
+     *            The duration of the action
      * @param robot
-     *            Le robot associé à l'action
+     *            The robot which does the action
      * @param previous
-     *            La rail sur lequel doit se trouver le robot pour effectuer l'action
+     *            The previous rail
      * @param next
-     *            La rail vers lequel se déplace le robot
+     *            The next rail
      */
     public MoveAction(Integer duration, Robot robot, Rail previous, Rail next) {
 	super(duration, robot);
@@ -34,18 +34,34 @@ public class MoveAction extends Action {
 	return "MoveAction : " + previous + " -> " + next;
     }
 
+    /**
+     * Return the previous rail
+     * @return The previous rail
+     */
     public Rail getPrevious() {
 	return previous;
     }
 
+    /**
+     * Set the previous rail
+     * @param previous The previous rail
+     */
     public void setPrevious(Rail previous) {
 	this.previous = previous;
     }
 
+    /**
+     * Get the next rail
+     * @return The next rail
+     */
     public Rail getNext() {
 	return next;
     }
 
+    /**
+     * Set the next rail
+     * @param next The next rail
+     */
     public void setNext(Rail next) {
 	this.next = next;
     }
