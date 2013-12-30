@@ -34,7 +34,6 @@ public class AlgStoreOrder implements IAlgStore {
 		    Order currentOrder = itOrder.next(); // Commande actuelle
 		    if (currentOrder.wantsProduct(currentProduct.getName())) {
 			// On cherche où on doit mettre le produit
-			System.out.println("Affiche moi ce putain de SOP !");
 			drawer = this.getDrawerFree(currentOrder, map);
 			if (drawer != null) {
 			    drawer.setStatus(Drawer.BOOKED);
@@ -57,7 +56,7 @@ public class AlgStoreOrder implements IAlgStore {
      * @return drawer free / null
      */
     public Drawer getDrawerFree(Order order, Map map) {
-	System.out.println("Enter in getDrawerFree");
+	System.out.println("Enter in getDrawerFree for Order "+order.getIdOrder());
 	Drawer drawer = null;
 	if (order.getDrawers().size() == 0) { // Si aucun drawers réservé on va le faire
 	    if (!this.bookDrawers(order, map)) { // Si on peut réserver des armoires
@@ -69,12 +68,14 @@ public class AlgStoreOrder implements IAlgStore {
 	    System.out.println("Eror Algo Destockage : Order ID " + order.getIdOrder() + " | nb Drawers réservé " + order.getDrawers().size() + " & nb products Name " + order.getProductsName().size() + " ");
 	}
 	// On parcours les drawers de la commande
+	System.out.println("Search in drawers already booked...");
 	for (Drawer drawerTest : order.getDrawers()) {
 	    if (drawerTest.getStatus() == Drawer.BOOKED_FOR_ORDER && drawerTest.getStatus() != Drawer.BOOKED && drawerTest.getProduct()==null) { // Si drawer booked et n'as pas de produit
 		drawer = drawerTest;
 		break;
 	    }
 	}
+	System.out.println("Order id "+order.getIdOrder()+" Drawer booked in column : "+drawer.getColumn());
 	return drawer;
     }
 
