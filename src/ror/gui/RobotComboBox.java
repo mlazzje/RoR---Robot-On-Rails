@@ -7,10 +7,17 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 @SuppressWarnings("rawtypes")
+/**
+ * RobotComboBox class
+ * Represent the Robot ComboBox
+ */
 public class RobotComboBox extends JComboBox implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor of the RobotComboBox
+	 */
 	@SuppressWarnings("unchecked")
 	public RobotComboBox() {
 		super();
@@ -22,6 +29,9 @@ public class RobotComboBox extends JComboBox implements ActionListener {
 		// TODO Faire en reflexif
 	}
 
+	/**
+	 * Function called when item selected
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();

@@ -29,6 +29,10 @@ import ror.core.Rail;
 import ror.core.RoRElement;
 import ror.core.Robot;
 
+/**
+ * RoRElementPanel class
+ * Represent the RoRElement Panel
+ */
 public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 
     private static final long serialVersionUID = 1L;
@@ -78,6 +82,10 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	}
     }
 
+    /**
+     * Constructor of the RoRElementPanel class
+     * @param element RoRElement item
+     */
     public RoRElementPanel(RoRElement element) {
 	super();
 	Dimension dim = new Dimension(RoRElementPanel.size, RoRElementPanel.size);
@@ -94,6 +102,11 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	update(this.rorElement, null);
     }
 
+    /**
+     * Update of the panel
+     * @param rorElement Observable object
+     * @param o
+     */
     public void update(Observable rorElement, Object o) {
 	if (rorElement instanceof Rail) {
 	    Rail rail = (Rail) rorElement;
@@ -189,6 +202,9 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	}
     }
 
+    /**
+	 * Function called when click
+	 */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -356,6 +372,12 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	this.rorElement = rorElement;
     }
 
+    /**
+     * Scale an Image
+     * @param image Image
+     * @param size Size of the image
+     * @return A BufferedImage of the resized image
+     */
     public static BufferedImage scaleImage(BufferedImage image, int size) {
 	BufferedImage bi = new BufferedImage(size, size, BufferedImage.TRANSLUCENT);
 	Graphics2D g2d = (Graphics2D) bi.createGraphics();

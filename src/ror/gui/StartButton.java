@@ -7,10 +7,17 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * StartButton class
+ * Represent the Start Button
+ */
 public class StartButton extends JButton implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * StartButton class
+	 */
 	public StartButton() {
 		super();
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));

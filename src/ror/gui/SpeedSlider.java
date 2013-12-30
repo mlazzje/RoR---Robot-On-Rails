@@ -4,10 +4,17 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * SpeedSlider class
+ * Represent the Speed Slider
+ */
 public class SpeedSlider extends JSlider implements ChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor of the SpeedSlider class
+	 */
 	public SpeedSlider() {
 		super();
 		this.setSnapToTicks(true);
@@ -18,6 +25,9 @@ public class SpeedSlider extends JSlider implements ChangeListener {
 		this.addChangeListener(this);
 	}
 
+	/**
+	 * Function called when state changed
+	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {

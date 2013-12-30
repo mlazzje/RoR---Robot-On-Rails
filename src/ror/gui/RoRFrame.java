@@ -22,6 +22,10 @@ import javax.swing.UIManager;
 
 import ror.core.RoRElement;
 
+/**
+ * RoRFrame class
+ * Represent the RoR Frame
+ */
 public class RoRFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -49,78 +53,156 @@ public class RoRFrame extends JFrame {
     private JPanel mapPanel;
     private Object checkedElement;
 
+    /**
+     * Return the StartButton
+     * @return The StartButton
+     */
     public StartButton getStartButton() {
 	return startButton;
     }
 
+    /**
+     * Return the AcceleratedButton
+     * @return The AcceleratedButton
+     */
     public AcceleratedButton getAcceleratedButton() {
 	return acceleratedButton;
     }
 
+    /**
+     * Return the StopButton
+     * @return The StopButton
+     */
     public StopButton getStopButton() {
 	return stopButton;
     }
 
+    /**
+     * Return the SpeedSlider
+     * @return The SpeedSlider
+     */
     public SpeedSlider getSpeedSlider() {
 	return speedSlider;
     }
 
+    /**
+     * Return the AlgStoreComboBox
+     * @return The AlgStoreComboBox
+     */
     public AlgStoreComboBox getAlgStoreComboBox() {
 	return algStoreComboBox;
     }
 
+    /**
+     * Return the AlgDestockingComboBox
+     * @return The AlgDestockingComboBox
+     */
     public AlgDestockingComboBox getAlgDestockingComboBox() {
 	return algDestockingComboBox;
     }
 
+    /**
+     * Return the AlgMoveComboBox
+     * @return The AlgMoveComboBox
+     */
     public AlgMoveComboBox getAlgMoveComboBox() {
 	return algMoveComboBox;
     }
 
+    /**
+     * Return the RobotComboBox
+     * @return The RobotComboBox
+     */
     public RobotComboBox getRobotComboBox() {
 	return robotComboBox;
     }
 
+    /**
+     * Return the RandomCheckBox
+     * @return The RandomCheckBox
+     */
     public RandomCheckBox getRandomCheckBox() {
 	return randomCheckBox;
     }
 
+    /**
+     * Return the ImportButton
+     * @return The ImportButton
+     */
     public ImportButton getImportButton() {
 	return importButton;
     }
 
+    /**
+     * Return the OrderList
+     * @return The OrderList
+     */
     public OrderList getOrderList() {
 	return orderList;
     }
 
+    /**
+     * Return the LogList
+     * @return The LogList
+     */
     public LogList getLogList() {
 	return logList;
     }
 
+    /**
+     * Return the NbOrderLabel
+     * @return The NbOrderLabel
+     */
     public JLabel getNbOrderLabel() {
 	return nbOrderLabel;
     }
 
+    /**
+     * Return the AvgTimeOrderLabel
+     * @return The AvgTimeOrderLabel
+     */
     public JLabel getAvgTimeOrderLabel() {
 	return avgTimeOrderLabel;
     }
 
+    /**
+     * Return the TotalTimeOrderLabel
+     * @return The TotalTimeOrderLabel
+     */
     public JLabel getTotalTimeOrderLabel() {
 	return totalTimeOrderLabel;
     }
 
+    /**
+     * Return the AvgConsumptionLabel
+     * @return The AvgConsumptionLabel
+     */
     public JLabel getAvgConsumptionLabel() {
 	return avgConsumptionLabel;
     }
 
+    /**
+     * Return the TotalConsumptionLabel
+     * @return The TotalConsumptionLabel
+     */
     public JLabel getTotalConsumptionLabel() {
 	return totalConsumptionLabel;
     }
 
+    /**
+     * Return the InformationsPanel
+     * @return The InformationsPanel
+     */
     public JPanel getInformationsPanel() {
 	return informationsPanel;
     }
 
+    /**
+     * Constructor of the RoRFrame class
+     * @param uiController The UIController
+     * @param title The title of the frame
+     * @throws HeadlessException
+     */
     public RoRFrame(UIController uiController, String title) throws HeadlessException {
 	super(title);
 	this.uiController = uiController;
@@ -247,44 +329,77 @@ public class RoRFrame extends JFrame {
     }
 
     public void reColor() {
-	/*
-	 * for (Component jPanel : mapPanel.getComponents()) { //TODO Implementer Observable/Observer sur les cases pour gagner en perf' RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel; rorElementPanel.reColor(); }
-	 */
     }
 
+    /**
+     * Return the ImportFileChooser
+     * @return The ImportFileChooser
+     */
     public ImportFileChooser getImportFileChooser() {
 	return importFileChooser;
     }
 
+    /**
+     * Return the UIController
+     * @return The UIController
+     */
     public UIController getUiController() {
 	return uiController;
     }
 
+    /**
+     * Return the checkedElement
+     * @return The checkedElement
+     */
     public Object getCheckedElement() {
 	return checkedElement;
     }
 
+    /**
+     * Set the checkedElement
+     * @param checkedElement
+     */
     public void setCheckedElement(Object checkedElement) {
 	this.checkedElement = checkedElement;
     }
 
+    /**
+     * Set the totalConsumptionLabel
+     * @param totalConsumptionLabel
+     */
     public void setTotalConsumptionLabel(JLabel label) {
 	this.totalConsumptionLabel = label;
     }
     
+    /**
+     * Set the avgConsumptionLabel
+     * @param avgConsumptionLabel
+     */
     public void setAverageConsumptionLabel(JLabel label) {
 	this.avgConsumptionLabel = label;
     }
     
+    /**
+     * Set the nbOrderLabel
+     * @param nbOrderLabel
+     */
     public void setNbOrderDoneLabel(JLabel label) {
 	this.nbOrderLabel = label;
     }
     
+    /**
+     * Set the avgTimeOrderLabel
+     * @param avgTimeOrderLabel
+     */
     public void setAvgTimeOrder(JLabel label)
     {
 	this.avgTimeOrderLabel=label;
     }
     
+    /**
+     * Set the totalTimeOrderLabel
+     * @param totalTimeOrderLabel
+     */
     public void setTotalTimeOrderLabel(JLabel label)
     {
 	this.totalTimeOrderLabel=label;
