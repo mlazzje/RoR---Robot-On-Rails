@@ -34,16 +34,31 @@ import ror.core.algo.AlgStoreOrder;
 
 public class UIController implements Observer {
 
+    /**
+     * rorFrame
+     */
     private RoRFrame rorFrame;
+    /**
+     * simulationManager
+     */
     private SimulationManager simulationManager;
+    /**
+     * thread
+     */
     private Thread thread;
 
+    /**
+     * Constructor UIController
+     */
     public UIController() {
 	this.simulationManager = new SimulationManager();
 	this.rorFrame = new RoRFrame(this, "Robot On Rails - Simulateur automatisé des stocks");
 	this.simulationManager.addObserver(this);
     }
 
+    /* (non-Javadoc)
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void update(Observable o, Object arg) {
@@ -263,6 +278,11 @@ public class UIController implements Observer {
 	this.rorFrame.reColor();
     }
 
+    /**
+     * Set AlgoMove with AlgoId passed in parameter
+     * 
+     * @param algId
+     */
     public void setAlgMove(Integer algId) {
 	switch (algId) {
 	case 0:
@@ -280,6 +300,11 @@ public class UIController implements Observer {
 	}
     }
 
+    /**
+     * Set AlgoStore with AlgoId passed in parameter
+     * 
+     * @param algId
+     */
     public void setAlgStore(Integer algId) {
 	switch (algId) {
 	case 0:
@@ -293,6 +318,11 @@ public class UIController implements Observer {
 	}
     }
 
+    /**
+     * Set AlgoDestocking with AlgoId passed in parameter
+     * 
+     * @param algId
+     */
     public void setAlgDestocking(Integer algId) {
 	switch (algId) {
 	case 0:
@@ -306,22 +336,41 @@ public class UIController implements Observer {
 	}
     }
 
+    /**
+     * End simulation
+     */
     public void setEndSimulation() {
 	simulationManager.setEndSimulation();
     }
 
+    /**
+     * Set nb Robot with nbRobot passed in parameter
+     * 
+     * @param nbRobot
+     */
     public void setNbRobot(Integer nbRobot) {
 	simulationManager.setNbRobot(nbRobot);
     }
 
+    /**
+     *  //TODO What file ?
+     * 
+     * @param file
+     */
     public void setFile(File file) {
 	simulationManager.setFile(file);
     }
 
+    /**
+     * Set random mode
+     */
     public void setRandomMode() {
 	simulationManager.setRandomMode();
     }
 
+    /**
+     * Stop simulation in progress
+     */
     public void stopSimulation() {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
@@ -329,12 +378,18 @@ public class UIController implements Observer {
 	this.thread = null;
     }
 
+    /**
+     * Pause simulation
+     */
     public void pauseSimulation() {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	simulationManager.setPause();
     }
 
+    /**
+     * Start simulation
+     */
     public void startSimulation() {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
@@ -346,10 +401,18 @@ public class UIController implements Observer {
 
     }
 
+    /**
+     * Set speed
+     * 
+     * @param speed
+     */
     public void setSpeed(Float speed) {
 	simulationManager.setSpeed(speed);
     }
 
+    /**
+     * @return simulationManager
+     */
     public SimulationManager getSimulationManager() {
 	return this.simulationManager;
     }
