@@ -62,7 +62,7 @@ public class AlgStoreOrder implements IAlgStore {
 	System.out.println("Enter in getDrawerFree Order "+order.getIdOrder()+" with "+order.getDrawers().size()+" drawers booked !");
 	Drawer drawer = null;
 	if (order.getDrawers().size() == 0) { // Si aucun drawers réservé on va le faire
-	    System.out.println("-> Book Drawers");
+	    //System.out.println("-> Book Drawers");
 	    if (!this.bookDrawers(order, map)) { // Si on peut réserver des armoires
 		System.out.println("Plus de drawers dispos");
 		return null;
