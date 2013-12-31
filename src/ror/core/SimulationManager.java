@@ -229,7 +229,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		}
 
 		// TODO Implémenter méthodes algo pour pouvoir tester
-		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, newOrders, SimulationManager.this.map);
+		// System.out.println("orders for algo "+newOrders); // I need all orders for algo ! //TODO passer en paramètre que les Orders en cours, non celles terminées
+		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, SimulationManager.this.getOrders(), SimulationManager.this.map);
 
 		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
 		synchronized (map) {

@@ -19,7 +19,7 @@ public class AlgStoreOrder implements IAlgStore {
      */
     public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
 
-	System.out.println("orders passed in parameter "+ orders);
+	//System.out.println("orders passed in parameter "+ orders);
 	
 	if(inputProducts==null)
 	    return null;
@@ -69,11 +69,12 @@ public class AlgStoreOrder implements IAlgStore {
 	    }
 	}
 	if (order.getDrawers().size() != order.getProductsName().size()) {
-	    System.out.println("Eror Algo Destockage : Order ID " + order.getIdOrder() + " | nb Drawers réservé " + order.getDrawers().size() + " & nb products Name " + order.getProductsName().size() + " ");
+	    System.out.println("Error Algo Store Order : Order ID " + order.getIdOrder() + " | nb Drawers réservé " + order.getDrawers().size() + " & nb products Name " + order.getProductsName().size() + " ");
 	}
 	// On parcours les drawers de la commande
-	System.out.println("Search in drawers already booked...");
+	System.out.println("Search in drawers already booked... of Order "+order.getIdOrder());
 	for (Drawer drawerTest : order.getDrawers()) {
+	    System.out.println("Drawer = "+drawerTest+" | status : "+drawerTest.getStatus()+ " product : "+drawerTest.getProduct());
 	    if (drawerTest.getStatus() == Drawer.BOOKED_FOR_ORDER && drawerTest.getStatus() != Drawer.BOOKED && drawerTest.getProduct()==null) { // Si drawer booked et n'as pas de produit
 		drawer = drawerTest;
 		break;
