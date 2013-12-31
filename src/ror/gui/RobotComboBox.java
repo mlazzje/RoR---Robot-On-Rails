@@ -6,17 +6,20 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-@SuppressWarnings("rawtypes")
 /**
- * RobotComboBox class
- * Represent the Robot ComboBox
+ * @author RoR
+ *
  */
+@SuppressWarnings("rawtypes")
 public class RobotComboBox extends JComboBox implements ActionListener {
 
+	/**
+	 * serialVersionUID
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor of the RobotComboBox
+	 * Constructor RobotComboBox
 	 */
 	@SuppressWarnings("unchecked")
 	public RobotComboBox() {
@@ -29,8 +32,8 @@ public class RobotComboBox extends JComboBox implements ActionListener {
 		// TODO Faire en reflexif
 	}
 
-	/**
-	 * Function called when item selected
+	/* (non-Javadoc)
+	 * @see javax.swing.JComboBox#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {

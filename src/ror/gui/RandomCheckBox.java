@@ -6,23 +6,26 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 
 /**
- * RandomCheckBox class
- * Represent the Random CheckBox
+ * @author RoR
+ *
  */
 public class RandomCheckBox extends JCheckBox implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
-	
 	/**
-	 * Constructor of the RandomCheckBox class
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Constructor RandomCheckBox
 	 */
 	public RandomCheckBox() {
 		super();
 		this.setText("Mode aléatoire");
 	}
-	
-	/**
-	 * Function called when item checked/unchecked
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {

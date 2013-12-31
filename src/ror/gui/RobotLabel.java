@@ -6,15 +6,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * RobotLabel class
- * Represent the Robot Label
+ * @author RoR
+ *
  */
 public class RobotLabel extends JLabel {
 
+	/**
+	 * serialVersionUID
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor of the RobotLabel
+	 * Constructor RobotLabel
 	 */
 	public RobotLabel() {
 		super();

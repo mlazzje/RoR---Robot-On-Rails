@@ -30,31 +30,94 @@ import ror.core.RoRElement;
 import ror.core.Robot;
 
 /**
- * RoRElementPanel class
- * Represent the RoRElement Panel
+ * @author RoR
+ *
  */
 public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 
+    /**
+     * serialVersionUID
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * size
+     */
     private static int size = 32;
+    /**
+     * RoRElement
+     */
     private RoRElement rorElement;
+    /**
+     * railEmpty
+     */
     private static ImageIcon railEmpty;
+    /**
+     * railDB
+     */
     private static ImageIcon railDB;
+    /**
+     * railGB
+     */
     private static ImageIcon railGB;
+    /**
+     * railDH
+     */
     private static ImageIcon railDH;
+    /**
+     * railGH
+     */
     private static ImageIcon railGH;
+    /**
+     * railDGB
+     */
     private static ImageIcon railDGB;
+    /**
+     * railDGH
+     */
     private static ImageIcon railDGH;
+    /**
+     * railDHB
+     */
     private static ImageIcon railDHB;
+    /**
+     * railGHB
+     */
     private static ImageIcon railGHB;
+    /**
+     * railH
+     */
     private static ImageIcon railH;
+    /**
+     * railV
+     */
     private static ImageIcon railV;
+    /**
+     * column
+     */
     private static ImageIcon[] column;
+    /**
+     * output spot
+     */
     private static ImageIcon output;
+    /**
+     * input spot
+     */
     private static ImageIcon input;
+    /**
+     * outputFill
+     */
     private static ImageIcon outputFill;
+    /**
+     * inputFill
+     */
     private static ImageIcon inputFill;
+    /**
+     * robot
+     */
     private static ImageIcon robot;
+    /**
+     * roboti
+     */
     private static ImageIcon roboti;
 
     static {
@@ -83,8 +146,9 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
     }
 
     /**
-     * Constructor of the RoRElementPanel class
-     * @param element RoRElement item
+     * Contructor RoRElementPanel
+     * 
+     * @param element
      */
     public RoRElementPanel(RoRElement element) {
 	super();
@@ -102,10 +166,8 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	update(this.rorElement, null);
     }
 
-    /**
-     * Update of the panel
-     * @param rorElement Observable object
-     * @param o
+    /* (non-Javadoc)
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
      */
     public void update(Observable rorElement, Object o) {
 	if (rorElement instanceof Rail) {
@@ -202,9 +264,9 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	}
     }
 
-    /**
-	 * Function called when click
-	 */
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -348,35 +410,52 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	}
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     @Override
     public void mousePressed(MouseEvent e) {
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseExited(MouseEvent e) {
     }
 
+    /**
+     * @return rorElement
+     */
     public RoRElement getRorElement() {
 	return rorElement;
     }
 
+    /**
+     * @param rorElement
+     */
     public void setRorElement(RoRElement rorElement) {
 	this.rorElement = rorElement;
     }
 
     /**
-     * Scale an Image
-     * @param image Image
-     * @param size Size of the image
-     * @return A BufferedImage of the resized image
+     * @param image
+     * @param size
+     * @return BufferedImage
      */
     public static BufferedImage scaleImage(BufferedImage image, int size) {
 	BufferedImage bi = new BufferedImage(size, size, BufferedImage.TRANSLUCENT);
