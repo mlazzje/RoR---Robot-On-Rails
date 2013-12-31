@@ -32,8 +32,6 @@ public class ExcelExportTest {
 
     @Test
     public void testExcelExport() {
-	excelExport=new ExcelExport(new SimulationManager());
-	//fail("Not yet implemented");
     }
 
 }
