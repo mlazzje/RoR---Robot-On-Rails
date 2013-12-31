@@ -10,18 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 /**
- * @author RoR
- *
+ * ImportButton class
+ * Represent the import Button
  */
 public class ImportButton extends JButton implements MouseListener {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor ImportButton
+	 * Constructor of the ImportButton class
 	 */
 	public ImportButton() {
 		super();
@@ -30,8 +27,8 @@ public class ImportButton extends JButton implements MouseListener {
 		this.addMouseListener(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	/**
+	 * Function called when click
 	 */
 	public void mouseClicked(MouseEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
@@ -48,30 +45,18 @@ public class ImportButton extends JButton implements MouseListener {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}

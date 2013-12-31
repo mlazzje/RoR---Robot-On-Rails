@@ -3,20 +3,16 @@ package ror.gui;
 import javax.swing.JTable;
 
 /**
- * @author RoR
- *
+ * OrderList class
+ * Represent the Order List
  */
 public class OrderList extends JTable {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor OrderList
-	 * 
-	 * @param frame
+	 * Constructor of the OrderList class
+	 * @param frame The RoRFrame
 	 */
 	public OrderList(RoRFrame frame) {
 		super();

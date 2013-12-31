@@ -32,6 +32,10 @@ import ror.core.algo.AlgMoveFast;
 import ror.core.algo.AlgStoreFifo;
 import ror.core.algo.AlgStoreOrder;
 
+/**
+ * UIController class
+ * Represent the UIController
+ */
 public class UIController implements Observer {
 
     /**

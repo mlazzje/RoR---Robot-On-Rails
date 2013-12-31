@@ -1,16 +1,23 @@
 package ror.gui;
 
 import java.awt.Image;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
+/**
+ * StopButton class
+ * Represent the Stop Button
+ */
 public class StopButton extends JButton implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor of the StopButton class
+	 */
 	public StopButton() {
 		super();
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/stop.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));

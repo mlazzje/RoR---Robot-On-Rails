@@ -7,15 +7,16 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * AcceleratedButton class
+ * Represent the Accelerated Button
+ */
 public class AcceleratedButton extends JButton implements MouseListener {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor AcceleratedButton
+	 * Constructor of the AcceleratedButton class
 	 */
 	public AcceleratedButton() {
 		super();
@@ -23,8 +24,8 @@ public class AcceleratedButton extends JButton implements MouseListener {
 		this.setIcon(icon);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	/**
+	 * Function called when click
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -36,30 +37,18 @@ public class AcceleratedButton extends JButton implements MouseListener {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}

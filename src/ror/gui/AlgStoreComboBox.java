@@ -6,22 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-/**
- * @author RoR
- * 
- * Class AlgStoreComboBox
- *
- */
 @SuppressWarnings("rawtypes")
+/**
+ * AlgStoreComboBox class
+ * Represent the AlgStore ComboBox
+ */
 public class AlgStoreComboBox extends JComboBox implements ActionListener {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor AlgStoreComboBox
+	 * Constructor of the AlgStoreComboBox class
 	 */
 	@SuppressWarnings("unchecked")
 	public AlgStoreComboBox() {
@@ -34,8 +29,8 @@ public class AlgStoreComboBox extends JComboBox implements ActionListener {
 		// TODO Faire en reflexif
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.JComboBox#actionPerformed(java.awt.event.ActionEvent)
+	/**
+	 * Function called when item selected
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {

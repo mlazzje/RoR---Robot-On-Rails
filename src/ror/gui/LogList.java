@@ -2,20 +2,17 @@ package ror.gui;
 
 import javax.swing.JList;
 
-/**
- * @author RoR
- *
- */
 @SuppressWarnings("rawtypes")
+/**
+ * LogList class
+ * Represent the LogList
+ */
 public class LogList extends JList {
 
-	/**
-	 * serialVersionUID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor LogList
+	 * Constructor of the LogList class
 	 */
 	@SuppressWarnings("unchecked")
 	public LogList() {
