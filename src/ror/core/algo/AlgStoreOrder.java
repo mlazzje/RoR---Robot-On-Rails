@@ -56,7 +56,8 @@ public class AlgStoreOrder implements IAlgStore {
      * @return drawer free / null
      */
     public Drawer getDrawerFree(Order order, Map map) {
-	System.out.println("Enter in getDrawerFree for Order "+order.getIdOrder()+" with "+order.getDrawers().size()+" drawers booked !");
+	System.out.println("Enter in getDrawerFree Order "+order.getIdOrder()+" with "+order.getDrawers().size()+" drawers booked !");
+	System.out.println(" with "+order.getDrawers().size()+" drawers booked !");
 	Drawer drawer = null;
 	if (order.getDrawers().size() == 0) { // Si aucun drawers réservé on va le faire
 	    System.out.println("-> Book Drawers");
