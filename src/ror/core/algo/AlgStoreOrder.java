@@ -56,9 +56,11 @@ public class AlgStoreOrder implements IAlgStore {
      * @return drawer free / null
      */
     public Drawer getDrawerFree(Order order, Map map) {
-	System.out.println("Enter in getDrawerFree for Order "+order.getIdOrder());
+	System.out.println("Enter in getDrawerFree Order "+order.getIdOrder()+" with "+order.getDrawers().size()+" drawers booked !");
+	System.out.println(" with "+order.getDrawers().size()+" drawers booked !");
 	Drawer drawer = null;
 	if (order.getDrawers().size() == 0) { // Si aucun drawers réservé on va le faire
+	    System.out.println("-> Book Drawers");
 	    if (!this.bookDrawers(order, map)) { // Si on peut réserver des armoires
 		System.out.println("Plus de drawers dispos");
 		return null;
@@ -75,7 +77,7 @@ public class AlgStoreOrder implements IAlgStore {
 		break;
 	    }
 	}
-	System.out.println("Order id "+order.getIdOrder()+" Drawer booked in column : "+drawer.getColumn());
+	System.out.println("Order id "+order.getIdOrder()+"| Drawer booked in column : "+drawer.getColumn());
 	return drawer;
     }
 
@@ -123,10 +125,13 @@ public class AlgStoreOrder implements IAlgStore {
 			// Book drawers
 			if (column.getNbAvailableDrawers() == 10) { // Si colonne peut se remplir entièrement
 			    if (firstColumn == null) {
+				System.out.println("First column = column");
 				firstColumn = column;
 			    } else if (secondColumn == null) {
+				System.out.println("Second column = column");
 				secondColumn = column;
 			    } else if (thirdColumn == null) {
+				System.out.println("Third column = column");
 				thirdColumn = column;
 			    }
 			    // Maj nbDrawersBooked
@@ -148,6 +153,7 @@ public class AlgStoreOrder implements IAlgStore {
 			}
 		    }
 		} else if (nbDrawersBooked == 0) { // Réservation première colonne
+		    System.out.println("Book 1st column");
 		    if (column.getNbAvailableDrawers() > nbDrawersToBook) {
 			nbDrawersBooked = nbDrawersToBook;
 		    } else {
