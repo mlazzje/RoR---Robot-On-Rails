@@ -25,8 +25,6 @@ public class AlgDestockingFifo implements IAlgDestocking {
 	// On liste les produits stockés, et non réservés pour une commande
 	for (Product product : stockProducts) {
 	    if (product.getStatus() == Product.STORED || (product.getStatus() == Product.BOOKED && product.getDrawer()!=null)) {
-		    System.out.println("AHHHHHHHHHHH PRODUCT STORED");
-
 		stockProductsName.add(product.getName());
 		storedProducts.add(product);
 	    }

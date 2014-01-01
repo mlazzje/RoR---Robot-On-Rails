@@ -56,7 +56,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     /**
      * Speed 
      */
-    private Float speed = (float) 1;
+    private Float speed = (float) 0.5;
     /**
      * Number of robots
      */
@@ -245,9 +245,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    Thread.sleep((long) (3500 - (SimulationManager.this.coeff * SimulationManager.this.speed)));
-
-		    uptime += (System.currentTimeMillis() - startTime);
+		    long pause = (long)(500);
+		    Thread.sleep(pause);
+		    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		    long duree = (long)((System.currentTimeMillis() - startTime)/(SimulationManager.this.speed+(long)0.5))-pause	;
+		    //System.out.println("Vitesse : "+SimulationManager.this.speed);
+		    //System.out.println("Coeff : "+SimulationManager.this.coeff);
+		    //System.out.println("Pause : "+pause);
+		    //System.out.println("Duree ajoutée :"+duree);
+		    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		    uptime += duree;
 
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
