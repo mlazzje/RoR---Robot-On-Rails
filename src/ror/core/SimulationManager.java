@@ -220,6 +220,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    SimulationManager.this.orders.addAll(newOrders);
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
+		    /*
 		    if(newOrders.isEmpty()) {
 		    	boolean allDone = true;
 		    	for(Order order : SimulationManager.this.orders) {
@@ -232,6 +233,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    		this.setStop();
 		    	}
 		    }
+		    */
 		}
 		if (newProducts != null) {
 		    for (Product product : newProducts) {

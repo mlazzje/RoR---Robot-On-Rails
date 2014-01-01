@@ -328,12 +328,14 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 		    frame.getInformationsPanel().add(label);
 		} else {
 		    Iterator<Product> it = ((Input) this.rorElement).getProductList().iterator();
-		    while (it.hasNext()) {
+		    int cpt = 0;
+		    while (it.hasNext() && cpt < 12) {
 			Product next = it.next();
 			JLabel label = new JLabel(next.getName());
 			label.setVerticalAlignment(JLabel.CENTER);
 			label.setHorizontalAlignment(JLabel.CENTER);
 			frame.getInformationsPanel().add(label);
+			cpt++;
 		    }
 		}
 		frame.setCheckedElement(this.rorElement);

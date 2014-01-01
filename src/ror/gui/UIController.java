@@ -98,12 +98,14 @@ public class UIController implements Observer {
 				} else {
 					synchronized (input.getProductList()) {
 						Iterator<Product> it = input.getProductList().iterator();
-						while (it.hasNext()) {
+					    int cpt = 0;
+						while (it.hasNext() && cpt < 12) {
 							Product next = it.next();
 							JLabel label = new JLabel(next.getName());
 							label.setVerticalAlignment(JLabel.CENTER);
 							label.setHorizontalAlignment(JLabel.CENTER);
 							this.rorFrame.getInformationsPanel().add(label);
+							cpt++;
 						}
 					}
 				}
@@ -137,12 +139,14 @@ public class UIController implements Observer {
 					this.rorFrame.getInformationsPanel().add(label);
 				} else {
 					Iterator<Product> it = output.getProductList().iterator();
-					while (it.hasNext()) {
+				    int cpt = 0;
+					while (it.hasNext() && cpt < 12) {
 						Product next = it.next();
 						JLabel label = new JLabel(next.getName());
 						label.setVerticalAlignment(JLabel.CENTER);
 						label.setHorizontalAlignment(JLabel.CENTER);
 						this.rorFrame.getInformationsPanel().add(label);
+						cpt++;
 					}
 				}
 				this.rorFrame.pack();
