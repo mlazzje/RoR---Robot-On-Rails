@@ -322,6 +322,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      */
     public void setStop() {
 	status = 0;
+	this.setChanged();
+	this.notifyObservers();
 	this.map.getInput().clearProducts();
 	this.map.getOutput().clearProducts();
 	this.setNewLogs(new ArrayList<String>());
@@ -335,7 +337,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set pause
      */
     public void setPause() {
-	status = 2;
+    	status = 2;
     }
 
     /**
