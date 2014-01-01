@@ -284,6 +284,10 @@ public class Robot extends Observable {
 				}
 			    }
 			    if (orderDone) {
+				synchronized (outputAction.getOutput().getProductList()) {
+				    outputAction.getOutput().getProductList().removeAll(o.getProducts());
+				}
+				
 				o.setStatus(Order.DONE);
 				o.setProcessingTime(simulationManager.getUptime()-o.getProcessingTime());
 			    }
