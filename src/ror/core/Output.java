@@ -38,7 +38,8 @@ public class Output extends RoRElement {
     /**
      * @param int x
      * @param int y
-     * @param access rail
+     * @param access
+     *            rail
      */
     public Output(Integer x, Integer y, Rail access) {
 	super(RoRElementTypes.Output, x, y);
@@ -57,12 +58,6 @@ public class Output extends RoRElement {
 	synchronized (this.productList) {
 	    boolean returned = this.productList.add(p);
 	    p.setStatus(Product.DONE);
-	    new Timer().schedule(new TimerTask() {          
-	        @Override
-	        public void run() {
-	            Output.this.removeProduct(p);    
-	        }
-	    }, 5000);
 	    this.setChanged();
 	    this.notifyObservers();
 	    return returned;
