@@ -166,7 +166,6 @@ public class OrderSource {
 	for (Integer key : keyToRemove) {
 	    this.products.remove(key);
 	}
-
 	return returnedProducts;
     }
 
@@ -250,9 +249,9 @@ public class OrderSource {
 		// Création du produit
 		Element currentProduct = j.next();
 		Product newProduct = new Product(currentProduct.getValue());
-		newProduct.setOrder(newOrder);
+		//newProduct.setOrder(newOrder);
 		// Date de production
-		int productionDate = Integer.parseInt(currentProduct.getAttributeValue("productionDate")) * 1000;
+		int productionDate = orderDate + Integer.parseInt(currentProduct.getAttributeValue("productionDate")) * 1000;
 		if (this.products.get(productionDate) == null)
 		    this.products.put(productionDate, new ArrayList<Product>());
 		this.products.get(productionDate).add(newProduct);
