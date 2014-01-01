@@ -99,13 +99,19 @@ public class UIController implements Observer {
 					synchronized (input.getProductList()) {
 						Iterator<Product> it = input.getProductList().iterator();
 					    int cpt = 0;
-						while (it.hasNext() && cpt < 12) {
+						while (it.hasNext() && cpt < 11) {
 							Product next = it.next();
 							JLabel label = new JLabel(next.getName());
 							label.setVerticalAlignment(JLabel.CENTER);
 							label.setHorizontalAlignment(JLabel.CENTER);
 							this.rorFrame.getInformationsPanel().add(label);
 							cpt++;
+						}
+						if(cpt >= 11) {
+							JLabel label = new JLabel("+ "+(input.getProductList().size()));
+							label.setVerticalAlignment(JLabel.CENTER);
+							label.setHorizontalAlignment(JLabel.CENTER);
+							this.rorFrame.getInformationsPanel().add(label);
 						}
 					}
 				}
@@ -140,13 +146,19 @@ public class UIController implements Observer {
 				} else {
 					Iterator<Product> it = output.getProductList().iterator();
 				    int cpt = 0;
-					while (it.hasNext() && cpt < 12) {
+					while (it.hasNext() && cpt < 11) {
 						Product next = it.next();
 						JLabel label = new JLabel(next.getName());
 						label.setVerticalAlignment(JLabel.CENTER);
 						label.setHorizontalAlignment(JLabel.CENTER);
 						this.rorFrame.getInformationsPanel().add(label);
 						cpt++;
+					}
+					if(cpt >= 11) {
+						JLabel label = new JLabel("+ "+(output.getProductList().size()));
+						label.setVerticalAlignment(JLabel.CENTER);
+						label.setHorizontalAlignment(JLabel.CENTER);
+						this.rorFrame.getInformationsPanel().add(label);
 					}
 				}
 				this.rorFrame.pack();
