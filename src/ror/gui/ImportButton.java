@@ -38,7 +38,7 @@ public class ImportButton extends JButton implements MouseListener {
 			if (ret == JFileChooser.APPROVE_OPTION) {
 				File file = frame.getImportFileChooser().getSelectedFile();
 				frame.getUiController().setFile(file);
-				System.out.println(file);
+				frame.getRandomCheckBox().setSelected(false);
 			}
 		} else {
 			System.err.println("Can't get parent RoRFrame");
