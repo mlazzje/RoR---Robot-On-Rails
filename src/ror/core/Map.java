@@ -59,7 +59,9 @@ public class Map {
      * @return the path from a Rail to another rail
      */
     public ArrayList<Rail> getPath(Rail start, Rail end) {
-	return (ArrayList<Rail>) djikstra.getPath(start, end);
+	synchronized (this.djikstra) {
+		return (ArrayList<Rail>) djikstra.getPath(start, end);
+	}
     }/*
       * public ArrayList<Rail> getPath(Rail start, Rail end) { ArrayList<Rail> path = (ArrayList<Rail>) djikstra.getPath(start, end); if (path.size() > 0 && path.get(0) == start) path.remove(0); return path; }
       */
