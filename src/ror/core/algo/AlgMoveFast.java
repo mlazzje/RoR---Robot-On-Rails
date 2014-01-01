@@ -16,91 +16,94 @@ public class AlgMoveFast implements IAlgMove {
 
     public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
 	// si des actions input ou store sont disponibles
-	while (newDestockActions.size() > 0) {
-	    Robot robot;
+	if (newDestockActions != null) {
+	    while (newDestockActions.size() > 0) {
+		Robot robot;
 
-	    robot = getBestRobot(robots);
-	    robot.setSpeed(Robot.SPEED_3);
+		robot = getBestRobot(robots);
+		robot.setSpeed(Robot.SPEED_3);
 
-	    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
-	    int freeSpace = robot.getLastActionSpaceAvailability();
+		ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
+		int freeSpace = robot.getLastActionSpaceAvailability();
 
-	    while (freeSpace > 0 && newDestockActions.size() > 0) {
-		destockingActionToAffect.add(newDestockActions.get(0));
-		newDestockActions.remove(newDestockActions.get(0));
-		freeSpace--;
+		while (freeSpace > 0 && newDestockActions.size() > 0) {
+		    destockingActionToAffect.add(newDestockActions.get(0));
+		    newDestockActions.remove(newDestockActions.get(0));
+		    freeSpace--;
+		}
+		// ajout des actions de mouvements et de destockage au robot
+		ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
+		for (Action action : actionMoveAndDestock) {
+		    robot.addAction(action);
+		}
+
+		Rail start = robot.getLastActionRail();
+		Rail end = map.getOutput().getAccess();
+
+		// ajout des actions des mouvements jusqu'a l'output au robot
+		ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
+		for (MoveAction move : movesToOutput) {
+		    robot.addAction(move);
+		}
+
+		// ajout des actions d'output
+		for (Action action : destockingActionToAffect) {
+		    DestockingAction destockingAction = (DestockingAction) action;
+		    OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
+		    outputAction.setProduct(destockingAction.getProduct());
+		    robot.addAction(outputAction);
+		}
+
 	    }
-	    // ajout des actions de mouvements et de destockage au robot
-	    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
-	    for (Action action : actionMoveAndDestock) {
-		robot.addAction(action);
-	    }
-
-	    Rail start = robot.getLastActionRail();
-	    Rail end = map.getOutput().getAccess();
-
-	    // ajout des actions des mouvements jusqu'a l'output au robot
-	    ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
-	    for (MoveAction move : movesToOutput) {
-		robot.addAction(move);
-	    }
-
-	    // ajout des actions d'output
-	    for (Action action : destockingActionToAffect) {
-		DestockingAction destockingAction = (DestockingAction) action;
-		OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
-		outputAction.setProduct(destockingAction.getProduct());
-		robot.addAction(outputAction);
-	    }
-
 	}
-
 	// si des actions input ou store sont disponibles
-	while (newStoreActions.size() > 0) {
+	if (newStoreActions != null) {
+	    while (newStoreActions.size() > 0) {
 
-	    Robot robot = getBestRobot(robots);
-	    robot.setSpeed(Robot.SPEED_3);
+		Robot robot = getBestRobot(robots);
+		robot.setSpeed(Robot.SPEED_3);
 
-	    ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
-	    for (StoreAction storeAction : newStoreActions) {
-		InputAction inputaction = new InputAction(1000, null, map.getInput());
-		inputaction.setProduct(storeAction.getProduct());
-		inputActions.add(inputaction);
-	    }
-
-	    Rail start = robot.getLastActionRail();
-	    Rail end = map.getInput().getAccess();
-
-	    ArrayList<MoveAction> movesToInput = railsToMoveActions(map.getPath(start, end));
-	    for (MoveAction move : movesToInput) {
-		robot.addAction(move);
-	    }
-
-	    ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
-
-	    // ajout des inputs actions au robot
-	    while (robot.getLastActionSpaceAvailability() > 0 && inputActions.size() > 0) {
-		affectedInputAction.add(inputActions.get(0));
-		robot.addAction(inputActions.get(0));
-		inputActions.remove(inputActions.get(0));
-	    }
-
-	    ArrayList<Action> storeActionsToAffect = new ArrayList<Action>();
-
-	    // on parcours les actions affectees pour recuperer les storeactions associées
-	    for (InputAction inputAction : affectedInputAction) {
+		ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 		for (StoreAction storeAction : newStoreActions) {
-		    if (inputAction.getProduct() == storeAction.getProduct()) {
-			storeActionsToAffect.add(storeAction);
+		    InputAction inputaction = new InputAction(1000, null, map.getInput());
+		    inputaction.setProduct(storeAction.getProduct());
+		    inputActions.add(inputaction);
+		}
+
+		Rail start = robot.getLastActionRail();
+		Rail end = map.getInput().getAccess();
+
+		ArrayList<MoveAction> movesToInput = railsToMoveActions(map.getPath(start, end));
+		for (MoveAction move : movesToInput) {
+		    robot.addAction(move);
+		}
+
+		ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
+
+		// ajout des inputs actions au robot
+		while (robot.getLastActionSpaceAvailability() > 0 && inputActions.size() > 0) {
+		    affectedInputAction.add(inputActions.get(0));
+		    robot.addAction(inputActions.get(0));
+		    inputActions.remove(inputActions.get(0));
+		}
+
+		ArrayList<Action> storeActionsToAffect = new ArrayList<Action>();
+
+		// on parcours les actions affectees pour recuperer les storeactions associées
+		for (InputAction inputAction : affectedInputAction) {
+		    for (StoreAction storeAction : newStoreActions) {
+			if (inputAction.getProduct() == storeAction.getProduct()) {
+			    storeActionsToAffect.add(storeAction);
+			}
 		    }
 		}
-	    }
-	    newStoreActions.removeAll(storeActionsToAffect);
+		newStoreActions.removeAll(storeActionsToAffect);
 
-	    // ajout des actions de mouvements et de stockage au robot
-	    ArrayList<Action> actionMoveAndStore = sortActionsAndMoves(storeActionsToAffect, map, map.getInput().getAccess());
-	    for (Action action : actionMoveAndStore) {
-		robot.addAction(action);
+		// ajout des actions de mouvements et de stockage au robot
+		ArrayList<Action> actionMoveAndStore = sortActionsAndMoves(storeActionsToAffect, map, map.getInput().getAccess());
+		for (Action action : actionMoveAndStore) {
+		    robot.addAction(action);
+		}
 	    }
 	}
 
