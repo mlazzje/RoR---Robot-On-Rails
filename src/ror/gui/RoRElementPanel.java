@@ -264,6 +264,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 		} else {
 			this.setIcon(RoRElementPanel.railEmpty);
 		}
+		this.repaint();
 	}
 
 	/*

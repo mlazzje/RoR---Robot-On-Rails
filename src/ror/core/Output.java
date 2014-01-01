@@ -2,6 +2,9 @@ package ror.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
 
 public class Output extends RoRElement {
     // Properties
@@ -50,10 +53,16 @@ public class Output extends RoRElement {
      * @param p
      * @return true if everything if ok, else false
      */
-    public boolean addProduct(Product p) {
+    public boolean addProduct(final Product p) {
 	synchronized (this.productList) {
 	    boolean returned = this.productList.add(p);
 	    p.setStatus(Product.DONE);
+	    new Timer().schedule(new TimerTask() {          
+	        @Override
+	        public void run() {
+	            Output.this.removeProduct(p);    
+	        }
+	    }, 5000);
 	    this.setChanged();
 	    this.notifyObservers();
 	    return returned;
