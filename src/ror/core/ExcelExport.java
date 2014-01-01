@@ -33,11 +33,11 @@ public class ExcelExport {
 		data.put("5", new Object[] { "Nombre de robots", simulationManager.getNbRobot() });
 		data.put("5", new Object[] { "", "" });
 		data.put("6", new Object[] { "Nombre de commande traitée", simulationManager.getOrdersDoneCount() });
-		data.put("7", new Object[] { "Temps de traitement moyen par commande", simulationManager.getAverageOrderProcessingTime() });
-		data.put("8", new Object[] { "Durée de la simulation", simulationManager.getUptime() });
+		data.put("7", new Object[] { "Temps de traitement moyen par commande", (simulationManager.getAverageOrderProcessingTime()/1000)/60+"min "+(simulationManager.getAverageOrderProcessingTime()/1000)%60+"s" });
+		data.put("8", new Object[] { "Durée de la simulation", (simulationManager.getUptime()/1000)/60+"min "+(simulationManager.getUptime()/1000)%60+"s"  });
 		data.put("9", new Object[] { "Consommation moyenne par commande", simulationManager.getAverageConsumption() });
 		data.put("10", new Object[] { "Consommation totale ", simulationManager.getTotalConsumption() });
-		System.out.println(data);
+
 		// Iterate over data and write to sheet
 		Set<String> keyset = data.keySet();
 		int rownum = 0;
@@ -57,12 +57,11 @@ public class ExcelExport {
 			// Write the workbook in file system
 			if(!file.getAbsolutePath().toLowerCase().endsWith(".xlsx"))
 			{
-			    file = new File(file.getAbsolutePath()+ "..xlsx");
+			    file = new File(file.getAbsolutePath()+ ".xlsx");
 			}
 			FileOutputStream out = new FileOutputStream(file);
 			workbook.write(out);
 			out.close();
-			System.out.println("howtodoinjava_demo.xlsx written successfully on disk.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
