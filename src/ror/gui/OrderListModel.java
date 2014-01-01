@@ -1,5 +1,7 @@
 package ror.gui;
 
+import java.util.Collections;
+
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -48,6 +50,7 @@ public class OrderListModel extends DefaultTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
+		Collections.sort(this.frame.getUiController().getSimulationManager().getOrders());		
 		return this.frame.getUiController().getSimulationManager().getOrders().get(row).toWeirdString()[col];
 	}
 
