@@ -57,12 +57,13 @@ public class Output extends RoRElement {
 	synchronized (this.productList) {
 	    boolean returned = this.productList.add(p);
 	    p.setStatus(Product.DONE);
-	    new Timer().schedule(new TimerTask() {          
-	        @Override
-	        public void run() {
-	            Output.this.removeProduct(p);    
-	        }
-	    }, 5000);
+	    if(p.getOrder().getStatus() == Order.DONE)
+		    new Timer().schedule(new TimerTask() {          
+		        @Override
+		        public void run() {
+		            Output.this.removeProduct(p);    
+		        }
+		    }, 5000);
 	    this.setChanged();
 	    this.notifyObservers();
 	    return returned;
