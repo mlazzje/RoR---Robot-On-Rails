@@ -54,7 +54,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     // own attributes
     /**
-     * Speed 
+     * Speed
      */
     private Float speed = (float) 0.5;
     /**
@@ -162,7 +162,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.uptime;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Runnable#run()
      */
     @Override
@@ -221,19 +223,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		    /*
-		    if(newOrders.isEmpty()) {
-		    	boolean allDone = true;
-		    	for(Order order : SimulationManager.this.orders) {
-		    		if(order.getStatus() != Order.DONE) {
-		    			allDone = false;
-		    			break;
-		    		}
-		    	}
-		    	if(allDone) {
-		    		this.setStop();
-		    	}
-		    }
-		    */
+		     * if(newOrders.isEmpty()) { boolean allDone = true; for(Order order : SimulationManager.this.orders) { if(order.getStatus() != Order.DONE) { allDone = false; break; } } if(allDone) { this.setStop(); } }
+		     */
 		}
 		if (newProducts != null) {
 		    for (Product product : newProducts) {
@@ -247,9 +238,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, SimulationManager.this.getOrders(), SimulationManager.this.map);
 
 		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
-		synchronized (map) {
-		    SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
-		}
+		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
+
 		// update statistic indicators
 		SimulationManager.this.updateIndicators();
 
@@ -259,15 +249,15 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    long pause = (long)(500);
+		    long pause = (long) (500);
 		    Thread.sleep(pause);
-		    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		    long duree = (long)((System.currentTimeMillis() - startTime)/(SimulationManager.this.speed+(long)0.5))-pause	;
-		    //System.out.println("Vitesse : "+SimulationManager.this.speed);
-		    //System.out.println("Coeff : "+SimulationManager.this.coeff);
-		    //System.out.println("Pause : "+pause);
-		    //System.out.println("Duree ajoutée :"+duree);
-		    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		    // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		    long duree = (long) ((System.currentTimeMillis() - startTime) / (SimulationManager.this.speed + (long) 0.5)) - pause;
+		    // System.out.println("Vitesse : "+SimulationManager.this.speed);
+		    // System.out.println("Coeff : "+SimulationManager.this.coeff);
+		    // System.out.println("Pause : "+pause);
+		    // System.out.println("Duree ajoutée :"+duree);
+		    // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		    uptime += duree;
 
 		} catch (InterruptedException e) {
@@ -292,11 +282,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    r.stopSchedule();
 	}
 	// Suppression des robots des rails
-	for(Rail rail : this.map.getRails()) {
+	for (Rail rail : this.map.getRails()) {
 	    rail.setRobot(null);
 	}
-	for(Column col : this.map.getColumns()) {
-	    for(Drawer dra : col.getDrawerList()) {
+	for (Column col : this.map.getColumns()) {
+	    for (Drawer dra : col.getDrawerList()) {
 		dra.setProduct(null);
 	    }
 	}
@@ -337,11 +327,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set pause
      */
     public void setPause() {
-    	status = 2;
+	status = 2;
     }
 
     /**
-     * Set play 
+     * Set play
      */
     public void setPlay() {
 	if (status == 2) {
@@ -353,7 +343,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
      */
     @Override
@@ -396,7 +388,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
 		// if no robot on the next rail
 		if (blockingRobot == null) {
-
 		    // execute next action
 		    robot.executeAction(robot.getCurrentAction());
 
@@ -416,6 +407,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// will
 		// be cancel by the robot his waiting)
 		else {
+		    System.out.println(blockingRobot + " bloque " + robot);
+		    if (blockingRobot.getCurrentAction() != null)
+			System.out.println(blockingRobot.getCurrentAction().getClass().getSimpleName());
+
 		    synchronized (blockingRobot.getActions()) {
 			// Si le robot de devant n'a pas d'action affectée
 			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {
@@ -424,15 +419,14 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 			    // on fait avancer le robot jusqu'a une intersection
 
-			    synchronized (map) {
-				ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
-				blockingRobot.getActions().addAll(movesBlockingRobot);
-			    }
+			    System.out.println("GO IN");
+			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
+			    blockingRobot.getActions().addAll(movesBlockingRobot);
+
 			    PauseAction pa = new PauseAction(0, robot, blockingRobot);
-			    synchronized (blockingRobot.getActions()) {
-				blockingRobot.getActions().add(0, pa);
-				blockingRobot.executeAction(blockingRobot.getCurrentAction());
-			    }
+			    blockingRobot.getActions().add(0, pa);
+			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
+
 			}
 		    }
 
@@ -461,7 +455,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     /**
      * Return ArrayList of robots blocked by robot passed in parameter
      * 
-     * @param blocking robot
+     * @param blocking
+     *            robot
      * @return robots blocked
      */
     private ArrayList<Robot> getWaitingRobots(Robot blockingRobot) {

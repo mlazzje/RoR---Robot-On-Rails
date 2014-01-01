@@ -96,7 +96,6 @@ public class Dijkstra {
 	}
 	synchronized (vertices) {
 	    synchronized (rails) {
-
 		for (Vertex v : vertices) {
 		    ArrayList<Edge> edges = new ArrayList<Edge>();
 		    if (v.rail.getLeftRail() != null)
