@@ -219,7 +219,7 @@ public class Order implements Comparable<Order> {
 
     /**
      * @param productName
-     * @return number of this productName already stored (booked) // Simulation
+     * @return number of this productName already booked (being stored)
      */
     private int nbProductStored(String productName) {
 	int nb = 0;
