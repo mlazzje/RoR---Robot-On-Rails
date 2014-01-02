@@ -24,7 +24,7 @@ public class RobotComboBox extends JComboBox implements ActionListener {
 	@SuppressWarnings("unchecked")
 	public RobotComboBox() {
 		super();
-		String[] algStore = { "1", "2", "3" };
+		String[] algStore = { "1", "2", "3" , "4" , "5" , "6"  , "7"  , "8"};
 		DefaultComboBoxModel algModel = new DefaultComboBoxModel(algStore);
 		this.setModel(algModel);
 		this.setSelectedIndex(2);
