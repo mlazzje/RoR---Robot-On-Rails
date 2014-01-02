@@ -2,6 +2,7 @@ package ror.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -89,6 +90,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * ArrayList of new logs
      */
     private ArrayList<String> newLogs;
+    
+    /**
+     * Data for chart
+     */
+    private ArrayList<HashMap<Long, Integer>> dataRobotActivity;
+    private HashMap<Long, Integer> dataConsumption;
+    private HashMap<Long, Integer> dataOrder;
 
     /**
      * Constructor of simulation manager
@@ -104,6 +112,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.iAlgMove = new AlgMoveEco();
 	this.orders = new ArrayList<Order>();
 	this.stockProducts = new ArrayList<Product>();
+	this.dataRobotActivity = new ArrayList<HashMap<Long, Integer>>();
+	this.dataConsumption = new HashMap<Long, Integer>();
+	this.dataOrder = new HashMap<Long, Integer>();
     }
 
     /**
@@ -171,10 +182,14 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     public void run() {
 	// add robots
 	if (!this.wasInPause) {
+		robots.clear();
+		dataRobotActivity.clear();
+		dataConsumption.clear();
 	    for (int i = 0; i < nbRobot; i++) {
 		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i, this);
 		r.addObserver(SimulationManager.this);
 		robots.add(r);
+		dataRobotActivity.add(new HashMap<Long, Integer>());
 	    }
 	}
 
@@ -246,7 +261,14 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// notify observers (UIController)
 		SimulationManager.this.setChanged();
 		SimulationManager.this.notifyObservers();
-
+		
+		// Fill chart data
+		for(int cptRobot = 0 ; cptRobot < this.robots.size() ; cptRobot++) {
+			dataRobotActivity.get(cptRobot).put(uptime, this.robots.get(cptRobot).getActions().size());
+		}
+		dataConsumption.put(uptime, this.getTotalConsumption());
+		dataOrder.put(uptime, this.getOrdersDoneCount());
+		
 		// sleep
 		try {
 		    long pause = (long) (500);
@@ -290,7 +312,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		dra.setProduct(null);
 	    }
 	}
-	this.robots = new ArrayList<Robot>();
     }
 
     /**
@@ -650,5 +671,20 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		count++;
 	}
 	return count;
+    }
+
+    public ArrayList<HashMap<Long, Integer>> getDataRobotActivity()
+    {
+    	return this.dataRobotActivity;
+    }
+
+    public HashMap<Long, Integer> getDataConsumption()
+    {
+    	return this.dataConsumption;
+    }
+    
+    public HashMap<Long, Integer> getDataOrder()
+    {
+    	return this.dataOrder;
     }
 }
