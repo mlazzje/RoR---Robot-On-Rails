@@ -44,6 +44,7 @@ public class AlgStoreOrder implements IAlgStore {
 			    actions.add(currentAction);
 			    currentProduct.setStatus(Product.BEING_STORED); // on met à jour le inputProducts !
 			    currentOrder.addProductStored(currentProduct); // For algo store Order
+			    break; // On passe au produit suivant !
 			} else {
 			    //System.out.println("No Drawer free or product already being stored");
 			}
