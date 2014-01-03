@@ -93,11 +93,6 @@ public class SimulationManagerTest extends TestCase {
 	assertTrue(simulationManager.getMap() != null);
     }
 
-    @Test
-    public void testUpdateIndicators() {
-	// TODO créer méthode updateIndicators dans SimulationManager
-	simulationManager.updateIndicators();
-    }
 
     @Test
     public void testSetStop() {

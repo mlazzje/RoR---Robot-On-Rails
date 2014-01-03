@@ -19,11 +19,14 @@ public class AlgMoveEco implements IAlgMove {
 
 	// si des actions input ou store sont disponibles
 	if (newDestockActions != null) {
+
 	    while (newDestockActions.size() > 0) {
 		Robot robot;
 
 		robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
+
 		if (robot != null) {
+
 		    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
 		    int freeSpace = robot.getLastActionSpaceAvailability();
 
@@ -59,8 +62,10 @@ public class AlgMoveEco implements IAlgMove {
 
 	    }
 	}
+
 	// si des actions input ou store sont disponibles
 	if (newStoreActions != null) {
+
 	    while (newStoreActions.size() > 0) {
 
 		Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
@@ -187,12 +192,11 @@ public class AlgMoveEco implements IAlgMove {
 		    continue;
 		else {
 		    // on recupere la liste des rails precedent pour supprimer leur left et/out right si c'est la position du robot
-		    Rail copyRailBloquant = this.getRail(copyRails, railRobotBloquant.getX(), railRobotBloquant.getY());
 
 		    ArrayList<Rail> previousRails = railRobotBloquant.getPreviousRail();
 
 		    for (Rail previousRail : previousRails) {
-			// on supprimer l'acces d'un rail à un autre si un robot se trouve sur le rail de destination
+			// on supprime l'acces d'un rail à un autre si un robot se trouve sur le rail de destination
 
 			if (previousRail.getLeftRail() != null && previousRail.getLeftRail().getX() == railRobotBloquant.getX() && previousRail.getLeftRail().getY() == railRobotBloquant.getY())
 			    this.getRail(copyRails, previousRail.getX(), previousRail.getY()).setLeftRail(null);
@@ -223,8 +227,12 @@ public class AlgMoveEco implements IAlgMove {
 		minRailCount = railsToMoveActions(path).size();
 	    }
 	}
-	// System.out.println(bestRobot);
-	return bestRobot;// robotNotBeblocked.get(0);//getBestRobot(robotNotBeblocked, map, destination);
+	// si pas de best robot on prende celui qui a le moins d'actions
+	if (bestRobot == null) {
+	    AlgMoveFast alg = new AlgMoveFast();
+	    bestRobot = alg.getBestRobot(robots);
+	}
+	return bestRobot;
 
     }
 
