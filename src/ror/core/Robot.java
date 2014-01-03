@@ -20,6 +20,8 @@ public class Robot extends Observable implements Runnable {
 
     public static final int STATUS_SLEEPING = 2;
 
+    public static final int STATUS_PAUSE = 3;
+
     /**
      * First speed
      */
@@ -103,8 +105,8 @@ public class Robot extends Observable implements Runnable {
 	number = num;
 	actions = new ArrayList<Action>();
 	rail = initRail;
+	rail.setRobot(this);
 	products = new ArrayList<Product>();
-	initRail.setRobot(this);
 	this.consumption = 0;
 	this.simulationManager = simulationManager;
 	timer = new Timer();
@@ -117,7 +119,7 @@ public class Robot extends Observable implements Runnable {
      */
     @Override
     public String toString() {
-	return "Robot " + getNumber();
+	return "Robot #" + getNumber();
     }
 
     /**
@@ -182,7 +184,6 @@ public class Robot extends Observable implements Runnable {
 			if (!(tmpCountAction instanceof MoveAction))
 			    countActions++;
 		    }
-
 		    System.out.println("Erreur :  " + Robot.this + " " + moveAction.getPrevious() + " <- " + lastMove.getPrevious() + " -- Nombre d'actions : " + countActions + " en cours " + Robot.this.actions.get(0).getClass().getSimpleName());
 		}
 	    }
@@ -190,8 +191,11 @@ public class Robot extends Observable implements Runnable {
 	    this.waitForTimer((int) (action.getDuration() * Robot.this.speed));
 
 	    lastMove = moveAction;
+
 	    this.setOrderInProgress(null);
-	    Robot.this.rail.setRobot(null);
+	    this.rail.setRobot(null);
+	    this.rail.lock.unlock();
+	    System.out.println(this + " unlock " + this.rail + this.rail.lock.isLocked());
 	    if (((MoveAction) action).getNext() != null)
 		Robot.this.rail = ((MoveAction) action).getNext();
 	    Robot.this.rail.setRobot(Robot.this);
@@ -507,80 +511,103 @@ public class Robot extends Observable implements Runnable {
 	this.speed = speed;
     }
 
-    private void unblock(Robot blockedRobot) {
-	// System.out.println(Robot.this + " bloque " + blockedRobot + " le bloquant a le status : " + blockedRobot.getStatus());
+    private void moveBlockingRobot(Robot blockingRobot) {
 
+	System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
+	System.out.println("#test 0");
+
+	System.out.println("#test 1");
 	// si le robot qui bloque n'a pas prévu d'avancer
-	if (this.willMove() == false) {
+	if (blockingRobot.willMove() == false) {
+	    System.out.println("#test 2");
+
 	    // on fait avancer le robot jusqu'à la prochaine intersection ou jusqu'au rail suivant
-	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(Robot.this.getRail(), blockedRobot.getOpositeRailAtNextIntersection()));
-	    synchronized (this.actions) {
-		this.getActions().addAll(movesBlockingRobot);
+	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(blockingRobot.getLastActionRail(), this.getOpositeRailAtNextIntersection()));
+	    blockingRobot.getActions().addAll(movesBlockingRobot);
+	    System.out.println("#test 3");
+
+	    synchronized (blockingRobot.status) {
+		// de plus on reveil le robot si il dort
+		System.out.println("#test 4");
 	    }
-	    // de plus on reveil le robot si il dort
-	    if (this.getStatus() == Robot.STATUS_SLEEPING) {
-		synchronized (this) {
-		    this.notify();
-		}
+
+	}
+	// si le robot dort on le reveille
+	if (blockingRobot.getStatus() == Robot.STATUS_SLEEPING) {
+	    synchronized (blockingRobot) {
+		System.out.println("#test 5");
+
+		blockingRobot.notify();
 	    }
 	}
     }
 
     public boolean willMove() {
-	synchronized (this.actions) {
-	    for (Action a : this.actions) {
-		if (a instanceof MoveAction) {
-		    return true;
-		}
+	for (Action a : this.actions) {
+	    if (a instanceof MoveAction) {
+		return true;
 	    }
 	}
+
 	return false;
     }
 
     @Override
     public void run() {
 	do {
-
 	    int simulationStatus = this.simulationManager.getStatus();
+
+	    // on lock le rail courant la premiere fois a l'initialisation de la simulation
+	    if (lastMove == null && !this.rail.lock.isLocked()) {
+		this.rail.lock.lock();
+	    }
 
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
 	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED || simulationStatus == SimulationManager.STOPPED) {
-		if (this.getCurrentAction() == null)
+		System.out.println(this + " rentre en veille");
+
+		// maj du status si pas d'actions
+		synchronized (this.status) {
 		    this.status = Robot.STATUS_SLEEPING;
+		}
+
+		// mise en pause du robot
 		synchronized (this) {
 		    try {
 			this.wait();
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
+		    System.out.println(this + " sors de veille");
 		}
-		this.status = Robot.STATUS_RUNNING;
 
+		synchronized (this.status) {
+		    this.status = Robot.STATUS_RUNNING;
+		}
 	    } else {
-		Robot blockingRobot = this.simulationManager.checkNextAction(this, this.getCurrentAction());
+		synchronized (this.actions) {
+		    if (this.actions.get(0) instanceof MoveAction) {
+			MoveAction move = (MoveAction) this.actions.get(0);
+			Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
 
-		if (blockingRobot != null) {
-		    blockingRobot.unblock(this);
-		    synchronized (this) {
-			try {
-			    this.wait(100);
-			} catch (InterruptedException e) {
-			    e.printStackTrace();
+			if (blockingRobot != null) {
+			    this.moveBlockingRobot(blockingRobot);
 			}
+			Rail r = move.getNext();
+			System.out.println(this + " essaye de locker " + r);
+			r.lock.lock();
+			System.out.println(this + " a locké " + r);
 		    }
-		}
-		// execution de la prochaine action
-		else {
-		    synchronized (this.getActions()) {
-			if (this.actions.size() > 0) {
-			    Action a = this.actions.get(0);
-			    a.setDuration((int) (1000 * this.simulationManager.getSpeed()));
-			    this.executeAction(a);
-			    Robot.this.setChanged();
-			    Robot.this.notifyObservers();
-			    this.actions.remove(0);
-			}
-		    }
+
+		    // execution de la prochaine action
+		    Action a = this.actions.get(0);
+		    a.setDuration((int) (1000 * this.simulationManager.getSpeed()));
+		    this.executeAction(a);
+		    this.setChanged();
+		    this.notifyObservers();
+		    this.actions.remove(0);
+		    System.out.println(this + " end action " + a.getClass().getSimpleName());
+
 		}
 	    }
 

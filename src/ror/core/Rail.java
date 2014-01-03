@@ -1,10 +1,15 @@
 package ror.core;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Rail extends RoRElement {
 
+    
     // Properties
+    
+    public ReentrantLock lock;
+    
     /**
      * Left rail
      */
@@ -116,6 +121,7 @@ public class Rail extends RoRElement {
 	this.previous = previousRail;
 	this.next = nextRail;
 	this.robot = null;
+	this.lock=new ReentrantLock();
     }
 
     /**
