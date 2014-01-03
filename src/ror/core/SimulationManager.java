@@ -193,6 +193,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 			robots.clear();
 			dataRobotActivity.clear();
 			dataConsumption.clear();
+			orders.clear();
 			for (int i = 0; i < nbRobot; i++) {
 				Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i, this);
 				r.addObserver(SimulationManager.this);
@@ -359,7 +360,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.map.getOutput().clearProducts();
 		this.setNewLogs(new ArrayList<String>());
 		this.orderSource = new OrderSource();
-		this.orders = new ArrayList<Order>();
 		this.stockProducts = new ArrayList<Product>();
 		Order.resetLastId();
 	}

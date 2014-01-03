@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import javax.imageio.ImageIO;
 
 import org.jfree.chart.JFreeChart;
@@ -27,8 +28,10 @@ public class ExcelExport {
 	 * @param simulationManager
 	 */
 	public ExcelExport(SimulationManager simulationManager, File file) {
-
-		/* Activity Chart */
+		
+		/* 
+		 * Activity Chart 
+		 */
 		ArrayList<HashMap<Long, Integer>> dataActivityChart = simulationManager.getDataRobotActivity();
         XYSeriesCollection activityResult = new XYSeriesCollection();
 		int cptRobot = 0;
@@ -73,7 +76,7 @@ public class ExcelExport {
 			byte[] byteArray = bas.toByteArray();
 			InputStream in = new ByteArrayInputStream(byteArray);
 			BufferedImage image = ImageIO.read(in);
-			File outputfile = new File(file.getAbsolutePath().replace(file.getName(), "")+"activityChart.png");
+			File outputfile = new File(file.getAbsolutePath()+"_activityChart.png");
 			ImageIO.write(image, "png", outputfile);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,7 +84,9 @@ public class ExcelExport {
 		
 		
 
-		/* Consumption Chart */
+		/* 
+		 * Consumption Chart 
+		 */
 		HashMap<Long, Integer> dataChartComsumption = simulationManager.getDataConsumption();
         XYSeriesCollection consumptionResult = new XYSeriesCollection();
 		XYSeries series = new XYSeries("Consommation totale");
@@ -121,7 +126,7 @@ public class ExcelExport {
 			byte[] byteArray = bas.toByteArray();
 			InputStream in = new ByteArrayInputStream(byteArray);
 			BufferedImage image = ImageIO.read(in);
-			File outputfile = new File(file.getAbsolutePath().replace(file.getName(), "")+"consumptionChart.png");
+			File outputfile = new File(file.getAbsolutePath()+"_consumptionChart.png");
 			ImageIO.write(image, "png", outputfile);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,7 +172,7 @@ public class ExcelExport {
 			byte[] byteArray = bas.toByteArray();
 			InputStream in = new ByteArrayInputStream(byteArray);
 			BufferedImage image = ImageIO.read(in);
-			File outputfile = new File(file.getAbsolutePath().replace(file.getName(), "")+"orderChart.png");
+			File outputfile = new File(file.getAbsolutePath()+"_orderChart.png");
 			ImageIO.write(image, "png", outputfile);
 		} catch (Exception e) {
 			e.printStackTrace();
