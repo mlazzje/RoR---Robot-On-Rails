@@ -10,7 +10,6 @@ import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
 import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
-import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgMoveEco;
@@ -20,6 +19,12 @@ import ror.core.algo.IAlgMove;
 import ror.core.algo.IAlgStore;
 
 public class SimulationManager extends Observable implements Observer, Runnable {
+
+    public static final Integer RUNNING = 1;
+
+    public static final Integer PAUSED = 2;
+
+    public static final Integer STOPPED = 0;
 
     // relationship
     /**
@@ -89,6 +94,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * ArrayList of new logs
      */
     private ArrayList<String> newLogs;
+
+    private ArrayList<Thread> robotThreads;
 
     /**
      * Constructor of simulation manager
@@ -169,41 +176,51 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      */
     @Override
     public void run() {
+	robotThreads = new ArrayList<Thread>();
 	// add robots
 	if (!this.wasInPause) {
 	    for (int i = 0; i < nbRobot; i++) {
 		Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i, this);
 		r.addObserver(SimulationManager.this);
 		robots.add(r);
+		Thread t = new Thread(r);
+		t.start();
+		robotThreads.add(t);
 	    }
 	}
 
-	// demo
-	/*
-	 * List<Rail> path = getMap().getPath((Rail) getMap().getMap()[1][1], (Rail) getMap().getMap()[2][23]); for (Rail rail : path) { MoveAction m = new MoveAction((int) (2500 * SimulationManager.this.speed), robots.get(0), null, rail); robots.get(0).addAction(m);
-	 * 
-	 * }
-	 */
-
-	for (Robot robot : this.robots) {
-
-	    PauseAction p = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, null);
-	    robot.addAction(p);
-	    robot.executeAction(robot.getCurrentAction());
-	}
 	uptime = 0;
 
-	status = 1;
-	while (status != 0) {
+	status = SimulationManager.RUNNING;
+
+	while (status != SimulationManager.STOPPED) {
 	    Long startTime = System.currentTimeMillis();
-	    if (status == 1) // running
-	    {
+
+	    if (status == SimulationManager.RUNNING) {
+
+		// on reveille tous les robots à la sortie de la pause
 		if (wasInPause) {
 		    for (Robot r : this.robots) {
-			r.executeAction(r.getCurrentAction());
+			synchronized (r) {
+
+			    r.notify();
+			}
+
 		    }
 		    wasInPause = false;
 		}
+
+		// on reveille les robots qui sont en veille et qui ont des actions a effectué
+		for (Robot r : this.robots) {
+		    if (r.getStatus() == Robot.STATUS_SLEEPING && r.getActions().size() > 0) {
+
+			synchronized (r) {
+
+			    r.notify();
+			}
+		    }
+		}
+
 		ArrayList<Order> newOrders;
 		ArrayList<Product> newProducts = null;
 		if (!source) // random mode
@@ -226,6 +243,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		     * if(newOrders.isEmpty()) { boolean allDone = true; for(Order order : SimulationManager.this.orders) { if(order.getStatus() != Order.DONE) { allDone = false; break; } } if(allDone) { this.setStop(); } }
 		     */
 		}
+
 		if (newProducts != null) {
 		    for (Product product : newProducts) {
 			this.map.getInput().addProduct(product);
@@ -233,15 +251,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    }
 		}
 
-		// TODO Implémenter méthodes algo pour pouvoir tester
-		// System.out.println("orders for algo "+newOrders); // I need all orders for algo ! //TODO passer en paramètre que les Orders en cours, non celles terminées
+		// TODO passer en paramètre que les Orders en cours, non celles terminées
 		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, SimulationManager.this.getOrders(), SimulationManager.this.map);
 
 		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
-		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 
-		// update statistic indicators
-		SimulationManager.this.updateIndicators();
+		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 
 		// notify observers (UIController)
 		SimulationManager.this.setChanged();
@@ -251,26 +266,23 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		try {
 		    long pause = (long) (500);
 		    Thread.sleep(pause);
-		    // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 		    long duree = (long) ((System.currentTimeMillis() - startTime) / (SimulationManager.this.speed + (long) 0.5)) - pause;
-		    // System.out.println("Vitesse : "+SimulationManager.this.speed);
-		    // System.out.println("Coeff : "+SimulationManager.this.coeff);
-		    // System.out.println("Pause : "+pause);
-		    // System.out.println("Duree ajoutée :"+duree);
-		    // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		    uptime += duree;
 
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
 		}
 
-	    } else if (status == 2) // pause simulation
-	    {
+	    } else if (status == SimulationManager.PAUSED) {
+
 		for (Robot r : this.robots) {
-		    r.stopSchedule();
+		    r.stopTimerTask();
 		}
 		try {
+
 		    synchronized (this) {
+
 			this.wait();
 		    }
 		} catch (InterruptedException e) {
@@ -278,18 +290,34 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		}
 	    }
 	}
+
+	System.out.println("Simulation terminée");
+
+	// mise en pause des robots
 	for (Robot r : this.robots) {
-	    r.stopSchedule();
+	    r.stopTimerTask();
 	}
+
 	// Suppression des robots des rails
-	for (Rail rail : this.map.getRails()) {
-	    rail.setRobot(null);
+	for (Robot r : this.robots) {
+	    synchronized (r) {
+		if (r.getRail() != null)
+		    r.getRail().setRobot(null);
+	    }
 	}
+
+	// suppression des produits dans les tiroirs
 	for (Column col : this.map.getColumns()) {
 	    for (Drawer dra : col.getDrawerList()) {
 		dra.setProduct(null);
+		dra.setStatus(Drawer.FREE);
 	    }
 	}
+
+	// suprresion des produits en entree et sortie
+	this.map.getInput().getProductList().clear();
+	this.map.getOutput().getProductList().clear();
+
 	this.robots = new ArrayList<Robot>();
     }
 
@@ -301,17 +329,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     }
 
     /**
-     * Update indicators // TODO TO Complete
-     */
-    public void updateIndicators() {
-	// TODO to implement and create indicators attributes
-    }
-
-    /**
      * Set stop
      */
     public void setStop() {
-	status = 0;
+	this.status = SimulationManager.STOPPED;
 	this.setChanged();
 	this.notifyObservers();
 	this.map.getInput().clearProducts();
@@ -327,17 +348,17 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set pause
      */
     public void setPause() {
-	status = 2;
+	this.status = SimulationManager.PAUSED;
     }
 
     /**
      * Set play
      */
     public void setPlay() {
-	if (status == 2) {
+	if (status == SimulationManager.PAUSED) {
 	    this.wasInPause = true;
 	}
-	status = 1;
+	this.status = SimulationManager.RUNNING;
 	synchronized (this) {
 	    this.notify();
 	}
@@ -356,121 +377,24 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    synchronized (this.newLogs) {
 
 		// Traçage des actions des robots
-		if (robot.getCurrentAction() instanceof InputAction) {
-		    InputAction action = (InputAction) robot.getCurrentAction();
+		if (robot.getActions().get(0) instanceof InputAction) {
+		    InputAction action = (InputAction) robot.getActions().get(0);
 		    this.newLogs.add(robot + " prend " + action.getProduct().getName() + " au point d'entrée");
-		} else if (robot.getCurrentAction() instanceof OutputAction) {
-		    OutputAction action = (OutputAction) robot.getCurrentAction();
+		} else if (robot.getActions().get(0) instanceof OutputAction) {
+		    OutputAction action = (OutputAction) robot.getActions().get(0);
 		    this.newLogs.add(robot + " dépose " + action.getProduct().getName() + " au point de sortie");
-		} else if (robot.getCurrentAction() instanceof StoreAction) {
-		    StoreAction action = (StoreAction) robot.getCurrentAction();
+		} else if (robot.getActions().get(0) instanceof StoreAction) {
+		    StoreAction action = (StoreAction) robot.getActions().get(0);
 		    this.newLogs.add(robot + " dépose " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
-		} else if (robot.getCurrentAction() instanceof DestockingAction) {
-		    DestockingAction action = (DestockingAction) robot.getCurrentAction();
+		} else if (robot.getActions().get(0) instanceof DestockingAction) {
+		    DestockingAction action = (DestockingAction) robot.getActions().get(0);
 		    this.newLogs.add(robot + " prend " + action.getProduct().getName() + " dans la colonne (" + action.getDrawer().getColumn().getX() + ", " + action.getDrawer().getColumn().getY() + ") dans le tiroir " + action.getDrawer().getPositionInColumn());
 		}
 	    }
-	    // save the last action of the robot
-	    // Action lastRobotAction = robot.getCurrentAction();
 
-	    // going to the next action
-	    robot.removeCurrentAction();
-	    if (robot.getCurrentAction() != null) {
-		robot.getCurrentAction().setDuration((int) (1000 * SimulationManager.this.speed));
-
-		// aguillage du prochain rail
-		if (robot.getCurrentAction() instanceof MoveAction) {
-		    MoveAction moveAction = (MoveAction) robot.getCurrentAction();
-		    moveAction.getPrevious().setNextRail(moveAction.getNext());
-		}
-
-		// search if the next action is blocked by another robot
-		Robot blockingRobot = checkNextAction(robot, robot.getCurrentAction());
-		// if no robot on the next rail
-		if (blockingRobot == null) {
-		    // execute next action
-		    robot.executeAction(robot.getCurrentAction());
-
-		    /*
-		     * // get all robots waiting for the current robot to move ArrayList<Robot> waitingRobots = getWaitingRobots(blockingRobot);
-		     * 
-		     * // then unblocks all robots blocked by this robot for (Robot r : waitingRobots) {
-		     * 
-		     * // cancel the scheduling task of blocked robot r.stopSchedule();
-		     * 
-		     * // remove the PauseAction of the blocked robot r.removeCurrentAction();
-		     * 
-		     * // then launch the next action r.executeAction(r.getCurrentAction()); }
-		     */
-		}
-		// else add long waiting action to robot (to be sure that the task
-		// will
-		// be cancel by the robot his waiting)
-		else {
-		    System.out.println(blockingRobot + " bloque " + robot);
-		    if (blockingRobot.getCurrentAction() != null)
-			System.out.println(blockingRobot.getCurrentAction().getClass().getSimpleName());
-
-		    synchronized (blockingRobot.getActions()) {
-			// Si le robot de devant n'a pas d'action affectée
-			if (blockingRobot.getActions().size() == 1 && blockingRobot.getActions().get(0) instanceof PauseAction) {
-			    blockingRobot.stopSchedule();
-			    blockingRobot.removeCurrentAction();
-
-			    // on fait avancer le robot jusqu'a une intersection
-
-			    System.out.println("GO IN");
-			    ArrayList<MoveAction> movesBlockingRobot = iAlgMove.railsToMoveActions(map.getPath(blockingRobot.getRail(), robot.getOpositeRailAtNextIntersection()));
-			    blockingRobot.getActions().addAll(movesBlockingRobot);
-
-			    PauseAction pa = new PauseAction(0, robot, blockingRobot);
-			    blockingRobot.getActions().add(0, pa);
-			    blockingRobot.executeAction(blockingRobot.getCurrentAction());
-
-			}
-		    }
-
-		    // System.out.println(robot + " bloqué par " + blockingRobot);
-		    PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, blockingRobot);
-		    synchronized (robot.getActions()) {
-			robot.getActions().add(0, pa);
-			robot.executeAction(robot.getCurrentAction());
-		    }
-
-		}
-
-		// notify observers (UIController)
-		this.setChanged();
-		this.notifyObservers();
-	    } else {
-		PauseAction pa = new PauseAction((int) (1000 * SimulationManager.this.speed), robot, null);
-		synchronized (robot.getActions()) {
-		    robot.getActions().add(0, pa);
-		    robot.executeAction(robot.getCurrentAction());
-		}
-	    }
+	    this.setChanged();
+	    this.notifyObservers();
 	}
-    }
-
-    /**
-     * Return ArrayList of robots blocked by robot passed in parameter
-     * 
-     * @param blocking
-     *            robot
-     * @return robots blocked
-     */
-    private ArrayList<Robot> getWaitingRobots(Robot blockingRobot) {
-	ArrayList<Robot> waitingRobots = new ArrayList<Robot>();
-
-	for (Robot robot : robots) {
-	    Action action = robot.getCurrentAction();
-	    if (action instanceof PauseAction) {
-		PauseAction pauseAction = (PauseAction) action;
-		if (pauseAction.getWaitingRobot() == blockingRobot)
-		    waitingRobots.add(robot);
-	    }
-	}
-	return waitingRobots;
     }
 
     /**
@@ -555,7 +479,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * @param action
      * @return nextAction of robot and action passed in parameter
      */
-    private Robot checkNextAction(Robot robot, Action action) {
+    public Robot checkNextAction(Robot robot, Action action) {
 	if (action instanceof MoveAction) {
 	    MoveAction moveAction = (MoveAction) action;
 	    for (Robot r : robots) {
@@ -616,7 +540,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    long count = 0;
 	    int orderCount = 0;
 	    for (Order order : this.orders) {
-		if (order.getStatus() == order.DONE) {
+		if (order.getStatus() == Order.DONE) {
 		    orderCount++;
 		    count += order.getProcessingTime();
 		}
@@ -650,5 +574,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		count++;
 	}
 	return count;
+    }
+
+    public Thread robotThread(Robot r) {
+	return this.robotThreads.get(SimulationManager.this.robots.indexOf(r));
     }
 }
