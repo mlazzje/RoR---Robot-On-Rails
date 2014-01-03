@@ -100,6 +100,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	 * Data for chart
 	 */
 	private ArrayList<HashMap<Long, Integer>> dataRobotActivity;
+	private ArrayList<HashMap<Long, Integer>> dataRobotConsumption;
 	private HashMap<Long, Integer> dataConsumption;
 	private HashMap<Long, Integer> dataOrder;
 	private HashMap<Long, Integer> dataOrderTotal;
@@ -122,6 +123,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.orders = new ArrayList<Order>();
 		this.stockProducts = new ArrayList<Product>();
 		this.dataRobotActivity = new ArrayList<HashMap<Long, Integer>>();
+		this.dataRobotConsumption = new ArrayList<HashMap<Long, Integer>>();
 		this.dataConsumption = new HashMap<Long, Integer>();
 		this.dataOrder = new HashMap<Long, Integer>();
 		this.dataOrderTotal = new HashMap<Long, Integer>();
@@ -195,13 +197,17 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		if (!this.wasInPause) {
 			robots.clear();
 			dataRobotActivity.clear();
+			dataRobotConsumption.clear();
 			dataConsumption.clear();
+			dataOrder.clear();
+			dataOrderTotal.clear();
 			orders.clear();
 			for (int i = 0; i < nbRobot; i++) {
 				Robot r = new Robot((Rail) getMap().getMap()[1 + i][1], i, this);
 				r.addObserver(SimulationManager.this);
 				robots.add(r);
 				dataRobotActivity.add(new HashMap<Long, Integer>());
+				dataRobotConsumption.add(new HashMap<Long, Integer>());
 				Thread t = new Thread(r);
 				t.start();
 				robotThreads.add(t);
@@ -284,6 +290,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				// Fill chart data
 				for (int cptRobot = 0; cptRobot < this.robots.size(); cptRobot++) {
 					dataRobotActivity.get(cptRobot).put(uptime, this.robots.get(cptRobot).getActions().size());
+				}
+				for (int cptRobot = 0; cptRobot < this.robots.size(); cptRobot++) {
+					dataRobotConsumption.get(cptRobot).put(uptime, this.robots.get(cptRobot).getConsumption());
 				}
 				dataConsumption.put(uptime, this.getTotalConsumption());
 				dataOrder.put(uptime, this.getOrdersDoneCount());
@@ -602,6 +611,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public ArrayList<HashMap<Long, Integer>> getDataRobotActivity() {
 		return this.dataRobotActivity;
+	}
+
+	public ArrayList<HashMap<Long, Integer>> getDataRobotConsumption() {
+		return this.dataRobotConsumption;
 	}
 
 	public HashMap<Long, Integer> getDataConsumption() {

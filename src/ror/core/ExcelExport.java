@@ -88,6 +88,7 @@ public class ExcelExport {
 		 * Consumption Chart 
 		 */
 		HashMap<Long, Integer> dataChartComsumption = simulationManager.getDataConsumption();
+		ArrayList<HashMap<Long, Integer>> dataChartComsumptionRobot = simulationManager.getDataRobotConsumption();
         XYSeriesCollection consumptionResult = new XYSeriesCollection();
 		XYSeries series = new XYSeries("Consommation totale");
 		Iterator<Entry<Long, Integer>> it = dataChartComsumption.entrySet().iterator();
@@ -96,6 +97,18 @@ public class ExcelExport {
 	    	series.add(e.getKey()/1000, e.getValue());
 	    }
 	    consumptionResult.addSeries(series);
+	    
+		cptRobot = 0;
+		// Parcours des robots
+		for(Robot robot : simulationManager.getRobots()) {
+			series = new XYSeries("Consommation "+robot.toString());
+			// Remplissage des series
+			for (Entry<Long, Integer> e : dataChartComsumptionRobot.get(cptRobot).entrySet()) {
+				series.add(e.getKey()/1000, e.getValue());
+			}
+			consumptionResult.addSeries(series);
+			cptRobot++;
+		}
 
         xAxis = new NumberAxis("Temps (en seconde)");
         xAxis.setAutoRangeIncludesZero(false);
