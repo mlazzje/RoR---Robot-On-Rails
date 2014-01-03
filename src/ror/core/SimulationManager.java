@@ -110,6 +110,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	 */
 	public SimulationManager() {
 		this.map = new Map();
+		this.map.sortColumns();
 		this.setNewLogs(new ArrayList<String>());
 		this.robots = new ArrayList<Robot>();
 		this.orderSource = new OrderSource();
