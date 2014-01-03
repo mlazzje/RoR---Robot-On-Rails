@@ -195,7 +195,7 @@ public class Robot extends Observable implements Runnable {
 	    this.setOrderInProgress(null);
 	    this.rail.setRobot(null);
 	    this.rail.lock.unlock();
-	    System.out.println(this + " unlock " + this.rail + this.rail.lock.isLocked());
+	    // System.out.println(this + " unlock " + this.rail + this.rail.lock.isLocked());
 	    if (((MoveAction) action).getNext() != null)
 		Robot.this.rail = ((MoveAction) action).getNext();
 	    Robot.this.rail.setRobot(Robot.this);
@@ -514,30 +514,26 @@ public class Robot extends Observable implements Runnable {
     private void moveBlockingRobot(Robot blockingRobot) {
 
 	System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
-	System.out.println("#test 0");
 
-	System.out.println("#test 1");
+	// System.out.println("#test 1");
 	// si le robot qui bloque n'a pas prévu d'avancer
 	if (blockingRobot.willMove() == false) {
-	    System.out.println("#test 2");
+	    // System.out.println("#test 2");
 
 	    // on fait avancer le robot jusqu'à la prochaine intersection ou jusqu'au rail suivant
 	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(blockingRobot.getLastActionRail(), this.getOpositeRailAtNextIntersection()));
 	    blockingRobot.getActions().addAll(movesBlockingRobot);
-	    System.out.println("#test 3");
-
-	    synchronized (blockingRobot.status) {
-		// de plus on reveil le robot si il dort
-		System.out.println("#test 4");
-	    }
+	    // System.out.println("#test 3");
 
 	}
 	// si le robot dort on le reveille
-	if (blockingRobot.getStatus() == Robot.STATUS_SLEEPING) {
-	    synchronized (blockingRobot) {
-		System.out.println("#test 5");
+	synchronized (blockingRobot.status) {
 
-		blockingRobot.notify();
+	    if (blockingRobot.getStatus() == Robot.STATUS_SLEEPING) {
+		synchronized (blockingRobot) {
+		    // System.out.println("#test 5");
+		    blockingRobot.notify();
+		}
 	    }
 	}
     }
@@ -564,7 +560,7 @@ public class Robot extends Observable implements Runnable {
 
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
 	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED || simulationStatus == SimulationManager.STOPPED) {
-		System.out.println(this + " rentre en veille");
+		//System.out.println(this + " rentre en veille");
 
 		// maj du status si pas d'actions
 		synchronized (this.status) {
@@ -578,7 +574,7 @@ public class Robot extends Observable implements Runnable {
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
-		    System.out.println(this + " sors de veille");
+		    // System.out.println(this + " sors de veille");
 		}
 
 		synchronized (this.status) {
@@ -594,9 +590,9 @@ public class Robot extends Observable implements Runnable {
 			    this.moveBlockingRobot(blockingRobot);
 			}
 			Rail r = move.getNext();
-			System.out.println(this + " essaye de locker " + r);
+			// System.out.println(this + " essaye de locker " + r);
 			r.lock.lock();
-			System.out.println(this + " a locké " + r);
+			// System.out.println(this + " a locké " + r);
 		    }
 
 		    // execution de la prochaine action
@@ -606,7 +602,7 @@ public class Robot extends Observable implements Runnable {
 		    this.setChanged();
 		    this.notifyObservers();
 		    this.actions.remove(0);
-		    System.out.println(this + " end action " + a.getClass().getSimpleName());
+		    // System.out.println(this + " end action " + a.getClass().getSimpleName());
 
 		}
 	    }
