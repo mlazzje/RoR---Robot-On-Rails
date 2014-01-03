@@ -134,9 +134,18 @@ public class ExcelExport {
 		
 		/* Order Chart */
 		HashMap<Long, Integer> dataChartOrder = simulationManager.getDataOrder();
+		HashMap<Long, Integer> dataChartOrderTotal = simulationManager.getDataOrderTotal();
         XYSeriesCollection orderResult = new XYSeriesCollection();
-		series = new XYSeries("Consommation");
+		series = new XYSeries("Commandes Traitées");
 		it = dataChartOrder.entrySet().iterator();
+	    while (it.hasNext()) {
+	    	Entry<Long, Integer> e = it.next();
+	    	series.add(e.getKey()/1000, e.getValue());
+	    }
+	    orderResult.addSeries(series);
+	    
+		series = new XYSeries("Commandes Totales");
+		it = dataChartOrderTotal.entrySet().iterator();
 	    while (it.hasNext()) {
 	    	Entry<Long, Integer> e = it.next();
 	    	series.add(e.getKey()/1000, e.getValue());
@@ -145,7 +154,7 @@ public class ExcelExport {
 
         xAxis = new NumberAxis("Temps (en seconde)");
         xAxis.setAutoRangeIncludesZero(false);
-        yAxis = new NumberAxis("Commande traitée");
+        yAxis = new NumberAxis("Nombre de Commandes");
         yAxis.setAutoRangeIncludesZero(false);
 
         renderer = new StandardXYItemRenderer();

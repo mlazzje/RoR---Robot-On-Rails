@@ -102,6 +102,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	private ArrayList<HashMap<Long, Integer>> dataRobotActivity;
 	private HashMap<Long, Integer> dataConsumption;
 	private HashMap<Long, Integer> dataOrder;
+	private HashMap<Long, Integer> dataOrderTotal;
 
 	private ArrayList<Thread> robotThreads;
 
@@ -123,6 +124,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		this.dataRobotActivity = new ArrayList<HashMap<Long, Integer>>();
 		this.dataConsumption = new HashMap<Long, Integer>();
 		this.dataOrder = new HashMap<Long, Integer>();
+		this.dataOrderTotal = new HashMap<Long, Integer>();
 	}
 
 	/**
@@ -285,6 +287,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 				}
 				dataConsumption.put(uptime, this.getTotalConsumption());
 				dataOrder.put(uptime, this.getOrdersDoneCount());
+				dataOrderTotal.put(uptime, this.orders.size());
 
 				// sleep
 				try {
@@ -607,6 +610,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public HashMap<Long, Integer> getDataOrder() {
 		return this.dataOrder;
+	}
+
+	public HashMap<Long, Integer> getDataOrderTotal() {
+		return this.dataOrderTotal;
 	}
 
 	public Thread robotThread(Robot r) {
