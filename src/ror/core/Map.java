@@ -3,6 +3,7 @@ package ror.core;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -563,5 +564,14 @@ public class Map {
 	}
 
     }
-
+    
+    /*
+     *  To sort columns
+     */
+    public void sortColumns() {
+	for(Column col : this.getColumns()) {
+	    col.setDistanceInputOutput(this.getPath(this.input.getAccess(), col.getAccess()).size()+this.getPath(this.output.getAccess(), col.getAccess()).size());
+	}
+	Collections.sort(this.getColumns());
+    }
 }

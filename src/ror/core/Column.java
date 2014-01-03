@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Column extends RoRElement implements Observer {
+public class Column extends RoRElement implements Observer, Comparable<Column> {
 
     /**
      * 
@@ -30,6 +30,11 @@ public class Column extends RoRElement implements Observer {
      * Rail access for the drawer
      */
     private Rail access;
+    /**
+     * This number permit to sort Column. This nuber represent distance with Output + distance with Input
+     */
+    private Integer distanceInputOutput;
+
     /**
      * 
      */
@@ -157,6 +162,22 @@ public class Column extends RoRElement implements Observer {
     public List<Drawer> getDrawerList() {
 	return this.drawerList;
     }
+    
+    /**
+     * This number permit to sort Column. This nuber represent distance with Output + distance with Input
+     * 
+     * @return distance
+     */
+    public Integer getDistanceInputOutput() {
+        return distanceInputOutput;
+    }
+
+    /**
+     * Set distance. This number permit to sort Column. This nuber represent distance with Output + distance with Input
+     */
+    public void setDistanceInputOutput(Integer distanceInputOutput) {
+        this.distanceInputOutput = distanceInputOutput;
+    }
 
     /**
      * Book N Drawers for and Order
@@ -194,6 +215,15 @@ public class Column extends RoRElement implements Observer {
     @Override
     public String toString() {
 	return "Column : " + this.getX() + "," + this.getY();
+    }
+
+    
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(Column col) {
+	return this.getDistanceInputOutput().compareTo(col.getDistanceInputOutput());
     }
 
 }
