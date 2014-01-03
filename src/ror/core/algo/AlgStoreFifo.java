@@ -7,7 +7,6 @@ import ror.core.Drawer;
 import ror.core.Map;
 import ror.core.Order;
 import ror.core.Product;
-import ror.core.actions.Action;
 import ror.core.actions.StoreAction;
 
 public class AlgStoreFifo implements IAlgStore {

@@ -5,36 +5,19 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-
 import javax.imageio.ImageIO;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.*;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.chart.title.TextTitle;
-import org.jfree.chart.title.Title;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.Series;
-import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
@@ -43,7 +26,6 @@ public class ExcelExport {
 	/**
 	 * @param simulationManager
 	 */
-	@SuppressWarnings("unchecked")
 	public ExcelExport(SimulationManager simulationManager, File file) {
 
 		/* Activity Chart */
@@ -62,7 +44,6 @@ public class ExcelExport {
 		}
 		
 		// Configuration du graphique
-        String title = "Activité du robot";
         NumberAxis xAxis = new NumberAxis("Temps (en seconde)");
         xAxis.setAutoRangeIncludesZero(false);
         NumberAxis yAxis = new NumberAxis("Nombre d'actions en attente");
@@ -111,7 +92,6 @@ public class ExcelExport {
 	    }
 	    consumptionResult.addSeries(series);
 
-	    title = "Activité du robot";
         xAxis = new NumberAxis("Temps (en seconde)");
         xAxis.setAutoRangeIncludesZero(false);
         yAxis = new NumberAxis("Consommation (en Watt)");
@@ -150,7 +130,7 @@ public class ExcelExport {
 		/* Order Chart */
 		HashMap<Long, Integer> dataChartOrder = simulationManager.getDataOrder();
         XYSeriesCollection orderResult = new XYSeriesCollection();
-		series = new XYSeries("Consommation totale");
+		series = new XYSeries("Consommation");
 		it = dataChartOrder.entrySet().iterator();
 	    while (it.hasNext()) {
 	    	Entry<Long, Integer> e = it.next();
@@ -158,7 +138,6 @@ public class ExcelExport {
 	    }
 	    orderResult.addSeries(series);
 
-	    title = "Commande traitée";
         xAxis = new NumberAxis("Temps (en seconde)");
         xAxis.setAutoRangeIncludesZero(false);
         yAxis = new NumberAxis("Commande traitée");
@@ -171,7 +150,7 @@ public class ExcelExport {
         plot.setRangeGridlinePaint(Color.white);
         plot.setAxisOffset(new RectangleInsets(4, 4, 4, 4));
 
-        chart = new JFreeChart("Commande",JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+        chart = new JFreeChart("Commandes",JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		chart.addSubtitle(new TextTitle(simulationManager.getiAlgStore().getClass().getSimpleName().replace("Alg", "").replace("Store", "Stockage ")+" - "+simulationManager.getiAlgDestocking().getClass().getSimpleName().replace("Alg", "").replace("Destocking", "Destockage ")+" - "+simulationManager.getiAlgMove().getClass().getSimpleName().replace("Alg", "").replace("Move", "Déplacement ")));
 		chart.addSubtitle(new TextTitle("Nombre de commande traitée : "+simulationManager.getOrdersDoneCount()));
 		chart.addSubtitle(new TextTitle("Temps de traitement moyen par commande : "+(simulationManager.getAverageOrderProcessingTime() / 1000) / 60 + "min " + (simulationManager.getAverageOrderProcessingTime() / 1000) % 60 + "s"));

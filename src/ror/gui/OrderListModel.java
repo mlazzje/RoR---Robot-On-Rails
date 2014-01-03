@@ -4,8 +4,6 @@ import java.util.Collections;
 
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
 /**
  * OrderListModel class Represent the OrderList Model
  */

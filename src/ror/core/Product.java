@@ -1,7 +1,6 @@
 package ror.core;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Product {
 

@@ -5,8 +5,6 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
-
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;

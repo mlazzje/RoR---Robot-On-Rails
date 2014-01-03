@@ -2,11 +2,8 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 
-import ror.core.Drawer;
 import ror.core.Order;
 import ror.core.Product;
-import ror.core.Robot;
-import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.algo.IAlgDestocking;
 

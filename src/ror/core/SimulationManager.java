@@ -483,7 +483,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	 * Set end of simulation
 	 */
 	public void setEndSimulation() {
-		coeff = 0;
+		setCoeff(0);
 		this.setPlay();
 	}
 
@@ -610,5 +610,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	public Thread robotThread(Robot r) {
 		return this.robotThreads.get(SimulationManager.this.robots.indexOf(r));
+	}
+
+	public Integer getCoeff() {
+		return coeff;
+	}
+
+	public void setCoeff(Integer coeff) {
+		this.coeff = coeff;
 	}
 }

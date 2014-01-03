@@ -8,7 +8,6 @@ import ror.core.Drawer;
 import ror.core.Map;
 import ror.core.Order;
 import ror.core.Product;
-import ror.core.actions.Action;
 import ror.core.actions.StoreAction;
 
 public class AlgStoreOrder implements IAlgStore {
@@ -222,9 +221,5 @@ public class AlgStoreOrder implements IAlgStore {
     }
 
     public void printBookedDrawersInColumn(Column col, int i) {
-	for (Drawer d : col.getDrawerList()) {
-	    //System.out.println("drawer status : "+d.getStatus()+" in "+col);
-	}
-	//System.out.println("Nb drawers to book "+i);
     }
 }

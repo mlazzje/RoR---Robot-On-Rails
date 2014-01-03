@@ -2,8 +2,6 @@ package ror.core.algo;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 import ror.core.Map;
 import ror.core.Rail;
 import ror.core.Robot;

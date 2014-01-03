@@ -17,8 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import com.sun.corba.se.impl.orbutil.concurrent.Sync;
-
 import ror.core.Column;
 import ror.core.Drawer;
 import ror.core.ExcelExport;
