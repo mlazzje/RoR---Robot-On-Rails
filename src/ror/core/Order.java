@@ -352,4 +352,24 @@ public class Order implements Comparable<Order> {
 	public static void resetLastId() {
 		Order.lastIdOrder = 0;
 	}
+	
+	/*
+	 * Method use for AlgoDestocking order.
+	 * 
+	 * Return true if all Drawers of order (booked in algoStoreOrder) are full (with a product), else return false
+	 */
+	public boolean isReadyForDestocking() {
+	    int nbDrawerFull=0;
+	    for (Drawer d : this.getDrawers()) {
+		if(d.getProduct()!=null) {
+		    nbDrawerFull++;
+		}
+	    }
+	    if(nbDrawerFull==this.getDrawers().size()) {
+		return true;
+	    }
+	    else {
+		return false;
+	    }
+	}
 }
