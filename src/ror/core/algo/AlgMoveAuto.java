@@ -14,6 +14,14 @@ public class AlgMoveAuto implements IAlgMove {
 	public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
 		final int limit = 15;
 		int robotActions = 0;
+
+		if(newDestockActions == null) {
+		    newDestockActions = new ArrayList<DestockingAction>();
+		}
+		if(newStoreActions == null) {
+		    newStoreActions = new ArrayList<StoreAction>();
+		}
+		
 		// Count robot actions
 		for (Robot robot : robots) {
 			for (Action act : robot.getActions()) {
