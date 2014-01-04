@@ -262,6 +262,7 @@ public class RoRFrame extends JFrame {
 	this.startButton = new StartButton();
 	this.menuBar.add(this.startButton);
 	this.acceleratedButton = new AcceleratedButton();
+	this.acceleratedButton.setEnabled(false);
 	this.menuBar.add(this.acceleratedButton);
 	this.stopButton = new StopButton();
 	this.menuBar.add(this.stopButton);

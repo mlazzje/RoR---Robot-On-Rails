@@ -381,13 +381,20 @@ public class UIController implements Observer {
 	 */
 	public void setFile(File file) {
 		simulationManager.setFile(file);
+		simulationManager.setSource(true); // Passage en mode scénario
+		this.rorFrame.getAcceleratedButton().setEnabled(true);
+		this.rorFrame.getRandomCheckBox().setEnabled(true);
 	}
 
 	/**
 	 * Set random mode
 	 */
 	public void setRandomMode() {
-		simulationManager.setRandomMode();
+	    // Scénario
+	    if(simulationManager.getSource()) {
+		simulationManager.setSource(false); // Passage en mode random
+		this.rorFrame.getAcceleratedButton().setEnabled(false);
+	    }
 	}
 
 	/**

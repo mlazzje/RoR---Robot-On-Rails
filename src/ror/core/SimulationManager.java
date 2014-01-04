@@ -475,8 +475,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     /**
      * Set random mode
      */
-    public void setRandomMode() {
-	source = false;
+    public void setSource(boolean mode) {
+	source = mode;
     }
 
     /**
