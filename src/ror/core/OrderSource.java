@@ -215,7 +215,8 @@ public class OrderSource {
 	 */
 	public void setScenarioFile(File scenarioFile) {
 		System.out.println("Chargement fichier scenario");
-
+		this.orders.clear();
+		this.products.clear();
 		this.scenarioFile = scenarioFile;
 
 		// XML SAX parsing
