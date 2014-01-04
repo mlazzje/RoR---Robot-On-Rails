@@ -1,7 +1,6 @@
 package ror.core;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -301,6 +300,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		dataOrder.put(uptime, this.getOrdersDoneCount());
 		dataOrderTotal.put(uptime, this.orders.size());
 
+		if(orderSource.isFinished() && this.getOrdersNotDone().size() == 0) {
+			this.setStop();
+		}
+		
 		// sleep
 		try {
 		    long dureeTour = 1000; // 1seconde
@@ -475,8 +478,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set random mode
      */
     public void setSource(boolean mode) {
-	Order.resetLastId();
-	source = mode;
+		Order.resetLastId();
+		if(!mode) {
+			orderSource.setScenarioFile(null);
+		}
+		source = mode;
     }
 
     /**
