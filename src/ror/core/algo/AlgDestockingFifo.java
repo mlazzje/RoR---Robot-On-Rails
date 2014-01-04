@@ -10,7 +10,7 @@ import ror.core.algo.IAlgDestocking;
 public class AlgDestockingFifo implements IAlgDestocking {
 
     @Override
-    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts) {
+    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts, IAlgStore algo) {
 
 	ArrayList<DestockingAction> actions = new ArrayList<DestockingAction>();
 	ArrayList<DestockingAction> actionsToSend = new ArrayList<DestockingAction>();

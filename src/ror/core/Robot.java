@@ -240,6 +240,7 @@ public class Robot extends Observable implements Runnable {
 
 	    Robot.this.addProduct(product);
 	    drawer.setProduct(null); // status is set to free in setProduct
+	    drawer.setStatus(Drawer.FREE);
 	    product.setDrawer(null); // on supprime le tiroir au produit
 
 	} else if (action instanceof InputAction) {

@@ -281,7 +281,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 				ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, this.getOrdersNotDone(), SimulationManager.this.map);
 
-				ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
+				ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts, this.iAlgStore);
 
 				SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 

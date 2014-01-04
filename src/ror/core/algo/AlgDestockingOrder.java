@@ -11,7 +11,7 @@ import ror.core.algo.IAlgDestocking;
 public class AlgDestockingOrder implements IAlgDestocking {
 
     @Override
-    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts) {
+    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts, IAlgStore algo) {
 
 	ArrayList<DestockingAction> actions = new ArrayList<DestockingAction>();
 	ArrayList<DestockingAction> actionsToSend = new ArrayList<DestockingAction>();
@@ -31,7 +31,8 @@ public class AlgDestockingOrder implements IAlgDestocking {
 	for (Order currentOrder : orders) {
 	    // On réinitialise les actions
 	    actions.clear();
-	    // IF algo stckage FIFO 
+	    if(algo.getClass().getSimpleName().equals("AlgStoreFifo")) {
+		//System.out.println("AlgoStoreFifo");
         	    // On ne prend en compte que les commandes initialisées ou encore en attente de produits
         	    if (currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
         		// On ne fait de traitement que si le stock contient tous les produits de la commande
@@ -65,7 +66,9 @@ public class AlgDestockingOrder implements IAlgDestocking {
         		}
         	    }
         // ELSE
-        	    /*if (currentOrder.isReadyForDestocking()) {
+	    } else {
+		    //System.out.println("AlgoStoreOrder");
+        	    if (currentOrder.isReadyForDestocking() && currentOrder.getStatus()!=Order.READY_FOR_DESTOCKING && currentOrder.getStatus()!=Order.DONE) {
         		for( Drawer d : currentOrder.getDrawers()) {
         		    Product currentProduct = d.getProduct();
         		    if(currentProduct==null) {
@@ -77,7 +80,8 @@ public class AlgDestockingOrder implements IAlgDestocking {
         		}
         		currentOrder.setStatus(Order.READY_FOR_DESTOCKING);
     		    	actionsToSend.addAll(actions);
-        	    }*/
+        	    }
+	    }
 	}
 	return actionsToSend;
     }

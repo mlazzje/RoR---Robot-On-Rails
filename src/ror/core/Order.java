@@ -365,7 +365,7 @@ public class Order implements Comparable<Order> {
 		    nbDrawerFull++;
 		}
 	    }
-	    if(nbDrawerFull==this.getDrawers().size()) {
+	    if(nbDrawerFull==this.getProductsName().size()) {
 		return true;
 	    }
 	    else {

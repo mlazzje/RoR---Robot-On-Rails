@@ -7,6 +7,6 @@ import ror.core.Product;
 import ror.core.actions.DestockingAction;
 
 public interface IAlgDestocking {
-    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts);
+    public ArrayList<DestockingAction> getActions(ArrayList<Order> orders, ArrayList<Product> stockProducts, IAlgStore algo);
 
 }
