@@ -69,6 +69,22 @@ public class UIController implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// Mise à jour de la zone d'informations
+		if(this.simulationManager.getStatus() == this.simulationManager.STOPPED) {
+			// Proposition d'export Excel
+			int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
+			if (n == 0) {
+				JFileChooser fc = new JFileChooser();
+				int ret = fc.showSaveDialog(this.rorFrame);
+
+				if (ret == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					new ExcelExport(this.simulationManager, file);
+					System.out.println(file);
+				}
+			}
+			return;
+		}
+		
 		// Input
 		if (o instanceof Input) {
 			Input input = (Input) o;
@@ -363,6 +379,8 @@ public class UIController implements Observer {
 	 */
 	public void setEndSimulation() {
 		simulationManager.setEndSimulation();
+		ProgressBox pbox = new ProgressBox(this.rorFrame);
+		System.out.println(pbox);
 	}
 
 	/**
@@ -403,24 +421,8 @@ public class UIController implements Observer {
 	public void stopSimulation() {
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 		this.rorFrame.getStartButton().setIcon(icon);
-		int lastStatus = this.simulationManager.getStatus();
 		simulationManager.setStop();
 		this.thread = null;
-
-		// Proposition d'export Excel
-		if (lastStatus != 0) {
-			int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
-			if (n == 0) {
-				JFileChooser fc = new JFileChooser();
-				int ret = fc.showSaveDialog(this.rorFrame);
-
-				if (ret == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					new ExcelExport(this.simulationManager, file);
-					System.out.println(file);
-				}
-			}
-		}
 	}
 
 	/**
