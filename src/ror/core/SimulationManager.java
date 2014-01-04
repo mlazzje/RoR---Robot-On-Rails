@@ -303,11 +303,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    long dureeTour=1000; //1seconde
-		    long pause = (long) ((long)(dureeTour - (System.currentTimeMillis() - startTime))/speed);
-		    
+		    long dureeTour = 1000; // 1seconde
+		    long pause = (long) ((long) (dureeTour - (System.currentTimeMillis() - startTime)) / speed);
+
 		    Thread.sleep(pause);
-			
+
 		    uptime += dureeTour;
 
 		} catch (InterruptedException e) {
@@ -331,10 +331,33 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	System.out.println("Simulation terminée");
 
+    }
+
+    /**
+     * @return map
+     */
+    public Map getMap() {
+	return map;
+    }
+
+    /**
+     * Set stop
+     */
+    public void setStop() {
+	this.status = SimulationManager.STOPPED;
 	// mise en pause des robots
 	for (Robot r : this.robots) {
 	    r.stopTimerTask();
 	}
+
+	this.setChanged();
+	this.notifyObservers();
+
+	this.map.getInput().clearProducts();
+	this.map.getOutput().clearProducts();
+	this.setNewLogs(new ArrayList<String>());
+	this.orderSource = new OrderSource();
+	this.stockProducts = new ArrayList<Product>();
 
 	// Suppression des robots des rails
 	for (Robot r : this.robots) {
@@ -352,30 +375,6 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    }
 	}
 
-	// suprresion des produits en entree et sortie
-	this.map.getInput().getProductList().clear();
-	this.map.getOutput().getProductList().clear();
-    }
-
-    /**
-     * @return map
-     */
-    public Map getMap() {
-	return map;
-    }
-
-    /**
-     * Set stop
-     */
-    public void setStop() {
-	this.status = SimulationManager.STOPPED;
-	this.setChanged();
-	this.notifyObservers();
-	this.map.getInput().clearProducts();
-	this.map.getOutput().clearProducts();
-	this.setNewLogs(new ArrayList<String>());
-	this.orderSource = new OrderSource();
-	this.stockProducts = new ArrayList<Product>();
 	Order.resetLastId();
     }
 
@@ -476,6 +475,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set random mode
      */
     public void setSource(boolean mode) {
+	Order.resetLastId();
 	source = mode;
     }
 
@@ -631,7 +631,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	synchronized (this.orders) {
 	    copyOrders = new ArrayList<Order>(this.orders);
 	}
-	
+
 	for (Order order : copyOrders) {
 	    if (order.getStatus() == Order.DONE)
 		count++;
