@@ -227,15 +227,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		if (wasInPause) {
 		    for (Robot r : this.robots) {
 			synchronized (r) {
-
 			    r.notify();
 			}
-
 		    }
 		    wasInPause = false;
 		}
 
-		// on reveille les robots qui sont en veille et qui ont des actions a effectué
+		// on reveille les robots qui sont en veille et qui ont des actions a effectuer
 		for (Robot r : this.robots) {
 		    synchronized (r.getStatus()) {
 			if (r.getStatus() == Robot.STATUS_SLEEPING && r.getActions().size() > 0) {
@@ -253,15 +251,20 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    newOrders = SimulationManager.this.orderSource.getRandomOrders();
 		    for (Order order : newOrders)
 			order.setProcessingTime(this.getUptime());
-		    SimulationManager.this.orders.addAll(newOrders);
+		    synchronized (SimulationManager.this.orders) {
+			SimulationManager.this.orders.addAll(newOrders);
+		    }
 		    if (this.map.getInput().getProductList().size() < 2)
-			newProducts = SimulationManager.this.orderSource.getRandomProducts(SimulationManager.this.orders, SimulationManager.this.stockProducts);
+			newProducts = SimulationManager.this.orderSource.getRandomProducts(this.getOrdersNotDone(), SimulationManager.this.stockProducts);
 		} else // scenario mode
 		{
 		    newOrders = SimulationManager.this.orderSource.getScenarioOrders(SimulationManager.this.getUptime());
 		    for (Order order : newOrders)
 			order.setProcessingTime(this.getUptime());
-		    SimulationManager.this.orders.addAll(newOrders);
+
+		    synchronized (SimulationManager.this.orders) {
+			SimulationManager.this.orders.addAll(newOrders);
+		    }
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
 		    /*
@@ -276,8 +279,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    }
 		}
 
-		// TODO passer en paramètre que les Orders en cours, non celles terminées
-		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, SimulationManager.this.getOrders(), SimulationManager.this.map);
+		ArrayList<StoreAction> newStoreActions = SimulationManager.this.iAlgStore.getActions(newProducts, this.getOrdersNotDone(), SimulationManager.this.map);
 
 		ArrayList<DestockingAction> newDestockActions = SimulationManager.this.iAlgDestocking.getActions(this.orders, stockProducts);
 
@@ -428,6 +430,19 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    this.setChanged();
 	    this.notifyObservers();
 	}
+    }
+
+    public ArrayList<Order> getOrdersNotDone() {
+	ArrayList<Order> returnedOrders = new ArrayList<Order>();
+	synchronized (this.orders) {
+	    for (Order o : this.orders) {
+		if (o.getStatus() != Order.DONE) {
+		    returnedOrders.add(o);
+		}
+
+	    }
+	}
+	return returnedOrders;
     }
 
     /**
