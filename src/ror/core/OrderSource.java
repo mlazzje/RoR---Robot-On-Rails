@@ -218,7 +218,9 @@ public class OrderSource {
 		this.orders.clear();
 		this.products.clear();
 		this.scenarioFile = scenarioFile;
-
+		if(scenarioFile == null) {
+			return;
+		}
 		// XML SAX parsing
 		Document document = null;
 		Element racine;
