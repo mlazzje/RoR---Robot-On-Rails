@@ -303,6 +303,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		// sleep
 		try {
 		    long pause = (long) (500);
+		    // System.out.println(pause);
 		    Thread.sleep(pause);
 
 		    long duree = (long) ((System.currentTimeMillis() - startTime) / (SimulationManager.this.speed + (long) 0.5)) - pause;
@@ -587,7 +588,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	if (orders.size() > 0) {
 	    long count = 0;
 	    int orderCount = 0;
-	    for (Order order : this.orders) {
+	    ArrayList<Order> copyOrders;
+	    synchronized (this.orders) {
+		copyOrders = new ArrayList<Order>(this.orders);
+	    }
+	    for (Order order : copyOrders) {
 		if (order.getStatus() == Order.DONE) {
 		    orderCount++;
 		    count += order.getProcessingTime();

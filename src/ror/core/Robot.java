@@ -5,6 +5,10 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.text.DefaultEditorKit.CopyAction;
+
+import com.sun.corba.se.spi.copyobject.CopierManager;
+
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
@@ -195,7 +199,6 @@ public class Robot extends Observable implements Runnable {
 	    this.setOrderInProgress(null);
 	    this.rail.setRobot(null);
 	    this.rail.lock.unlock();
-	    // System.out.println(this + " unlock " + this.rail + this.rail.lock.isLocked());
 	    if (((MoveAction) action).getNext() != null)
 		Robot.this.rail = ((MoveAction) action).getNext();
 	    Robot.this.rail.setRobot(Robot.this);
@@ -418,26 +421,29 @@ public class Robot extends Observable implements Runnable {
      */
     public Rail getLastActionRail() {
 	Action lastAction;
+	ArrayList<Action> copyActions;
 	synchronized (this.actions) {
+	    copyActions = new ArrayList<Action>(this.actions);
+	}
 
-	    if (this.actions.size() > 0) {
-		lastAction = this.actions.get(this.actions.size() - 1);
+	if (copyActions.size() > 0) {
+	    lastAction = copyActions.get(copyActions.size() - 1);
 
-		if (lastAction instanceof MoveAction) {
-		    return ((MoveAction) lastAction).getNext();
-		} else if (lastAction instanceof StoreAction) {
-		    return ((StoreAction) lastAction).getDrawer().getColumn().getAccess();
-		} else if (lastAction instanceof DestockingAction) {
-		    return ((DestockingAction) lastAction).getDrawer().getColumn().getAccess();
-		} else if (lastAction instanceof OutputAction) {
-		    return ((OutputAction) lastAction).getOutput().getAccess();
-		} else if (lastAction instanceof InputAction) {
-		    return ((InputAction) lastAction).getInput().getAccess();
-		} else
-		    return this.rail;
+	    if (lastAction instanceof MoveAction) {
+		return ((MoveAction) lastAction).getNext();
+	    } else if (lastAction instanceof StoreAction) {
+		return ((StoreAction) lastAction).getDrawer().getColumn().getAccess();
+	    } else if (lastAction instanceof DestockingAction) {
+		return ((DestockingAction) lastAction).getDrawer().getColumn().getAccess();
+	    } else if (lastAction instanceof OutputAction) {
+		return ((OutputAction) lastAction).getOutput().getAccess();
+	    } else if (lastAction instanceof InputAction) {
+		return ((InputAction) lastAction).getInput().getAccess();
 	    } else
 		return this.rail;
-	}
+	} else
+	    return this.rail;
+
     }
 
     /**
@@ -473,22 +479,25 @@ public class Robot extends Observable implements Runnable {
     public Rail getOpositeRailAtNextIntersection() {
 	Rail intersectionRail = null;
 	MoveAction lastAction = null;
+
+	ArrayList<Action> copyActions;
 	synchronized (this.actions) {
-	    // Parcours des actions
+	    copyActions = new ArrayList<Action>(this.actions);
+	}
+	// Parcours des actions
 
-	    for (Action action : this.actions) {
-		if (action instanceof MoveAction) {
-		    intersectionRail = ((MoveAction) action).getNext();
+	for (Action action : copyActions) {
+	    if (action instanceof MoveAction) {
+		intersectionRail = ((MoveAction) action).getNext();
 
-		    // Le rail est une intersection
-		    if (intersectionRail.getLeftRail() != null && rail.getRightRail() != null) {
-			if (intersectionRail.getLeftRail() == ((MoveAction) action).getNext())
-			    return intersectionRail.getRightRail();
-			else
-			    return intersectionRail.getLeftRail();
-		    }
-		    lastAction = (MoveAction) action;
+		// Le rail est une intersection
+		if (intersectionRail.getLeftRail() != null && rail.getRightRail() != null) {
+		    if (intersectionRail.getLeftRail() == ((MoveAction) action).getNext())
+			return intersectionRail.getRightRail();
+		    else
+			return intersectionRail.getLeftRail();
 		}
+		lastAction = (MoveAction) action;
 	    }
 	}
 
@@ -515,15 +524,12 @@ public class Robot extends Observable implements Runnable {
 
 	System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
 
-	// System.out.println("#test 1");
 	// si le robot qui bloque n'a pas prévu d'avancer
 	if (blockingRobot.willMove() == false) {
-	    // System.out.println("#test 2");
 
 	    // on fait avancer le robot jusqu'à la prochaine intersection ou jusqu'au rail suivant
 	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(blockingRobot.getLastActionRail(), this.getOpositeRailAtNextIntersection()));
 	    blockingRobot.getActions().addAll(movesBlockingRobot);
-	    // System.out.println("#test 3");
 
 	}
 	// si le robot dort on le reveille
@@ -531,11 +537,11 @@ public class Robot extends Observable implements Runnable {
 
 	    if (blockingRobot.getStatus() == Robot.STATUS_SLEEPING) {
 		synchronized (blockingRobot) {
-		    // System.out.println("#test 5");
 		    blockingRobot.notify();
 		}
 	    }
 	}
+
     }
 
     public boolean willMove() {
@@ -560,7 +566,6 @@ public class Robot extends Observable implements Runnable {
 
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
 	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED || simulationStatus == SimulationManager.STOPPED) {
-		//System.out.println(this + " rentre en veille");
 
 		// maj du status si pas d'actions
 		synchronized (this.status) {
@@ -574,37 +579,37 @@ public class Robot extends Observable implements Runnable {
 		    } catch (InterruptedException e) {
 			e.printStackTrace();
 		    }
-		    // System.out.println(this + " sors de veille");
 		}
 
 		synchronized (this.status) {
 		    this.status = Robot.STATUS_RUNNING;
 		}
 	    } else {
-		synchronized (this.actions) {
-		    if (this.actions.get(0) instanceof MoveAction) {
-			MoveAction move = (MoveAction) this.actions.get(0);
-			Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
+		if (this.actions.get(0) instanceof MoveAction) {
+		    MoveAction move = (MoveAction) this.actions.get(0);
+		    Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
 
-			if (blockingRobot != null) {
-			    this.moveBlockingRobot(blockingRobot);
-			}
-			Rail r = move.getNext();
-			// System.out.println(this + " essaye de locker " + r);
-			r.lock.lock();
-			// System.out.println(this + " a locké " + r);
+		    if (blockingRobot != null) {
+			this.moveBlockingRobot(blockingRobot);
 		    }
-
-		    // execution de la prochaine action
-		    Action a = this.actions.get(0);
-		    a.setDuration((int) (1000 * this.simulationManager.getSpeed()));
-		    this.executeAction(a);
-		    this.setChanged();
-		    this.notifyObservers();
-		    this.actions.remove(0);
-		    // System.out.println(this + " end action " + a.getClass().getSimpleName());
-
+		    Rail r = move.getNext();
+		    r.lock.lock();
 		}
+		// execution de la prochaine action
+		Action a;
+		synchronized (this.actions) {
+		    a = this.actions.get(0);
+		}
+		a.setDuration((int) (1000 * this.simulationManager.getSpeed()));
+
+		this.executeAction(a);
+
+		this.setChanged();
+		this.notifyObservers();
+		synchronized (this.actions) {
+		    this.actions.remove(0);
+		}
+
 	    }
 
 	} while (true);
