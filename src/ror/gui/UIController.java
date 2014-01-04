@@ -254,7 +254,7 @@ public class UIController implements Observer {
 	// Mise à jours de la liste des logs
 	ArrayList<String> newLogs;
 	synchronized (simulationManager.getNewLogs()) {
-	    newLogs = simulationManager.getNewLogs();
+	    newLogs = new ArrayList<String>(simulationManager.getNewLogs());
 	}
 	
 	DefaultListModel<String> model = (DefaultListModel<String>) this.rorFrame.getLogList().getModel();
