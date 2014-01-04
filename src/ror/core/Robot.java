@@ -5,10 +5,6 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.text.DefaultEditorKit.CopyAction;
-
-import com.sun.corba.se.spi.copyobject.CopierManager;
-
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
