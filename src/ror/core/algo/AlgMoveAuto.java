@@ -11,48 +11,55 @@ import ror.core.actions.MoveAction;
 import ror.core.actions.StoreAction;
 
 public class AlgMoveAuto implements IAlgMove {
-	public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
-		final int limit = 15;
-		int robotActions = 0;
+    public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
+	final int limit = 15;
+	int robotActions = 0;
 
-		if(newDestockActions == null) {
-		    newDestockActions = new ArrayList<DestockingAction>();
-		}
-		if(newStoreActions == null) {
-		    newStoreActions = new ArrayList<StoreAction>();
-		}
-		
-		// Count robot actions
-		for (Robot robot : robots) {
-			for (Action act : robot.getActions()) {
-				if (act instanceof DestockingAction || act instanceof StoreAction) {
-					robotActions++;
-				}
-			}
-		}
-		// Fast
-		if ((newDestockActions.size() + newStoreActions.size() + robotActions) >= limit) {
-			new AlgMoveFast().updateRobotsActions(newDestockActions, newStoreActions, robots, map);
-		}
-		// Eco
-		else {
-			new AlgMoveEco().updateRobotsActions(newDestockActions, newStoreActions, robots, map);
-		}
+	if (newDestockActions == null) {
+	    newDestockActions = new ArrayList<DestockingAction>();
+	}
+	if (newStoreActions == null) {
+	    newStoreActions = new ArrayList<StoreAction>();
 	}
 
-	public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
-		if (rails.isEmpty())
-			return new ArrayList<MoveAction>();
+	// Count robot actions
 
-		ArrayList<MoveAction> moves = new ArrayList<MoveAction>();
-		Rail previous = rails.get(0);
-		for (Rail rail : rails) {
-			if (rails.get(0) == rail)
-				continue;
-			MoveAction move = new MoveAction(1000, null, previous, rail);
-			moves.add(move);
-			previous = rail;
+	for (Robot robot : robots) {
+	    ArrayList<Action> copyActions;
+
+	    synchronized (robot.getActions()) {
+		copyActions = new ArrayList<Action>(robot.getActions());
+	    }
+	    
+	    for (Action act : copyActions) {
+		if (act instanceof DestockingAction || act instanceof StoreAction) {
+		    robotActions++;
 		}
-		return moves;
+	    }
 	}
+	// Fast
+	if ((newDestockActions.size() + newStoreActions.size() + robotActions) >= limit) {
+	    new AlgMoveFast().updateRobotsActions(newDestockActions, newStoreActions, robots, map);
+	}
+	// Eco
+	else {
+	    new AlgMoveEco().updateRobotsActions(newDestockActions, newStoreActions, robots, map);
+	}
+    }
+
+    public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
+	if (rails.isEmpty())
+	    return new ArrayList<MoveAction>();
+
+	ArrayList<MoveAction> moves = new ArrayList<MoveAction>();
+	Rail previous = rails.get(0);
+	for (Rail rail : rails) {
+	    if (rails.get(0) == rail)
+		continue;
+	    MoveAction move = new MoveAction(1000, null, previous, rail);
+	    moves.add(move);
+	    previous = rail;
+	}
+	return moves;
+    }
 }
