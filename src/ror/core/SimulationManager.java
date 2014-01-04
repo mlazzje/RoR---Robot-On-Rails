@@ -1,6 +1,7 @@
 package ror.core;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -62,7 +63,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     /**
      * Speed
      */
-    private Float speed = (float) 0.5;
+    private Float speed = (float) 1;
     /**
      * Number of robots
      */
@@ -302,12 +303,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 		// sleep
 		try {
-		    long pause = (long) (500);
-		    // System.out.println(pause);
+		    long dureeTour=1000; //1seconde
+		    long pause = (long) ((long)(dureeTour - (System.currentTimeMillis() - startTime))/speed);
+		    
 		    Thread.sleep(pause);
-
-		    long duree = (long) ((System.currentTimeMillis() - startTime) / (SimulationManager.this.speed + (long) 0.5)) - pause;
-		    uptime += duree;
+			
+		    uptime += dureeTour;
 
 		} catch (InterruptedException e) {
 		    e.printStackTrace();
@@ -319,9 +320,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    r.stopTimerTask();
 		}
 		try {
-
 		    synchronized (this) {
-
 			this.wait();
 		    }
 		} catch (InterruptedException e) {
@@ -496,7 +495,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * @param speed
      */
     public void setSpeed(Float speed) {
-	this.speed = (speed >= 0) ? speed : 0.0f;
+	speed = (speed >= 0) ? speed : 0.0f;
+	this.speed = 1 + (speed / 100);
     }
 
     /**
@@ -570,7 +570,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      */
     public int getAverageConsumption() {
 	int count = 0;
-	for (Order order : this.orders) {
+	ArrayList<Order> copyOrders;
+	synchronized (this.orders) {
+	    copyOrders = new ArrayList<Order>(this.orders);
+	}
+	for (Order order : copyOrders) {
 	    if (order.getStatus() != Order.INIT)
 		count++;
 	}
@@ -622,7 +626,13 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      */
     public int getOrdersDoneCount() {
 	int count = 0;
-	for (Order order : this.orders) {
+
+	ArrayList<Order> copyOrders;
+	synchronized (this.orders) {
+	    copyOrders = new ArrayList<Order>(this.orders);
+	}
+	
+	for (Order order : copyOrders) {
 	    if (order.getStatus() == Order.DONE)
 		count++;
 	}

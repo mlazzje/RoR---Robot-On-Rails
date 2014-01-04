@@ -600,7 +600,7 @@ public class Robot extends Observable implements Runnable {
 		synchronized (this.actions) {
 		    a = this.actions.get(0);
 		}
-		a.setDuration((int) (1000 * this.simulationManager.getSpeed()));
+		a.setDuration((int) (1000 / this.simulationManager.getSpeed()));
 
 		this.executeAction(a);
 
