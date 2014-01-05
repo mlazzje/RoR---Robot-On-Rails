@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.swing.UIManager;
 
 import ror.core.Column;
@@ -93,8 +94,8 @@ public class UIController implements Observer {
 		    }
 		}
 		this.thread=null;
-		//TODO PJ effacer la loglist
-		
+		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
+		logModel.clear();
 		return;
 	    }
 	}
