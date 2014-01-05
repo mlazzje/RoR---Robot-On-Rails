@@ -79,15 +79,14 @@ public class UIController implements Observer {
 	    int val = this.simulationManager.getOrdersDoneCount();
 	    int pourcent = 0;
 	    if (total > 0) {
-		pourcent =(int)((val * 100.0f) / total);
+		pourcent = (int) ((val * 100.0f) / total);
 	    }
 	    this.progressBox.setProgressValue(pourcent);
-	    if(this.simulationManager.getStatus() != this.simulationManager.STOPPED)
+	    if (this.simulationManager.getStatus() != this.simulationManager.STOPPED)
 		return;
-	    else
-	    {
+	    else {
 		this.progressBox.dispose();
-		this.progressBox=null;
+		this.progressBox = null;
 	    }
 	}
 
@@ -98,7 +97,7 @@ public class UIController implements Observer {
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 		this.rorFrame.getStartButton().setIcon(icon);
 
-		// Proposition d'export 
+		// Proposition d'export
 		int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
 		if (n == 0) {
 		    JFileChooser fc = new JFileChooser();
@@ -110,10 +109,10 @@ public class UIController implements Observer {
 			System.out.println(file);
 		    }
 		}
-		this.thread=null;
+		this.thread = null;
 		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
-		logModel.clear();		
-		
+		logModel.clear();
+
 		rorFrame.getAlgDestockingComboBox().setEnabled(true);
 		rorFrame.getAlgStoreComboBox().setEnabled(true);
 		rorFrame.getAlgMoveComboBox().setEnabled(true);
@@ -121,12 +120,11 @@ public class UIController implements Observer {
 		rorFrame.getRandomCheckBox().setEnabled(true);
 		rorFrame.getImportButton().setEnabled(true);
 		rorFrame.getRandomCheckBox().setSelected(true);
-		
+
 		return;
 	    }
 	}
-	
-	
+
 	// Input
 	if (o instanceof Input) {
 	    Input input = (Input) o;
@@ -310,18 +308,17 @@ public class UIController implements Observer {
 	((OrderListModel) this.rorFrame.getOrderList().getModel()).fireTableDataChanged();
 
 	// Mise à jours de la liste des logs
+	ArrayList<String> newLogs;
+
 	synchronized (simulationManager.getNewLogs()) {
-
-	    ArrayList<String> newLogs = simulationManager.getNewLogs();
-	    DefaultListModel<String> model = (DefaultListModel<String>) this.rorFrame.getLogList().getModel();
-	    for (String log : newLogs) {
-		// model.addElement(log);
-		model.add(0, log);
-	    }
-	    this.rorFrame.getLogList().setModel(model);
-	    simulationManager.setNewLogs(new ArrayList<String>());
-
+	    newLogs = new ArrayList<String>(simulationManager.getNewLogs());
 	}
+
+	DefaultListModel<String> model = (DefaultListModel<String>) this.rorFrame.getLogList().getModel();
+	for (String log : newLogs) {
+	    model.add(0, log);
+	}
+	simulationManager.setNewLogs(new ArrayList<String>());
 
 	// update total electric consumption
 	JLabel label = this.rorFrame.getTotalConsumptionLabel();
