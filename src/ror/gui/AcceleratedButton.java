@@ -29,7 +29,9 @@ public class AcceleratedButton extends JButton implements MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		if(!this.isEnabled()) {
+			return;
+		}
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
 			frame.getUiController().setEndSimulation();
