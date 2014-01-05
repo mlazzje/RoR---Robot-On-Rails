@@ -92,6 +92,10 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	 */
 	private static ImageIcon railV;
 	/**
+	 * railX
+	 */
+	private static ImageIcon railX;
+	/**
 	 * column
 	 */
 	private static ImageIcon[] column;
@@ -123,6 +127,7 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 	static {
 		try {
 			RoRElementPanel.railEmpty = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/empty.png")), size));
+			RoRElementPanel.railX = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/rail-x.png")), size));
 			RoRElementPanel.railDB = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/rail-db.png")), size));
 			RoRElementPanel.railGB = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/rail-gb.png")), size));
 			RoRElementPanel.railDH = new ImageIcon((Image) RoRElementPanel.scaleImage(ImageIO.read(RoRElementPanel.class.getResource("/ressources/rail-dh.png")), size));
@@ -220,6 +225,11 @@ public class RoRElementPanel extends JLabel implements MouseListener, Observer {
 					this.setIcon(RoRElementPanel.railDGH);
 				}
 			}
+			
+			if(rail.getLeftRail() != null && rail.getRightRail() != null && rail.getPreviousRail().size() == 2) {
+				this.setIcon(RoRElementPanel.railX);
+			}
+			
 			JLabel robotLabel = new JLabel();
 			robotLabel.setSize(new Dimension(16, 16));
 			if (((Rail) this.getRorElement()).getRobot() != null) {
