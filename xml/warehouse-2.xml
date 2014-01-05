@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<warehouse_plan width="45" height="13">
+
+	<!-- Description des lignes de rails horizontales -->
+
+	<!-- Ligne 1 découpée en 2 -->
+	<rail_row>
+		<start>
+			<x>43</x>
+			<y>0</y>
+		</start>
+		
+		<end>
+			<x>1</x>
+			<y>0</y>
+		</end>
+		<right>
+			<x>1</x>
+			<y>1</y>
+		</right>
+	</rail_row>
+
+	<!-- Ligne 2 -->
+	<rail_row>
+		<end>
+			<x>2</x>
+			<y>3</y>
+		</end>
+		<start>
+			<x>21</x>
+			<y>3</y>
+		</start>
+		<right>
+			<x>1</x>
+			<y>3</y>
+		</right>
+	</rail_row>
+
+	<rail_row>
+		<start>
+			<x>42</x>
+			<y>3</y>
+		</start>
+		<end>
+			<x>23</x>
+			<y>3</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>3</y>
+		</right>
+	</rail_row>
+
+	<!-- Ligne 3 -->
+	<rail_row>
+		<end>
+			<x>2</x>
+			<y>6</y>
+		</end>
+		<start>
+			<x>21</x>
+			<y>6</y>
+		</start>
+		<right>
+			<x>1</x>
+			<y>6</y>
+		</right>
+	</rail_row>
+
+	<rail_row>
+		<start>
+			<x>42</x>
+			<y>6</y>
+		</start>
+		<end>
+			<x>23</x>
+			<y>6</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>6</y>
+		</right>
+	</rail_row>
+
+	<!-- Ligne 4 -->
+	<rail_row>
+		<end>
+			<x>2</x>
+			<y>9</y>
+		</end>
+		<start>
+			<x>21</x>
+			<y>9</y>
+		</start>
+		<right>
+			<x>1</x>
+			<y>9</y>
+		</right>
+	</rail_row>
+
+	<rail_row>
+		<start>
+			<x>42</x>
+			<y>9</y>
+		</start>
+		<end>
+			<x>23</x>
+			<y>9</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>9</y>
+		</right>
+	</rail_row>
+
+	<!-- Ligne 5 découpée en 2-->
+	<rail_row>
+		<start>
+			<x>1</x>
+			<y>12</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>12</y>
+		</end>
+		<right>
+			<x>23</x>
+			<y>12</y>
+		</right>
+		<left>
+			<x>22</x>
+			<y>11</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>23</x>
+			<y>12</y>
+		</start>
+		<end>
+			<x>43</x>
+			<y>12</y>
+		</end>
+		<right>
+			<x>43</x>
+			<y>11</y>
+		</right>
+	</rail_row>
+
+	<!-- Description des lignes de rails verticales -->
+
+	<!-- Colonne 1 -->
+	
+	<rail_row>
+		<start>
+			<x>1</x>
+			<y>1</y>
+		</start>
+		<end>
+			<x>1</x>
+			<y>11</y>
+		</end>	
+		<right>
+			<x>1</x>
+			<y>12</y>
+		</right>
+	</rail_row>
+
+	<!-- Colonne 2 -->
+	<rail_row>
+		<start>
+			<x>22</x>
+			<y>11</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>9</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>8</y>
+		</right>
+		<left>
+			<x>21</x>
+			<y>9</y>
+		</left>
+	</rail_row>
+	<rail_row>
+		<start>
+			<x>22</x>
+			<y>8</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>6</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>5</y>
+		</right>
+		<left>
+			<x>21</x>
+			<y>6</y>
+		</left>
+	</rail_row>
+	<rail_row>
+		<start>
+			<x>22</x>
+			<y>5</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>3</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>2</y>
+		</right>
+		<left>
+			<x>21</x>
+			<y>3</y>
+		</left>
+	</rail_row>
+	<rail_row>
+		<start>
+			<x>22</x>
+			<y>2</y>
+		</start>
+		<end>
+			<x>22</x>
+			<y>1</y>
+		</end>
+		<right>
+			<x>22</x>
+			<y>0</y>
+		</right>
+	</rail_row>
+
+
+	<!-- Colonne 4 découpée en 4-->
+	<rail_row>
+		<start>
+			<x>43</x>
+			<y>11</y>
+		</start>
+		<end>
+			<x>43</x>
+			<y>9</y>
+		</end>
+		<right>
+			<x>43</x>
+			<y>8</y>
+		</right>
+		<left>
+			<x>42</x>
+			<y>9</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>43</x>
+			<y>8</y>
+		</start>
+		<end>
+			<x>43</x>
+			<y>6</y>
+		</end>
+		<right>
+			<x>43</x>
+			<y>5</y>
+		</right>
+		<left>
+			<x>42</x>
+			<y>6</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>43</x>
+			<y>5</y>
+		</start>
+		<end>
+			<x>43</x>
+			<y>3</y>
+		</end>
+		<right>
+			<x>43</x>
+			<y>2</y>
+		</right>
+		<left>
+			<x>42</x>
+			<y>3</y>
+		</left>
+	</rail_row>
+	
+	<rail_row>
+		<start>
+			<x>43</x>
+			<y>2</y>
+		</start>
+		<end>
+			<x>43</x>
+			<y>1</y>
+		</end>
+		<right>
+			<x>43</x>
+			<y>0</y>
+		</right>
+	</rail_row>
+
+	<!-- Points d'entrées et de sorties -->
+
+	<input>
+		<x>0</x>
+		<y>6</y>
+		<robot_access>
+			<x>1</x>
+			<y>6</y>
+		</robot_access>
+	</input>
+
+	<output>
+		<x>44</x>
+		<y>6</y>
+		<robot_access>
+			<x>43</x>
+			<y>6</y>
+		</robot_access>
+	</output>
+
+	<!-- Armoires -->
+
+	<!-- Armoire 1 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>1</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>1</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>2</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>2</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 2 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>4</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>4</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>5</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>5</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 3 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>7</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>7</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>8</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>8</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 4 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>10</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>10</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>2</x>
+			<y>11</y>
+		</start>
+		<end>
+			<x>21</x>
+			<y>11</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 5 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>1</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>1</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>2</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>2</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 6 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>4</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>4</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>5</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>5</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 7 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>7</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>7</y>
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>8</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>8</y>
+		</end>
+	</column_row>
+
+	<!-- Armoire 8 -->
+	<column_row>
+		<robot_access>
+		-1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>10</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>10</y>	
+		</end>
+	</column_row>
+
+	<column_row>
+		<robot_access>
+		1
+		</robot_access>
+		<start>
+			<x>23</x>
+			<y>11</y>
+		</start>
+		<end>
+			<x>42</x>
+			<y>11</y>
+		</end>
+	</column_row>
+	
+</warehouse_plan>
