@@ -30,12 +30,7 @@ public class StopButton extends JButton implements MouseListener {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
 			frame.getUiController().stopSimulation();
-			frame.getAlgDestockingComboBox().setEnabled(true);
-			frame.getAlgStoreComboBox().setEnabled(true);
-			frame.getAlgMoveComboBox().setEnabled(true);
-			frame.getRobotComboBox().setEnabled(true);
-			frame.getRandomCheckBox().setEnabled(true);
-			frame.getImportButton().setEnabled(true);
+			
 		} else {
 			System.err.println("Can't get parent RoRFrame");
 		}

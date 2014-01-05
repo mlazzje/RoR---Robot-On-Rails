@@ -15,7 +15,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 import javax.swing.UIManager;
 
 import ror.core.Column;
@@ -53,9 +52,9 @@ public class UIController implements Observer {
     private Thread thread;
 
     /**
-     * boolean
+     * ProgressBox
      */
-    private Boolean isExportDialogShown = false;
+    private ProgressBox progressBox = null;
 
     /**
      * Constructor UIController
@@ -74,14 +73,32 @@ public class UIController implements Observer {
     @SuppressWarnings("unchecked")
     @Override
     public void update(Observable o, Object arg) {
+
+	if (this.progressBox != null) {
+	    int total = this.simulationManager.getOrders().size();
+	    int val = this.simulationManager.getOrdersDoneCount();
+	    int pourcent = 0;
+	    if (total > 0) {
+		pourcent =(int)((val * 100.0f) / total);
+	    }
+	    this.progressBox.setProgressValue(pourcent);
+	    if(this.simulationManager.getStatus() != this.simulationManager.STOPPED)
+		return;
+	    else
+	    {
+		this.progressBox.dispose();
+		this.progressBox=null;
+	    }
+	}
+
 	// Mise à jour de la zone d'informations
 	synchronized (this.thread) {
 
-	    if (this.simulationManager.getStatus() == this.simulationManager.STOPPED && this.thread!=null) {
+	    if (this.simulationManager.getStatus() == this.simulationManager.STOPPED && this.thread != null) {
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 		this.rorFrame.getStartButton().setIcon(icon);
 
-		// Proposition d'export Excel
+		// Proposition d'export 
 		int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
 		if (n == 0) {
 		    JFileChooser fc = new JFileChooser();
@@ -95,11 +112,21 @@ public class UIController implements Observer {
 		}
 		this.thread=null;
 		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
-		logModel.clear();
+		logModel.clear();		
+		
+		rorFrame.getAlgDestockingComboBox().setEnabled(true);
+		rorFrame.getAlgStoreComboBox().setEnabled(true);
+		rorFrame.getAlgMoveComboBox().setEnabled(true);
+		rorFrame.getRobotComboBox().setEnabled(true);
+		rorFrame.getRandomCheckBox().setEnabled(true);
+		rorFrame.getImportButton().setEnabled(true);
+		rorFrame.getRandomCheckBox().setSelected(true);
+		
 		return;
 	    }
 	}
-
+	
+	
 	// Input
 	if (o instanceof Input) {
 	    Input input = (Input) o;
@@ -393,9 +420,8 @@ public class UIController implements Observer {
      * End simulation
      */
     public void setEndSimulation() {
+	this.progressBox = new ProgressBox(this.rorFrame);
 	simulationManager.setEndSimulation();
-	ProgressBox pbox = new ProgressBox(this.rorFrame);
-	System.out.println(pbox);
     }
 
     /**
@@ -434,7 +460,7 @@ public class UIController implements Observer {
      * Stop simulation in progress
      */
     public void stopSimulation() {
-		simulationManager.setStop();
+	simulationManager.setStop();
     }
 
     /**

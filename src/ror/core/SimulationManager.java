@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.locks.ReentrantLock;
 
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
@@ -380,6 +379,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.map.getOutput().clearProducts();
 	this.setNewLogs(new ArrayList<String>());
 	this.orderSource = new OrderSource();
+	this.source = false;
 	this.stockProducts = new ArrayList<Product>();
 	
 	// suppression des produits dans les tiroirs
@@ -533,7 +533,11 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Set end of simulation
      */
     public void setEndSimulation() {
-	setCoeff(0);
+	this.setSpeed((float) 9999);
+	for(Robot r : robots)
+	{
+	    r.deleteObservers();
+	}
 	this.setPlay();
     }
 
