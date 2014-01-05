@@ -561,6 +561,14 @@ public class Robot extends Observable implements Runnable {
 		this.rail.lock.lock();
 	    }
 
+	    // on delock le rail si la simulation est arrêtée
+	    if (simulationStatus == SimulationManager.STOPPED) {
+		if (this.rail.lock.isLocked()) {
+		    this.rail.lock.unlock();
+		    System.out.println("robot unlock son rail");
+		}
+	    }
+
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
 	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED || simulationStatus == SimulationManager.STOPPED) {
 

@@ -130,9 +130,18 @@ public class AlgMoveFast implements IAlgMove {
 		ArrayList<Rail> tmpRails = null;
 		if (copyActions.get(0) instanceof StoreAction)
 		    tmpRails = map.getPath(firstRail, ((StoreAction) action).getDrawer().getColumn().getAccess());
-		else if (copyActions.get(0) instanceof DestockingAction)
-		    tmpRails = map.getPath(firstRail, ((DestockingAction) action).getDrawer().getColumn().getAccess());
+		else if (copyActions.get(0) instanceof DestockingAction) {
 
+		    try {
+			tmpRails = map.getPath(firstRail, ((DestockingAction) action).getDrawer().getColumn().getAccess());
+		    } catch (Exception e) {
+			System.out.println(((DestockingAction) action));
+			System.out.println(((DestockingAction) action).getDrawer());
+			System.out.println(((DestockingAction) action).getDrawer().getColumn());
+			System.out.println(((DestockingAction) action).getDrawer().getColumn().getAccess());
+			e.printStackTrace();
+		    }
+		}
 		if (tmpRails != null && tmpRails.size() < rails.size()) {
 		    nextBestAction = action;
 		    rails = tmpRails;
