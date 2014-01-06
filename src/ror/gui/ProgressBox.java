@@ -14,8 +14,7 @@ public class ProgressBox extends JDialog {
     private JProgressBar progressBar;
 
     public ProgressBox(RoRFrame rorFrame) {
-	//super(rorFrame, "Calcul en cours", true);
-	super(rorFrame);
+	super(rorFrame,"Calcul en cours");
 	this.setLayout(new BorderLayout());
 	this.setAlwaysOnTop(true);
 	this.setResizable(false);
