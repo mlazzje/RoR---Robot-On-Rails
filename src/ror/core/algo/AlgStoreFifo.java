@@ -18,6 +18,9 @@ import ror.core.actions.StoreAction;
  */
 public class AlgStoreFifo implements IAlgStore {
 
+    /**
+     * @return an ArrayList of StoreAction depending of the list of inputProducts
+     */
     public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
 
 	ArrayList<StoreAction> actions = new ArrayList<StoreAction>();

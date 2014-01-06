@@ -7,6 +7,13 @@ import java.util.Collections;
 
 import ror.core.Rail;
 
+/**
+ * Vertex class : represents a vertex with some edges and a previous vertex
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-30
+ */
 class Vertex implements Comparable<Vertex> {
     public Rail rail;
     public Edge[] adjacencies;
@@ -27,6 +34,13 @@ class Vertex implements Comparable<Vertex> {
 
 }
 
+/**
+ * Edge class : represents an edge with a weight
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-30
+ */
 class Edge {
     public final Vertex target;
     public final double weight;
@@ -37,6 +51,14 @@ class Edge {
     }
 }
 
+
+/**
+ * Dijkstra class : allow to get the shortest path between two rail
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-30
+ */
 public class Dijkstra {
 
     private List<Vertex> vertices;
@@ -47,7 +69,11 @@ public class Dijkstra {
 	this.rails = rails;
 
     }
-
+    
+    /**
+     * process all vertex calcul (mindistance) from the source vertex
+     * @param source
+     */
     public void computePaths(Vertex source) {
 	source.minDistance = 0.;
 	PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
@@ -72,6 +98,11 @@ public class Dijkstra {
 	}
     }
 
+    /**
+     * 
+     * @param target
+     * @return return the shortest path to the target
+     */
     public List<Vertex> getShortestPathTo(Vertex target) {
 	List<Vertex> path = new ArrayList<Vertex>();
 	for (Vertex vertex = target; vertex != null; vertex = vertex.previous)
@@ -81,6 +112,12 @@ public class Dijkstra {
 	return path;
     }
 
+    /**
+     * 
+     * @param start
+     * @param end
+     * @return the shortestpath between two Rail
+     */
     public List<Rail> getPath(Rail start, Rail end) {
 
 	if (start.getX() == end.getX() && start.getY() == end.getY()) {
