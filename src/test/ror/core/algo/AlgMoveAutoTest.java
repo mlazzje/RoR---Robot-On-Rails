@@ -1,4 +1,4 @@
-package test.ror.core;
+package test.ror.core.algo;
 
 import static org.junit.Assert.*;
 
@@ -8,12 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ror.core.GraphicExport;
-import ror.core.SimulationManager;
+public class AlgMoveAutoTest {
 
-public class ExcelExportTest {
-
-    private GraphicExport excelExport;
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -31,7 +27,13 @@ public class ExcelExportTest {
     }
 
     @Test
-    public void testExcelExport() {
+    public void testUpdateRobotsActions() {
+	fail("Not yet implemented");
+    }
+
+    @Test
+    public void testRailsToMoveActions() {
+	fail("Not yet implemented");
     }
 
 }

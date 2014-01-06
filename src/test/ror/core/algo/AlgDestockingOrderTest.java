@@ -15,7 +15,7 @@ import com.sun.org.apache.xml.internal.resolver.Catalog;
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;
 
-public class AlgDestockingOrderTEst {
+public class AlgDestockingOrderTest {
 
     AlgDestockingOrder algDestockingOrder ;
     @BeforeClass
