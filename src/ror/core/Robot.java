@@ -10,7 +10,6 @@ import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
 import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
-import ror.core.actions.PauseAction;
 import ror.core.actions.StoreAction;
 import ror.core.Order;
 
@@ -283,10 +282,6 @@ public class Robot extends Observable implements Runnable {
 		    o.setProcessingTime(simulationManager.getUptime() - o.getProcessingTime());
 		}
 	    }
-
-	} else if (action instanceof PauseAction) {
-	    this.setOrderInProgress(null);
-	    this.waitForTimer(action.getDuration());
 
 	}
     }
