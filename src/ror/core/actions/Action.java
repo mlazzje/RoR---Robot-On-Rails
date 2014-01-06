@@ -1,15 +1,14 @@
-/**
- * Action class : Abstract class that represent an action
- * 
- * @author      GLC - CPE LYON
- * @version     1.0
- * @since       2013-01-06
- */
-
 package ror.core.actions;
 
 import ror.core.Robot;
 
+/**
+ * Action class : Abstract class that represent an action
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public abstract class Action {
     private Integer duration;
     private Robot robot;

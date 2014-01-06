@@ -1,15 +1,15 @@
-/**
- * MoveAction class : Class that represent a move action done by a robot to move from a rail to another one.
- * 
- * @author      GLC - CPE LYON
- * @version     1.0
- * @since       2013-01-06
- */
 package ror.core.actions;
 
 import ror.core.Rail;
 import ror.core.Robot;
 
+/**
+ * MoveAction class : Class that represent a move action done by a robot to move from a rail to another one.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class MoveAction extends Action {
     private Rail previous;
     private Rail next;
@@ -39,6 +39,7 @@ public class MoveAction extends Action {
 
     /**
      * Return the previous rail
+     * 
      * @return The previous rail
      */
     public Rail getPrevious() {
@@ -47,7 +48,9 @@ public class MoveAction extends Action {
 
     /**
      * Set the previous rail
-     * @param previous The previous rail
+     * 
+     * @param previous
+     *            The previous rail
      */
     public void setPrevious(Rail previous) {
 	this.previous = previous;
@@ -55,6 +58,7 @@ public class MoveAction extends Action {
 
     /**
      * Get the next rail
+     * 
      * @return The next rail
      */
     public Rail getNext() {
@@ -63,7 +67,9 @@ public class MoveAction extends Action {
 
     /**
      * Set the next rail
-     * @param next The next rail
+     * 
+     * @param next
+     *            The next rail
      */
     public void setNext(Rail next) {
 	this.next = next;

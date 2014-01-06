@@ -1,17 +1,16 @@
-/**
- * InputAction class : Class that represent an input action done by a robot to get
- * a product from the input point.
- * 
- * @author      GLC - CPE LYON
- * @version     1.0
- * @since       2013-01-06
- */
 package ror.core.actions;
 
 import ror.core.Input;
 import ror.core.Product;
 import ror.core.Robot;
 
+/**
+ * InputAction class : Class that represent an input action done by a robot to get a product from the input point.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class InputAction extends Action {
 
     private Product product;
