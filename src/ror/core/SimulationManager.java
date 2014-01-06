@@ -366,11 +366,9 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	Thread thread = new Thread() {
 	    public void run() {
-		System.out.println("Thread Running");
 		// on arrête les threads des robots
 		for (Robot r : SimulationManager.this.robots) {
 		    // on cancel le timer en cours
-		    r.stopTimerTask();
 		    synchronized (r) {
 			// on notifie le robot pour qu'il fasse un tour de boucle
 			r.notify();

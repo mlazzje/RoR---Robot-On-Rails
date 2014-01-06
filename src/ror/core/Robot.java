@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
@@ -601,9 +599,16 @@ public class Robot extends Observable implements Runnable {
 		}
 	    } else {
 		if (this.actions.get(0) instanceof MoveAction) {
+		    
 		    MoveAction move = (MoveAction) this.actions.get(0);
 		    Rail r = move.getNext();
-
+		    if(this.getRail()==move.getNext()) //erreur
+		    {
+			synchronized (this.actions) {
+			    this.actions.remove(0);
+			}
+			continue;
+		    }
 		    if (r.lock.tryLock() == false) {
 			// on a pas le lock donc c'est un autre robot qui l'a
 			Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
