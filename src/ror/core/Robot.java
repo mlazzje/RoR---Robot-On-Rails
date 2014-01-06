@@ -213,7 +213,7 @@ public class Robot extends Observable implements Runnable {
 	    if (drawer.getProduct() != null)
 		System.out.println("\nErreur tiroir plein\n " + drawer);
 
-	    Robot.this.removeProduct(product); // on supprimer le produit du plateau
+	    Robot.this.removeProduct(product); // on supprime le produit du plateau
 	    drawer.setProduct(product); // on associe le tiroir au produit
 	    product.setDrawer(drawer); // on associe le produit au tiroir
 
@@ -542,12 +542,13 @@ public class Robot extends Observable implements Runnable {
     }
 
     public boolean willMove() {
-	for (Action a : this.actions) {
-	    if (a instanceof MoveAction) {
-		return true;
+	synchronized (this.actions) {
+	    for (Action a : this.actions) {
+		if (a instanceof MoveAction) {
+		    return true;
+		}
 	    }
 	}
-
 	return false;
     }
 
