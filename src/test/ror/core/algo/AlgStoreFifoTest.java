@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ror.core.algo.AlgStoreFifo;
+
 public class AlgStoreFifoTest {
 
     @BeforeClass
@@ -28,7 +30,8 @@ public class AlgStoreFifoTest {
 
     @Test
     public void testGetActions() {
-	fail("Not yet implemented");
+    	AlgStoreFifo testAlg = new AlgStoreFifo();
+    	
     }
 
 }

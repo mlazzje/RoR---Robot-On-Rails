@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import ror.core.Product;
+import ror.core.Rail;
 import ror.core.Robot;
 import ror.core.actions.InputAction;
 
@@ -13,7 +14,8 @@ public class InputActionTest {
 	@Test
 	public void test() {
 		InputAction testAction = new InputAction(0, null, null);
-		Robot testRobot = new Robot(null,1,null);
+		Rail testRail = new Rail(null,1,null, null, null, null);
+		Robot testRobot = new Robot(testRail,1,null);
 		Product testProduct = new Product(null);
 		
 		// Test de la durée
