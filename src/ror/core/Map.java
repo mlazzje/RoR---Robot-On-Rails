@@ -18,7 +18,7 @@ import ror.core.algo.Dijkstra;
  * 
  * @author GLC - CPE LYON
  * @version 1.0
- * @since 2013-11-18
+ * @since 2013-11-29
  */
 public class Map {
 
@@ -68,7 +68,7 @@ public class Map {
      */
     public ArrayList<Rail> getPath(Rail start, Rail end) {
 	synchronized (this.djikstra) {
-		return (ArrayList<Rail>) djikstra.getPath(start, end);
+	    return (ArrayList<Rail>) djikstra.getPath(start, end);
 	}
     }/*
       * public ArrayList<Rail> getPath(Rail start, Rail end) { ArrayList<Rail> path = (ArrayList<Rail>) djikstra.getPath(start, end); if (path.size() > 0 && path.get(0) == start) path.remove(0); return path; }
@@ -116,7 +116,8 @@ public class Map {
     /**
      * Set the map with a two dimensional array of RoRElement
      * 
-     * @param two dimensional array of RoRElement
+     * @param two
+     *            dimensional array of RoRElement
      */
     public void setMap(RoRElement[][] map) {
 	this.map = map;
@@ -155,8 +156,10 @@ public class Map {
     }
 
     /**
-     * @param startNode rail
-     * @param endPoint rail
+     * @param startNode
+     *            rail
+     * @param endPoint
+     *            rail
      * @return the best Path between two rails
      */
     public ArrayList<Rail> CalculateBestPath(Rail startNode, Rail endPoint) {
@@ -173,7 +176,6 @@ public class Map {
 		ArrayList<Rail> sol = new ArrayList<Rail>(); // The solution
 		while (best.getPreviousRail().get(0) != null) {
 		    sol.add(best);
-		    System.out.println(best.x.toString() + "," + best.y.toString());
 		    best = best.getPreviousRail().get(0);
 		}
 		return sol; // Return the solution when the parent is null (the first point)
@@ -198,8 +200,10 @@ public class Map {
     /**
      * Generate weight of path between two rails
      * 
-     * @param start rail
-     * @param end rail
+     * @param start
+     *            rail
+     * @param end
+     *            rail
      */
     public void generateWeightTable(Rail start, Rail end) {
 
@@ -571,13 +575,13 @@ public class Map {
 	}
 
     }
-    
+
     /*
-     *  To sort columns
+     * To sort columns
      */
     public void sortColumns() {
-	for(Column col : this.getColumns()) {
-	    col.setDistanceInputOutput(this.getPath(this.input.getAccess(), col.getAccess()).size()+this.getPath(this.output.getAccess(), col.getAccess()).size());
+	for (Column col : this.getColumns()) {
+	    col.setDistanceInputOutput(this.getPath(this.input.getAccess(), col.getAccess()).size() + this.getPath(this.output.getAccess(), col.getAccess()).size());
 	}
 	Collections.sort(this.getColumns());
     }

@@ -144,6 +144,11 @@ public class Robot extends Observable implements Runnable {
 	this.number = number;
     }
 
+    /**
+     * schedule a timer to notify the robot after a wait of the duration (miliseconds)
+     * 
+     * @param duration
+     */
     private void waitForTimer(int duration) {
 
 	timer = new Timer();
@@ -519,9 +524,14 @@ public class Robot extends Observable implements Runnable {
 	this.speed = speed;
     }
 
+    /**
+     * force the blocking robot to move to allow the robot sending the action to go on the blocking robot rail.
+     * 
+     * @param blockingRobot
+     */
     private void moveBlockingRobot(Robot blockingRobot) {
 
-	System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
+	// System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
 
 	// si le robot qui bloque n'a pas prévu d'avancer
 	if (blockingRobot.willMove() == false) {
@@ -543,6 +553,10 @@ public class Robot extends Observable implements Runnable {
 
     }
 
+    /**
+     * 
+     * @return true if the robot has a MoveAction in his actions's list else return false
+     */
     public boolean willMove() {
 	synchronized (this.actions) {
 	    for (Action a : this.actions) {
@@ -639,6 +653,9 @@ public class Robot extends Observable implements Runnable {
 	this.timerTask = timerTask;
     }
 
+    /**
+     * Cancel the timer and timertask of current action
+     */
     public void stopTimerTask() {
 	if (this.timer != null) {
 	    timer.cancel();

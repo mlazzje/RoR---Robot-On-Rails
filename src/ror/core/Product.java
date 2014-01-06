@@ -150,7 +150,9 @@ public class Product {
 	this.order = order;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

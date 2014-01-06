@@ -12,11 +12,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Rail extends RoRElement {
 
-    
     // Properties
-    
+
     public ReentrantLock lock;
-    
+
     /**
      * Left rail
      */
@@ -128,7 +127,7 @@ public class Rail extends RoRElement {
 	this.previous = previousRail;
 	this.next = nextRail;
 	this.robot = null;
-	this.lock=new ReentrantLock();
+	this.lock = new ReentrantLock();
     }
 
     /**
@@ -149,7 +148,9 @@ public class Rail extends RoRElement {
 	this.notifyObservers();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

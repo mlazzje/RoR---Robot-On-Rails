@@ -7,7 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Column class : Core class that represents an column
+ * Column class : Core class that represents a column
  * 
  * @author GLC - CPE LYON
  * @version 1.0
@@ -132,7 +132,8 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
     /**
      * Set the acess rail
      * 
-     * @param One rail
+     * @param One
+     *            rail
      */
     public void setAccess(Rail access) {
 	this.access = access;
@@ -169,21 +170,21 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
     public List<Drawer> getDrawerList() {
 	return this.drawerList;
     }
-    
+
     /**
      * This number permit to sort Column. This nuber represent distance with Output + distance with Input
      * 
      * @return distance
      */
     public Integer getDistanceInputOutput() {
-        return distanceInputOutput;
+	return distanceInputOutput;
     }
 
     /**
      * Set distance. This number permit to sort Column. This nuber represent distance with Output + distance with Input
      */
     public void setDistanceInputOutput(Integer distanceInputOutput) {
-        this.distanceInputOutput = distanceInputOutput;
+	this.distanceInputOutput = distanceInputOutput;
     }
 
     /**
@@ -207,7 +208,9 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
 	return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
      */
     @Override
@@ -216,7 +219,9 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
 	this.notifyObservers();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -224,8 +229,9 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
 	return "Column : " + this.getX() + "," + this.getY();
     }
 
-    
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     @Override

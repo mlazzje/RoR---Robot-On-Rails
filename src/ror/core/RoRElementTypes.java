@@ -8,20 +8,20 @@ package ror.core;
  * @since 2013-11-18
  */
 public enum RoRElementTypes {
-	/**
-	 * Input type
-	 */
-	Input, 
-	/**
-	 * Output type
-	 */
-	Output, 
-	/**
-	 * Column type
-	 */
-	Column, 
-	/**
-	 * Rail type
-	 */
-	Rail;
+    /**
+     * Input type
+     */
+    Input,
+    /**
+     * Output type
+     */
+    Output,
+    /**
+     * Column type
+     */
+    Column,
+    /**
+     * Rail type
+     */
+    Rail;
 }

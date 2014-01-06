@@ -20,7 +20,7 @@ import ror.core.algo.IAlgMove;
 import ror.core.algo.IAlgStore;
 
 /**
- * SimulationManager class : Core class that represents an cabinet
+ * SimulationManager class : Core class that represents the simulationManager, the thread that permits to interact with robots, ordersource and all the algorithms.
  * 
  * @author GLC - CPE LYON
  * @version 1.0
@@ -86,10 +86,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      * Boolean source
      */
     private boolean source;
-    /**
-     * Coeff for speed and/or timer
-     */
-    private Integer coeff = 3000; // <==> 1 second
+
     /**
      * Uptime of simulation manager
      */
@@ -150,14 +147,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.source;
     }
 
-    
-    
     public OrderSource getOrderSource() {
-        return orderSource;
+	return orderSource;
     }
 
     public void setOrderSource(OrderSource orderSource) {
-        this.orderSource = orderSource;
+	this.orderSource = orderSource;
     }
 
     /**
@@ -202,17 +197,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.uptime;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
     @Override
     public void run() {
 	status = SimulationManager.RUNNING;
 
 	robotThreads = new ArrayList<Thread>();
-	// add robots
+	// add robots to the simulation
 	if (!this.wasInPause) {
 	    robots.clear();
 	    dataRobotActivity.clear();
@@ -234,7 +224,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	uptime = 0;
-
+	// on boucle tant que la simulation n'est pas arrêtée
 	while (status != SimulationManager.STOPPED) {
 	    Long startTime = System.currentTimeMillis();
 
@@ -284,9 +274,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    }
 		    if (this.map.getInput().getProductList().size() < 2)
 			newProducts = SimulationManager.this.orderSource.getScenarioProducts(SimulationManager.this.getUptime());
-		    /*
-		     * if(newOrders.isEmpty()) { boolean allDone = true; for(Order order : SimulationManager.this.orders) { if(order.getStatus() != Order.DONE) { allDone = false; break; } } if(allDone) { this.setStop(); } }
-		     */
+
 		}
 
 		if (newProducts != null) {
@@ -306,7 +294,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		SimulationManager.this.setChanged();
 		SimulationManager.this.notifyObservers();
 
-		// Fill chart data
+		// Fill chart data (used for statistics)
 		for (int cptRobot = 0; cptRobot < this.robots.size(); cptRobot++) {
 		    dataRobotActivity.get(cptRobot).put(uptime, this.robots.get(cptRobot).getActions().size());
 		}
@@ -317,6 +305,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		dataOrder.put(uptime, this.getOrdersDoneCount());
 		dataOrderTotal.put(uptime, this.orders.size());
 
+		// si le scénario est terminé on stope la simulation
 		if (orderSource.isFinished() && this.getOrdersNotDone().size() == 0) {
 		    this.status = SimulationManager.STOPPED;
 		    continue;
@@ -337,9 +326,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
 	    } else if (status == SimulationManager.PAUSED) {
 
+		// on met en pause les robots
 		for (Robot r : this.robots) {
 		    r.stopTimerTask();
 		}
+
+		// on met le thread du simulateur en pause
 		try {
 		    synchronized (this) {
 			this.wait();
@@ -360,15 +352,14 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     public Map getMap() {
 	return map;
     }
-    
+
     /**
      * Set stop
      */
     public void setStop() {
-	this.status=SimulationManager.STOPPED;
+	this.status = SimulationManager.STOPPED;
     }
 
-   
     private void stopSimulation() {
 
 	// mise en pause des robots
@@ -376,18 +367,19 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	    r.stopTimerTask();
 	    synchronized (r) {
 		r.notify();
+
 	    }
 	}
-	
+
 	synchronized (this) {
 	    try {
 		this.wait(200);
 	    } catch (InterruptedException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
 	}
-	
+
+	// on supprime les robots des rails
 	for (Rail r : map.getRails()) {
 	    r.setRobot(null);
 	}
@@ -398,7 +390,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	this.orderSource = new OrderSource();
 	this.source = false;
 	this.stockProducts = new ArrayList<Product>();
-	
+
 	// suppression des produits dans les tiroirs
 	for (Column col : this.map.getColumns()) {
 	    for (Drawer dra : col.getDrawerList()) {
@@ -408,7 +400,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
 
 	Order.resetLastId();
-	
+
 	this.setChanged();
 	this.notifyObservers();
     }
@@ -434,9 +426,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     * update method called by the robots : updating the logs
      */
     @Override
     public void update(Observable o, Object arg) { // called by a robot
@@ -466,6 +456,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	}
     }
 
+    /**
+     * 
+     * @return the ArrayList of order that have their status != Done
+     */
     public ArrayList<Order> getOrdersNotDone() {
 	ArrayList<Order> returnedOrders = new ArrayList<Order>();
 	synchronized (this.orders) {
@@ -551,8 +545,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
      */
     public void setEndSimulation() {
 	this.setSpeed((float) 9999);
-	for(Robot r : robots)
-	{
+	for (Robot r : robots) {
 	    r.deleteObservers();
 	}
 	this.setPlay();
@@ -705,11 +698,4 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.robotThreads.get(SimulationManager.this.robots.indexOf(r));
     }
 
-    public Integer getCoeff() {
-	return coeff;
-    }
-
-    public void setCoeff(Integer coeff) {
-	this.coeff = coeff;
-    }
 }

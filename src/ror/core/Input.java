@@ -33,7 +33,8 @@ public class Input extends RoRElement {
     /**
      * Set the rail access
      * 
-     * @param rail access
+     * @param rail
+     *            access
      */
     public void setAccess(Rail access) {
 	this.access = access;
@@ -45,7 +46,8 @@ public class Input extends RoRElement {
      * 
      * @param int x
      * @param int y
-     * @param rail access
+     * @param rail
+     *            access
      */
     public Input(Integer x, Integer y, Rail access) {
 	super(RoRElementTypes.Input, x, y);
@@ -107,7 +109,7 @@ public class Input extends RoRElement {
 	    this.productList.clear();
 	    this.setChanged();
 	    this.notifyObservers();
-	}	
+	}
     }
 
 }
