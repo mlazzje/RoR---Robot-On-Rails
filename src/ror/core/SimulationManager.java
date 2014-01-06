@@ -143,6 +143,16 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 	return this.source;
     }
 
+    
+    
+    public OrderSource getOrderSource() {
+        return orderSource;
+    }
+
+    public void setOrderSource(OrderSource orderSource) {
+        this.orderSource = orderSource;
+    }
+
     /**
      * @return speed
      */

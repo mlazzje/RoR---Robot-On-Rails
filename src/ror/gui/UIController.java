@@ -75,7 +75,13 @@ public class UIController implements Observer {
     public void update(Observable o, Object arg) {
 
 	if (this.progressBox != null) {
-	    int total = this.simulationManager.getOrders().size();
+	    int total = 0;
+	    synchronized (this.simulationManager.getOrderSource().getOrders()) {
+		total += this.simulationManager.getOrderSource().getOrders().size();
+	    }
+	    synchronized (this.simulationManager.getOrders()) {
+		total += this.simulationManager.getOrders().size();
+	    }
 	    int val = this.simulationManager.getOrdersDoneCount();
 	    int pourcent = 0;
 	    if (total > 0) {
