@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ror.core.ExcelExport;
+import ror.core.GraphicExport;
 import ror.core.SimulationManager;
 
 public class ExcelExportTest {
 
-    private ExcelExport excelExport;
+    private GraphicExport excelExport;
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }

@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 
 import ror.core.Column;
 import ror.core.Drawer;
-import ror.core.ExcelExport;
+import ror.core.GraphicExport;
 import ror.core.Input;
 import ror.core.Output;
 import ror.core.Product;
@@ -88,7 +88,7 @@ public class UIController implements Observer {
 		pourcent = (int) ((val * 100.0f) / total);
 	    }
 	    this.progressBox.setProgressValue(pourcent);
-	    if (this.simulationManager.getStatus() != this.simulationManager.STOPPED)
+	    if (this.simulationManager.getStatus() != SimulationManager.STOPPED)
 		return;
 	    else {
 		this.progressBox.dispose();
@@ -99,7 +99,7 @@ public class UIController implements Observer {
 	// Mise à jour de la zone d'informations
 	synchronized (this.thread) {
 
-	    if (this.simulationManager.getStatus() == this.simulationManager.STOPPED && this.thread != null) {
+	    if (this.simulationManager.getStatus() == SimulationManager.STOPPED && this.thread != null) {
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 		this.rorFrame.getStartButton().setIcon(icon);
 
@@ -111,7 +111,7 @@ public class UIController implements Observer {
 
 		    if (ret == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			new ExcelExport(this.simulationManager, file);
+			new GraphicExport(this.simulationManager, file);
 			System.out.println(file);
 		    }
 		}
