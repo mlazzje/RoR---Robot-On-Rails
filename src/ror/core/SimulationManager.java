@@ -291,8 +291,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		SimulationManager.this.iAlgMove.updateRobotsActions(newDestockActions, newStoreActions, SimulationManager.this.robots, this.map);
 
 		// notify observers (UIController)
-		SimulationManager.this.setChanged();
-		SimulationManager.this.notifyObservers();
+		if (this.status != SimulationManager.STOPPED) {
+		    SimulationManager.this.setChanged();
+		    SimulationManager.this.notifyObservers();
+		}
 
 		// Fill chart data (used for statistics)
 		for (int cptRobot = 0; cptRobot < this.robots.size(); cptRobot++) {
@@ -362,47 +364,53 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     private void stopSimulation() {
 
-	// mise en pause des robots
-	for (Robot r : this.robots) {
-	    r.stopTimerTask();
-	    synchronized (r) {
-		r.notify();
+	Thread thread = new Thread() {
+	    public void run() {
+		System.out.println("Thread Running");
+		// on arrête les threads des robots
+		for (Robot r : SimulationManager.this.robots) {
+		    // on cancel le timer en cours
+		    r.stopTimerTask();
+		    synchronized (r) {
+			// on notifie le robot pour qu'il fasse un tour de boucle
+			r.notify();
+		    }
+		    // et on attend que le thread du robots soient tous terminés.
+		    synchronized (SimulationManager.this.robotThread(r)) {
+			try {
+			    SimulationManager.this.robotThread(r).join();
+			} catch (InterruptedException e) {
+			    e.printStackTrace();
+			}
+		    }
+		}
+
+		SimulationManager.this.map.getInput().clearProducts();
+		SimulationManager.this.map.getOutput().clearProducts();
+		SimulationManager.this.setNewLogs(new ArrayList<String>());
+		SimulationManager.this.orderSource = new OrderSource();
+		SimulationManager.this.source = false;
+		SimulationManager.this.stockProducts = new ArrayList<Product>();
+
+		// suppression des produits dans les tiroirs
+		for (Column col : SimulationManager.this.map.getColumns()) {
+		    for (Drawer dra : col.getDrawerList()) {
+			dra.setProduct(null);
+			dra.setStatus(Drawer.FREE);
+		    }
+		}
+
+		Order.resetLastId();
 
 	    }
+	};
+	thread.start();
+	try {
+	    thread.join();
+	} catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
 	}
-
-	synchronized (this) {
-	    try {
-		this.wait(200);
-	    } catch (InterruptedException e) {
-		e.printStackTrace();
-	    }
-	}
-
-	// on supprime les robots des rails
-	for (Rail r : map.getRails()) {
-	    r.setRobot(null);
-	}
-
-	this.map.getInput().clearProducts();
-	this.map.getOutput().clearProducts();
-	this.setNewLogs(new ArrayList<String>());
-	this.orderSource = new OrderSource();
-	this.source = false;
-	this.stockProducts = new ArrayList<Product>();
-
-	// suppression des produits dans les tiroirs
-	for (Column col : this.map.getColumns()) {
-	    for (Drawer dra : col.getDrawerList()) {
-		dra.setProduct(null);
-		dra.setStatus(Drawer.FREE);
-	    }
-	}
-
-	Order.resetLastId();
-
-	this.setChanged();
-	this.notifyObservers();
     }
 
     /**
@@ -451,8 +459,10 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		}
 	    }
 
-	    this.setChanged();
-	    this.notifyObservers();
+	    if (this.status != SimulationManager.STOPPED) {
+		this.setChanged();
+		this.notifyObservers();
+	    }
 	}
     }
 

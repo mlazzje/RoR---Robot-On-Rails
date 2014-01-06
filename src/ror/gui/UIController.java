@@ -97,6 +97,7 @@ public class UIController implements Observer {
 	}
 
 	// Mise à jour de la zone d'informations
+	
 	synchronized (this.thread) {
 
 	    if (this.simulationManager.getStatus() == SimulationManager.STOPPED && this.thread != null) {
@@ -464,6 +465,13 @@ public class UIController implements Observer {
      */
     public void stopSimulation() {
 	simulationManager.setStop();
+	try {
+	    this.thread.join();
+	} catch (InterruptedException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	this.update(null, null);
     }
 
     /**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
@@ -578,16 +579,8 @@ public class Robot extends Observable implements Runnable {
 		this.rail.lock.lock();
 	    }
 
-	    // on delock le rail si la simulation est arrêtée
-	    if (simulationStatus == SimulationManager.STOPPED) {
-		if (this.rail.lock.isLocked()) {
-		    this.rail.lock.unlock();
-		    System.out.println("robot unlock son rail");
-		}
-	    }
-
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
-	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED || simulationStatus == SimulationManager.STOPPED) {
+	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED) {
 
 		// maj du status si pas d'actions
 		synchronized (this.status) {
@@ -609,13 +602,17 @@ public class Robot extends Observable implements Runnable {
 	    } else {
 		if (this.actions.get(0) instanceof MoveAction) {
 		    MoveAction move = (MoveAction) this.actions.get(0);
-		    Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
-
-		    if (blockingRobot != null) {
-			this.moveBlockingRobot(blockingRobot);
-		    }
 		    Rail r = move.getNext();
-		    r.lock.lock();
+
+		    if (r.lock.tryLock() == false) {
+			// on a pas le lock donc c'est un autre robot qui l'a
+			Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
+
+			if (blockingRobot != null) {
+			    this.moveBlockingRobot(blockingRobot);
+			}
+			r.lock.lock();
+		    }
 		}
 		// execution de la prochaine action
 		Action a;
@@ -634,7 +631,15 @@ public class Robot extends Observable implements Runnable {
 
 	    }
 
-	} while (true);
+	} while (simulationManager.getStatus() != SimulationManager.STOPPED);
+
+	// on delock le rail puisque la simulation est arrêttée
+	if (this.rail.lock.isLocked()) {
+	    this.rail.lock.unlock();
+	    this.rail.setRobot(null);
+	    System.out.println("robot unlock son rail et termine son thread");
+	}
+
     }
 
     public Timer getTimer() {
