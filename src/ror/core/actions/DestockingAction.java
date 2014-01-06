@@ -1,13 +1,18 @@
+/**
+ * DestockingAction class : Class that represent a Destocking action done by a robot to destock
+ * a product from a drawer.
+ * 
+ * @author      GLC - CPE LYON
+ * @version     1.0
+ * @since       2013-01-06
+ */
+
 package ror.core.actions;
 
 import ror.core.Drawer;
 import ror.core.Product;
 import ror.core.Robot;
 
-/**
- * DestockingAction class
- * Represent the destocking action
- */
 public class DestockingAction extends Action {
 
     private Drawer drawer;

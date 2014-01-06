@@ -1,12 +1,15 @@
+/**
+ * MoveAction class : Class that represent a move action done by a robot to move from a rail to another one.
+ * 
+ * @author      GLC - CPE LYON
+ * @version     1.0
+ * @since       2013-01-06
+ */
 package ror.core.actions;
 
 import ror.core.Rail;
 import ror.core.Robot;
 
-/**
- * MoveAction class
- * Represent a move of a robot
- */
 public class MoveAction extends Action {
     private Rail previous;
     private Rail next;

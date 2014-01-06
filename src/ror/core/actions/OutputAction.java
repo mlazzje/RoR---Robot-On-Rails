@@ -1,13 +1,17 @@
+/**
+ * OutputAction class : Class that represent an output action done by to put a product in the output point.
+ * 
+ * @author      GLC - CPE LYON
+ * @version     1.0
+ * @since       2013-01-06
+ */
+
 package ror.core.actions;
 
 import ror.core.Output;
 import ror.core.Product;
 import ror.core.Robot;
 
-/**
- * Output Action class
- * Represent an output action
- */
 public class OutputAction extends Action {
 
 	private Product product;

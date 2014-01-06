@@ -1,13 +1,17 @@
+/**
+ * StoreAction class : Class that represent a store action done by to put a product in a drawer.
+ * 
+ * @author      GLC - CPE LYON
+ * @version     1.0
+ * @since       2013-01-06
+ */
+
 package ror.core.actions;
 
 import ror.core.Drawer;
 import ror.core.Product;
 import ror.core.Robot;
 
-/**
- * StoreAction class
- * Represent a StoreAction
- */
 public class StoreAction extends Action {
 
     private Drawer drawer;
