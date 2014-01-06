@@ -61,7 +61,7 @@ public class ExcelExport {
 
         JFreeChart chart = new JFreeChart("Activité des robots",JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		chart.addSubtitle(new TextTitle(simulationManager.getiAlgStore().getClass().getSimpleName().replace("Alg", "").replace("Store", "Stockage ")+" - "+simulationManager.getiAlgDestocking().getClass().getSimpleName().replace("Alg", "").replace("Destocking", "Destockage ")+" - "+simulationManager.getiAlgMove().getClass().getSimpleName().replace("Alg", "").replace("Move", "Déplacement ")));
-		chart.addSubtitle(new TextTitle("Nombre de commande traitée : "+simulationManager.getOrdersDoneCount()));
+		chart.addSubtitle(new TextTitle("Nombre de commandes traitées : "+simulationManager.getOrdersDoneCount()));
 		chart.addSubtitle(new TextTitle("Temps de traitement moyen par commande : "+(simulationManager.getAverageOrderProcessingTime() / 1000) / 60 + "min " + (simulationManager.getAverageOrderProcessingTime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Durée de la simulation : "+(simulationManager.getUptime() / 1000) / 60 + "min " + (simulationManager.getUptime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Consommation moyenne par commande : "+simulationManager.getAverageConsumption()+"W"));
@@ -124,7 +124,7 @@ public class ExcelExport {
 
         chart = new JFreeChart("Consommation",JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		chart.addSubtitle(new TextTitle(simulationManager.getiAlgStore().getClass().getSimpleName().replace("Alg", "").replace("Store", "Stockage ")+" - "+simulationManager.getiAlgDestocking().getClass().getSimpleName().replace("Alg", "").replace("Destocking", "Destockage ")+" - "+simulationManager.getiAlgMove().getClass().getSimpleName().replace("Alg", "").replace("Move", "Déplacement ")));
-		chart.addSubtitle(new TextTitle("Nombre de commande traitée : "+simulationManager.getOrdersDoneCount()));
+		chart.addSubtitle(new TextTitle("Nombre de commandes traitées : "+simulationManager.getOrdersDoneCount()));
 		chart.addSubtitle(new TextTitle("Temps de traitement moyen par commande : "+(simulationManager.getAverageOrderProcessingTime() / 1000) / 60 + "min " + (simulationManager.getAverageOrderProcessingTime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Durée de la simulation : "+(simulationManager.getUptime() / 1000) / 60 + "min " + (simulationManager.getUptime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Consommation moyenne par commande : "+simulationManager.getAverageConsumption()+"W"));
@@ -179,7 +179,7 @@ public class ExcelExport {
 
         chart = new JFreeChart("Commandes",JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		chart.addSubtitle(new TextTitle(simulationManager.getiAlgStore().getClass().getSimpleName().replace("Alg", "").replace("Store", "Stockage ")+" - "+simulationManager.getiAlgDestocking().getClass().getSimpleName().replace("Alg", "").replace("Destocking", "Destockage ")+" - "+simulationManager.getiAlgMove().getClass().getSimpleName().replace("Alg", "").replace("Move", "Déplacement ")));
-		chart.addSubtitle(new TextTitle("Nombre de commande traitée : "+simulationManager.getOrdersDoneCount()));
+		chart.addSubtitle(new TextTitle("Nombre de commandes traitées : "+simulationManager.getOrdersDoneCount()));
 		chart.addSubtitle(new TextTitle("Temps de traitement moyen par commande : "+(simulationManager.getAverageOrderProcessingTime() / 1000) / 60 + "min " + (simulationManager.getAverageOrderProcessingTime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Durée de la simulation : "+(simulationManager.getUptime() / 1000) / 60 + "min " + (simulationManager.getUptime() / 1000) % 60 + "s"));
 		chart.addSubtitle(new TextTitle("Consommation moyenne par commande : "+simulationManager.getAverageConsumption()+"W"));
