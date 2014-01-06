@@ -10,7 +10,19 @@ import ror.core.actions.DestockingAction;
 import ror.core.actions.MoveAction;
 import ror.core.actions.StoreAction;
 
+/**
+ * AlgMoveAuto class : Move algorithm that implements the IAlgMove interface.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class AlgMoveAuto implements IAlgMove {
+    
+    /**
+     * Updates the robot's actions : add list of MoveAction, DestockingAction, StoreAction, InputAction and OutputAction to the robots depending on a list of destocking actions and a list of store actions to do.
+     * 
+     */
     public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
 	final int limit = 15;
 	int robotActions = 0;
@@ -30,7 +42,7 @@ public class AlgMoveAuto implements IAlgMove {
 	    synchronized (robot.getActions()) {
 		copyActions = new ArrayList<Action>(robot.getActions());
 	    }
-	    
+
 	    for (Action act : copyActions) {
 		if (act instanceof DestockingAction || act instanceof StoreAction) {
 		    robotActions++;
@@ -47,6 +59,11 @@ public class AlgMoveAuto implements IAlgMove {
 	}
     }
 
+    /**
+     * Generate an ArrayList of MoveAction from a list of Rail example : ArrayList<Rail> = {Rail(0,1),Rail(0,2),Rail,(0,3)} returned list will be {MoveAction(previous=(0,1),next=(0,2)),MoveAction(previous=(0,2),next=(0,3))}
+     * 
+     * @return an ArrayList of MoveAction
+     */
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
 	if (rails.isEmpty())
 	    return new ArrayList<MoveAction>();

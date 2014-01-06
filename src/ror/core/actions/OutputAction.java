@@ -5,7 +5,7 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * OutputAction class : Class that represent an output action done by to put a product in the output point.
+ * OutputAction class : Class that represents an output action done by to put a product in the output point.
  * 
  * @author GLC - CPE LYON
  * @version 1.0

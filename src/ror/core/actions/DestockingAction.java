@@ -5,7 +5,7 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * DestockingAction class : Class that represent a Destocking action done by a robot to destock a product from a drawer.
+ * DestockingAction class : Class that represents a Destocking action done by a robot to destock a product from a drawer.
  * 
  * @author GLC - CPE LYON
  * @version 1.0

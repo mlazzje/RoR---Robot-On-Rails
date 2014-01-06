@@ -3,7 +3,7 @@ package ror.core.actions;
 import ror.core.Robot;
 
 /**
- * Action class : Abstract class that represent an action
+ * Action class : Abstract class that represents an action
  * 
  * @author GLC - CPE LYON
  * @version 1.0

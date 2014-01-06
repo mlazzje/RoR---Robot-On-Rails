@@ -4,7 +4,7 @@ import ror.core.Rail;
 import ror.core.Robot;
 
 /**
- * MoveAction class : Class that represent a move action done by a robot to move from a rail to another one.
+ * MoveAction class : Class that represents a move action done by a robot to move from a rail to another one.
  * 
  * @author GLC - CPE LYON
  * @version 1.0

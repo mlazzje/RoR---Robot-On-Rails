@@ -8,6 +8,13 @@ import ror.core.Product;
 import ror.core.actions.DestockingAction;
 import ror.core.algo.IAlgDestocking;
 
+/**
+ * AlgDestockingOrder class : Destocking Algorithm that implements the IAlgDestocking interface.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class AlgDestockingOrder implements IAlgDestocking {
 
     @Override
@@ -21,7 +28,7 @@ public class AlgDestockingOrder implements IAlgDestocking {
 
 	// On liste les produits stockés, et non réservés pour une commande
 	for (Product product : stockProducts) {
-	    if (product.getStatus() == Product.STORED && product.getDrawer()!=null) {
+	    if (product.getStatus() == Product.STORED && product.getDrawer() != null) {
 		stockProductsName.add(product.getName());
 		storedProducts.add(product);
 	    }
@@ -32,7 +39,6 @@ public class AlgDestockingOrder implements IAlgDestocking {
 	    // On réinitialise les actions
 	    actions.clear();
 	    if (algo.getClass().getSimpleName().equals("AlgStoreFifo")) {
-		// System.out.println("AlgoStoreFifo");
 		// On ne prend en compte que les commandes initialisées ou encore en attente de produits
 		if (currentOrder.getStatus() == Order.INIT || currentOrder.getStatus() == Order.WAITING) {
 		    // On ne fait de traitement que si le stock contient tous les produits de la commande
@@ -59,15 +65,12 @@ public class AlgDestockingOrder implements IAlgDestocking {
 				}
 			    }
 			}
-			// System.out.println("\n##################\nCommande prête "+currentOrder+"\n##################");
 			currentOrder.setStatus(Order.READY_FOR_DESTOCKING);
 			actionsToSend.addAll(actions);
 			break;
 		    }
 		}
-		// ELSE
 	    } else {
-		// System.out.println("AlgoStoreOrder");
 		if (currentOrder.isReadyForDestocking() && currentOrder.getStatus() != Order.READY_FOR_DESTOCKING && currentOrder.getStatus() != Order.DONE) {
 		    for (Drawer d : currentOrder.getDrawers()) {
 			Product currentProduct = d.getProduct();
@@ -86,9 +89,16 @@ public class AlgDestockingOrder implements IAlgDestocking {
 	return actionsToSend;
     }
 
+    /**
+     * 
+     * @param container
+     *            example : {"a","a","b","c"}
+     * @param testList
+     *            example : {"c","a","a"}
+     * @return true if the container contains the testlist else false
+     */
     public static Boolean containsAllWithDoublon(ArrayList<String> container, ArrayList<String> testList) {
 	ArrayList<String> copy = new ArrayList<String>(container);
-	// System.out.println("##### nombre de produits  "+container.size()+"#####");
 
 	for (String test : testList) {
 	    if (copy.contains(test))

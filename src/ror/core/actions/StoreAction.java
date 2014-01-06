@@ -5,7 +5,7 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * StoreAction class : Class that represent a store action done by to put a product in a drawer.
+ * StoreAction class : Class that represents a store action done by to put a product in a drawer.
  * 
  * @author      GLC - CPE LYON
  * @version     1.0

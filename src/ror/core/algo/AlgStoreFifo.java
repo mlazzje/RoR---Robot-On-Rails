@@ -9,7 +9,15 @@ import ror.core.Order;
 import ror.core.Product;
 import ror.core.actions.StoreAction;
 
+/**
+ * AlgStoreFifo class : Store algorithm that implements the IAlgStore interface.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class AlgStoreFifo implements IAlgStore {
+
     public ArrayList<StoreAction> getActions(ArrayList<Product> inputProducts, ArrayList<Order> orders, Map map) {
 
 	ArrayList<StoreAction> actions = new ArrayList<StoreAction>();

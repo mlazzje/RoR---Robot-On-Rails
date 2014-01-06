@@ -12,7 +12,19 @@ import ror.core.actions.MoveAction;
 import ror.core.actions.OutputAction;
 import ror.core.actions.StoreAction;
 
+/**
+ * AlgMoveEco class : Move algorithm that implements the IAlgMove interface.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class AlgMoveEco implements IAlgMove {
+
+    /**
+     * Updates the robot's actions : add list of MoveAction, DestockingAction, StoreAction, InputAction and OutputAction to the robots depending on a list of destocking actions and a list of store actions to do.
+     * 
+     */
     public void updateRobotsActions(ArrayList<DestockingAction> newDestockActions, ArrayList<StoreAction> newStoreActions, ArrayList<Robot> robots, Map map) {
 
 	// si des actions input ou store sont disponibles
@@ -114,6 +126,14 @@ public class AlgMoveEco implements IAlgMove {
 
     }
 
+    /**
+     * Generate a list of Moveaction between the startRail and the next DestockingAction or StoreAction location then continue to add MoveAction between each DestockingAction or StoreAction location.
+     * 
+     * @param storeOrDestockActions
+     * @param map
+     * @param startRail
+     * @return a list of MoveAction and DestockAction if the ArrayList is a list of DestockingActions else a list of MoveAction and StoreAction if the Arraylist is a list of StoreAction
+     */
     public ArrayList<Action> sortActionsAndMoves(ArrayList<Action> storeOrDestockActions, Map map, Rail startRail) {
 	ArrayList<Action> actions = new ArrayList<Action>();
 	Rail firstRail = startRail;
@@ -160,6 +180,11 @@ public class AlgMoveEco implements IAlgMove {
 	return actions;
     }
 
+    /**
+     * Generate an ArrayList of MoveAction from a list of Rail example : ArrayList<Rail> = {Rail(0,1),Rail(0,2),Rail,(0,3)} returned list will be {MoveAction(previous=(0,1),next=(0,2)),MoveAction(previous=(0,2),next=(0,3))}
+     * 
+     * @return an ArrayList of MoveAction
+     */
     public ArrayList<MoveAction> railsToMoveActions(ArrayList<Rail> rails) {
 	if (rails.isEmpty())
 	    return new ArrayList<MoveAction>();
@@ -176,6 +201,13 @@ public class AlgMoveEco implements IAlgMove {
 	return moves;
     }
 
+    /**
+     * Search the robot that has the shortest way to the destination Rail after it realised his current actions.
+     * @param robots
+     * @param map
+     * @param destination
+     * @return a Robot
+     */
     public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
 
 	// prend en compte le fait qu'un robot peut se trouver sur le chemin d'un autre pour une destination donnée
@@ -208,12 +240,9 @@ public class AlgMoveEco implements IAlgMove {
 	    Dijkstra dijkstra = new Dijkstra(copyRails);
 	    ArrayList<Rail> path = (ArrayList<Rail>) dijkstra.getPath(this.getRail(copyRails, robot.getLastActionRail().getX(), robot.getLastActionRail().getY()), this.getRail(copyRails, destination.getX(), destination.getY()));
 	    if (path == null) {
-		// System.out.println(robot + " Chemin impossible");
+		// chemin impossible
 		continue;
 	    }
-
-	    // System.out.println(robot + ": " + path.size() + " cases jusqu'a destination");
-	    // System.out.println(path);
 
 	    if (minRailCount != null) {
 		if (railsToMoveActions(path).size() < minRailCount) {
@@ -234,6 +263,14 @@ public class AlgMoveEco implements IAlgMove {
 
     }
 
+    /**
+     * Search the rail corresponding to a x an y coordinates in a list of rail elements.
+     * 
+     * @param rails
+     * @param x
+     * @param y
+     * @return
+     */
     public Rail getRail(ArrayList<Rail> rails, int x, int y) {
 	for (Rail r : rails) {
 	    if (r.getX() == x && r.getY() == y) {
@@ -243,6 +280,12 @@ public class AlgMoveEco implements IAlgMove {
 	return null;
     }
 
+    /**
+     * Generate a copy of an ArrayList of Rails without copying references
+     * 
+     * @param rails
+     * @return an ArrayList of Rail
+     */
     public ArrayList<Rail> getCloneRail(ArrayList<Rail> rails) {
 	// dupliquer la liste des rails (attention bien dupliquer la liste pour ne pas garder les references)
 	ArrayList<Rail> copyRails = new ArrayList<Rail>();

@@ -7,6 +7,13 @@ import ror.core.Product;
 import ror.core.actions.DestockingAction;
 import ror.core.algo.IAlgDestocking;
 
+/**
+ * AlgDestockingFifo class : Destocking Algorithm that implements the IAlgDestocking interface.
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class AlgDestockingFifo implements IAlgDestocking {
 
     @Override
@@ -17,11 +24,10 @@ public class AlgDestockingFifo implements IAlgDestocking {
 
 	ArrayList<String> stockProductsName = new ArrayList<String>();
 	ArrayList<Product> storedProducts = new ArrayList<Product>();
-	//System.out.println("##### nombre de produits stocks "+stockProducts.size()+"#####");
 
 	// On liste les produits stockés, et non réservés pour une commande
 	for (Product product : stockProducts) {
-	    if (product.getStatus() == Product.STORED && product.getDrawer()!=null) {
+	    if (product.getStatus() == Product.STORED && product.getDrawer() != null) {
 		stockProductsName.add(product.getName());
 		storedProducts.add(product);
 	    }
@@ -57,7 +63,6 @@ public class AlgDestockingFifo implements IAlgDestocking {
 			    }
 			}
 		    }
-		    //System.out.println("\n##################\nCommande prête "+currentOrder+"\n##################");
 		    currentOrder.setStatus(Order.READY_FOR_DESTOCKING);
 		    actionsToSend.addAll(actions);
 		    break;
@@ -69,10 +74,17 @@ public class AlgDestockingFifo implements IAlgDestocking {
 	return actionsToSend;
     }
 
+    /**
+     * 
+     * @param container
+     *            example : {"a","a","b","c"}
+     * @param testList
+     *            example : {"c","a","a"}
+     * @return true if the container contains the testlist else false
+     */
     public static Boolean containsAllWithDoublon(ArrayList<String> container, ArrayList<String> testList) {
 	ArrayList<String> copy = new ArrayList<String>(container);
-	//System.out.println("##### nombre de produits  "+container.size()+"#####");
-	
+
 	for (String test : testList) {
 	    if (copy.contains(test))
 		copy.remove(test);

@@ -5,7 +5,7 @@ import ror.core.Product;
 import ror.core.Robot;
 
 /**
- * InputAction class : Class that represent an input action done by a robot to get a product from the input point.
+ * InputAction class : Class that represents an input action done by a robot to get a product from the input point.
  * 
  * @author GLC - CPE LYON
  * @version 1.0
