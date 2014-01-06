@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ror.core.Column;
 import ror.core.Drawer;
 import ror.core.Product;
+import ror.core.Rail;
 import ror.core.Robot;
 import ror.core.actions.StoreAction;
 
@@ -14,8 +16,10 @@ public class StoreActionTest {
 	@Test
 	public void test() {
 		StoreAction testAction = new StoreAction(0, null, null, null);
-		Robot testRobot = new Robot(null,1,null);
-		Drawer testDrawer = new Drawer(null, null);
+		Rail testRail = new Rail(null,1,null, null, null, null);
+		Robot testRobot = new Robot(testRail,1,null);
+		Column testCol = new Column(null, null, null, null, testRail);
+		Drawer testDrawer = new Drawer(testCol, null);
 		Product testProduct = new Product(null);
 		
 		// Test de la durée

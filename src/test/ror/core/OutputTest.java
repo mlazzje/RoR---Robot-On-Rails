@@ -28,15 +28,6 @@ public class OutputTest {
 		outputTestNull.setAccess(testOutputRail);
 		assertTrue(outputTestNull.getAccess().equals(testOutputRail));
 		assertFalse(outputTestNull.getAccess().equals(testOutputRail2));
-		
-		// test methods
-		assertTrue(outputTestNull.addProduct(p));
-		assertTrue(outputTestNull.outputProductsCount()==1);
-		assertFalse(outputTestNull.outputProductsCount()==0);
-		assertTrue(outputTestNull.removeProduct(p));
-		assertTrue(outputTestNull.outputProductsCount()==0);
-		assertFalse(outputTestNull.outputProductsCount()==1);
-		assertFalse(outputTestNull.removeProduct(p));
 	}
 
 }
