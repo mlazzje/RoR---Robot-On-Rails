@@ -3,6 +3,13 @@ package ror.core;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Input class : Core class that represents the input
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Input extends RoRElement {
 
     // Properties

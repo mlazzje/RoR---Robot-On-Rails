@@ -13,6 +13,13 @@ import ror.core.actions.OutputAction;
 import ror.core.actions.StoreAction;
 import ror.core.Order;
 
+/**
+ * Robot class : Core class that represents a robot
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Robot extends Observable implements Runnable {
 
     public static final int STATUS_RUNNING = 1;

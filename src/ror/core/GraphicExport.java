@@ -22,6 +22,13 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 
+/**
+ * GraphicExport class : Core class that permits us to extract statistics
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class GraphicExport {
 
     /**

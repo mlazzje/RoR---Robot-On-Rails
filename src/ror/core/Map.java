@@ -13,6 +13,13 @@ import org.jdom2.input.SAXBuilder;
 
 import ror.core.algo.Dijkstra;
 
+/**
+ * Map class : Core class that represents the map of the warehouse
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Map {
 
     /**

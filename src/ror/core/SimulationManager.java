@@ -19,6 +19,13 @@ import ror.core.algo.IAlgDestocking;
 import ror.core.algo.IAlgMove;
 import ror.core.algo.IAlgStore;
 
+/**
+ * SimulationManager class : Core class that represents an cabinet
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class SimulationManager extends Observable implements Observer, Runnable {
 
     public static final Integer RUNNING = 1;

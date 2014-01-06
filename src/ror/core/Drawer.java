@@ -2,6 +2,13 @@ package ror.core;
 
 import java.util.Observable;
 
+/**
+ * Drawer class : Core class that represents a drawer
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Drawer extends Observable {
 
     /**

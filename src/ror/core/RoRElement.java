@@ -2,6 +2,13 @@ package ror.core;
 
 import java.util.Observable;
 
+/**
+ * RoRElement class : Interface class that represents all basic elements in the simulation (elements which implements this interface)
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public abstract class RoRElement extends Observable {
 
     /**

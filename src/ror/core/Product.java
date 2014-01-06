@@ -2,6 +2,13 @@ package ror.core;
 
 import java.util.UUID;
 
+/**
+ * Product class : Core class that represents a product
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Product {
 
     /**

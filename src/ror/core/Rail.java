@@ -3,6 +3,13 @@ package ror.core;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Rail class : Core class that represents a rail
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Rail extends RoRElement {
 
     

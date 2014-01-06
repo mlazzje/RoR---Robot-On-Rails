@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Column class : Core class that represents an column
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class Column extends RoRElement implements Observer, Comparable<Column> {
 
     /**

@@ -10,6 +10,13 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
+/**
+ * OrderSource class : Core class that represents an order source can permit to generate products and orders
+ * 
+ * @author GLC - CPE LYON
+ * @version 1.0
+ * @since 2013-11-18
+ */
 public class OrderSource {
 
 	/**
