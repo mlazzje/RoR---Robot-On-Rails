@@ -97,43 +97,44 @@ public class UIController implements Observer {
 	}
 
 	// Mise à jour de la zone d'informations
+	if (this.thread != null) {
+	    synchronized (this.thread) {
 
-	synchronized (this.thread) {
+		if (this.simulationManager.getStatus() == SimulationManager.STOPPED && this.thread != null) {
+		    ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+		    this.rorFrame.getStartButton().setIcon(icon);
 
-	    if (this.simulationManager.getStatus() == SimulationManager.STOPPED && this.thread != null) {
-		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
-		this.rorFrame.getStartButton().setIcon(icon);
+		    int n = JOptionPane.showConfirmDialog(UIController.this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
+		    if (n == JOptionPane.YES_OPTION) {
 
-		int n = JOptionPane.showConfirmDialog(UIController.this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
-		if (n == JOptionPane.YES_OPTION) {
+			FileDialog fd = new FileDialog(UIController.this.rorFrame, "Exporter sous", FileDialog.SAVE);
 
-		    FileDialog fd = new FileDialog(UIController.this.rorFrame, "Exporter sous", FileDialog.SAVE);
+			fd.setVisible(true);
+			String filename = fd.getFile();
 
-		    fd.setVisible(true);
-		    String filename = fd.getFile();
+			if (filename != null) {
+			    File f = fd.getFiles()[0];
 
-		    if (filename != null) {
-			File f = fd.getFiles()[0];
-
-			new GraphicExport(UIController.this.simulationManager, f);
+			    new GraphicExport(UIController.this.simulationManager, f);
+			}
 		    }
+
+		    LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
+		    logModel.clear();
+		    rorFrame.getAlgDestockingComboBox().setEnabled(true);
+		    rorFrame.getAlgStoreComboBox().setEnabled(true);
+		    rorFrame.getAlgMoveComboBox().setEnabled(true);
+		    rorFrame.getRobotComboBox().setEnabled(true);
+		    rorFrame.getRandomCheckBox().setEnabled(true);
+		    rorFrame.getImportButton().setEnabled(true);
+		    rorFrame.getRandomCheckBox().setSelected(true);
+		    this.thread = null;
+
+		    this.rorFrame.setEnabled(true);
+		    return;
 		}
-
-
-		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
-		logModel.clear();
-		rorFrame.getAlgDestockingComboBox().setEnabled(true);
-		rorFrame.getAlgStoreComboBox().setEnabled(true);
-		rorFrame.getAlgMoveComboBox().setEnabled(true);
-		rorFrame.getRobotComboBox().setEnabled(true);
-		rorFrame.getRandomCheckBox().setEnabled(true);
-		rorFrame.getImportButton().setEnabled(true);
-		rorFrame.getRandomCheckBox().setSelected(true);
-		this.thread = null;
-
-		this.rorFrame.setEnabled(true);
-		return;
 	    }
+
 	}
 
 	// Input
