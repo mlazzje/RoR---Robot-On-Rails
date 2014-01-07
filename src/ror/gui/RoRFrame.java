@@ -18,7 +18,7 @@ import ror.core.RoRElement;
 
 /**
  * @author mlazzje
- *
+ * 
  */
 public class RoRFrame extends JFrame {
 
@@ -102,10 +102,6 @@ public class RoRFrame extends JFrame {
      * informationsPanel
      */
     private JPanel informationsPanel;
-    /**
-     * importFileChooser
-     */
-    private ImportFileChooser importFileChooser;
     /**
      * uiController
      */
@@ -255,7 +251,6 @@ public class RoRFrame extends JFrame {
     public RoRFrame(UIController uiController, String title) throws HeadlessException {
 	super(title);
 	this.uiController = uiController;
-	this.importFileChooser = new ImportFileChooser();
 
 	// Menu
 	this.menuBar = new JMenuBar();
@@ -385,13 +380,6 @@ public class RoRFrame extends JFrame {
     }
 
     /**
-     * @return importFileChooser
-     */
-    public ImportFileChooser getImportFileChooser() {
-	return importFileChooser;
-    }
-
-    /**
      * @return uiController
      */
     public UIController getUiController() {
@@ -418,34 +406,32 @@ public class RoRFrame extends JFrame {
     public void setTotalConsumptionLabel(JLabel label) {
 	this.totalConsumptionLabel = label;
     }
-    
+
     /**
      * @param label
      */
     public void setAverageConsumptionLabel(JLabel label) {
 	this.avgConsumptionLabel = label;
     }
-    
+
     /**
      * @param label
      */
     public void setNbOrderDoneLabel(JLabel label) {
 	this.nbOrderLabel = label;
     }
-    
+
     /**
      * @param label
      */
-    public void setAvgTimeOrder(JLabel label)
-    {
-	this.avgTimeOrderLabel=label;
+    public void setAvgTimeOrder(JLabel label) {
+	this.avgTimeOrderLabel = label;
     }
-    
+
     /**
      * @param label
      */
-    public void setTotalTimeOrderLabel(JLabel label)
-    {
-	this.totalTimeOrderLabel=label;
+    public void setTotalTimeOrderLabel(JLabel label) {
+	this.totalTimeOrderLabel = label;
     }
 }
