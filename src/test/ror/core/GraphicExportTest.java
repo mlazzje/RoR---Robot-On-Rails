@@ -1,12 +1,12 @@
 package test.ror.core;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ror.core.GraphicExport;
 
 public class GraphicExportTest {
 
@@ -28,7 +28,9 @@ public class GraphicExportTest {
 
     @Test
     public void testGraphicExport() {
-	fail("Not yet implemented");
+	@SuppressWarnings("unused")
+	GraphicExport export = new GraphicExport(null, null);
+	
     }
 
 }

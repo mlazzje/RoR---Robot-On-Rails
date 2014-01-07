@@ -1,7 +1,5 @@
 package test.ror.core;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import ror.core.Cabinet;

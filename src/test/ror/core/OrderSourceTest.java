@@ -1,10 +1,6 @@
 package test.ror.core;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -15,7 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ror.core.Order;
 import ror.core.OrderSource;
 import ror.core.Product;
 
@@ -74,7 +69,6 @@ public class OrderSourceTest {
 		orderSourceTest.setScenarioFile(file);
 
 		HashMap<Integer, ArrayList<Product>> products = orderSourceTest.getProducts();
-		HashMap<Integer,ArrayList<Order>> orders = orderSourceTest.getOrders();
 
 		for(Entry<Integer,  ArrayList<Product>> entry : products.entrySet()) {
 		    Integer key = entry.getKey();

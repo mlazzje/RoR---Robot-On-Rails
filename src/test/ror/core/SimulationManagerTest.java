@@ -175,14 +175,12 @@ public class SimulationManagerTest extends TestCase {
 
     @Test
     public void testSetSpeed() {
-	simulationManager.setSpeed(1.0f);
-	assertTrue(simulationManager.getSpeed() == 1.0f);
-
-	simulationManager.setSpeed(10000.0f);
-	assertTrue(simulationManager.getSpeed() == 10000.0f);
+	simulationManager.setSpeed(100.f);
+	System.out.println(simulationManager.getSpeed());
+	assertTrue(simulationManager.getSpeed() == 2.0f);
 
 	simulationManager.setSpeed(-1.0f);
-	assertTrue(simulationManager.getSpeed() == 0.0f);
+	assertTrue(simulationManager.getSpeed() == 1.0f);
     }
 
     @Test

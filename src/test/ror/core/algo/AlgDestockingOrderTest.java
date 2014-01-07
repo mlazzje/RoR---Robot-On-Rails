@@ -1,7 +1,5 @@
 package test.ror.core.algo;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -9,8 +7,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.sun.org.apache.xml.internal.resolver.Catalog;
 
 import ror.core.algo.AlgDestockingFifo;
 import ror.core.algo.AlgDestockingOrder;

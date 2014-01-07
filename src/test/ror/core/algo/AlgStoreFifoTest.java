@@ -1,7 +1,5 @@
 package test.ror.core.algo;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -30,7 +28,8 @@ public class AlgStoreFifoTest {
 
     @Test
     public void testGetActions() {
-    	AlgStoreFifo testAlg = new AlgStoreFifo();
+    	@SuppressWarnings("unused")
+	AlgStoreFifo testAlg = new AlgStoreFifo();
     	
     }
 

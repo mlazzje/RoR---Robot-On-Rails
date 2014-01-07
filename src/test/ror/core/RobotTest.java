@@ -8,7 +8,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ror.core.Product;
+import ror.core.Rail;
+import ror.core.Robot;
+import ror.core.actions.InputAction;
+import ror.core.actions.MoveAction;
+
 public class RobotTest {
+
+    private Robot robot;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -20,6 +28,7 @@ public class RobotTest {
 
     @Before
     public void setUp() throws Exception {
+	robot = new Robot(null, null, null);
     }
 
     @After
@@ -28,137 +37,93 @@ public class RobotTest {
 
     @Test
     public void testRobot() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testToString() {
-	fail("Not yet implemented");
+	robot = new Robot(null, 4, null);
     }
 
     @Test
     public void testGetNumber() {
-	fail("Not yet implemented");
+	Robot r = new Robot(null, 4, null);
+	assertTrue(r.getNumber() ==4);
     }
 
     @Test
     public void testSetNumber() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testRemoveCurrentAction() {
-	fail("Not yet implemented");
+	robot.setNumber(1);
+	assertTrue(robot.getNumber() == 1);
     }
 
     @Test
     public void testGetProducts() {
-	fail("Not yet implemented");
-    }
+	assertTrue(robot.getProducts().size() == 0);
+	Product p = new Product("a");
+	Product p1 = new Product("b");
 
-    @Test
-    public void testAddAction() {
-	fail("Not yet implemented");
+	robot.getProducts().add(p);
+	robot.getProducts().add(p1);
     }
 
     @Test
     public void testGetTraveledDistance() {
-	fail("Not yet implemented");
+	assertTrue(robot.getTraveledDistance() >= 0);
     }
 
     @Test
     public void testGetConsumption() {
-	fail("Not yet implemented");
+	assertTrue(robot.getConsumption() >= 0);
     }
 
     @Test
     public void testGetActions() {
-	fail("Not yet implemented");
+	assertTrue(robot.getActions() != null);
     }
 
     @Test
     public void testGetRail() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetWorking() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetStatus() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetOrderInProgress() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testSetOrderInProgress() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetLastActionRail() {
-	fail("Not yet implemented");
+	Rail r = new Rail(0, 0, null, null, null, null);
+	robot = new Robot(r, 1, null);
+	assertTrue(robot.getRail() == r);
     }
 
     @Test
     public void testGetLastActionSpaceAvailability() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetOpositeRailAtNextIntersection() {
-	fail("Not yet implemented");
+	robot = new Robot(null, null, null);
+	assertTrue(robot.getLastActionSpaceAvailabilityUnsynchronized() == 10);
+	robot.getActions().add(new InputAction(null, null, null));
+	assertTrue(robot.getLastActionSpaceAvailabilityUnsynchronized() == 9);
     }
 
     @Test
     public void testGetSpeed() {
-	fail("Not yet implemented");
+	robot.setSpeed(Robot.SPEED_1);
+	assertTrue(robot.getSpeed() == Robot.SPEED_1);
+	robot.setSpeed(Robot.SPEED_2);
+	assertTrue(robot.getSpeed() == Robot.SPEED_2);
     }
 
     @Test
     public void testSetSpeed() {
-	fail("Not yet implemented");
+	robot.setSpeed(Robot.SPEED_1);
+	assertTrue(robot.getSpeed() == Robot.SPEED_1);
+	robot.setSpeed(Robot.SPEED_2);
+	assertTrue(robot.getSpeed() == Robot.SPEED_2);
     }
 
     @Test
     public void testWillMove() {
-	fail("Not yet implemented");
+	assertTrue(robot.willMove() == false);
+	MoveAction move = new MoveAction(100, null, null, null);
+	robot.getActions().add(move);
+	assertTrue(robot.willMove() == true);
     }
 
     @Test
     public void testRun() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetTimer() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testSetTimer() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testGetTimerTask() {
-	fail("Not yet implemented");
-    }
-
-    @Test
-    public void testSetTimerTask() {
-	fail("Not yet implemented");
+	// fail("Not yet implemented");
     }
 
     @Test
     public void testStopTimerTask() {
-	fail("Not yet implemented");
+	robot.stopTimerTask();
     }
 
 }

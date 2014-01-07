@@ -8,6 +8,7 @@ import ror.core.Output;
 import ror.core.Product;
 import ror.core.Rail;
 
+@SuppressWarnings("unused")
 public class OutputTest {
 
 	@Test
@@ -16,7 +17,6 @@ public class OutputTest {
 		Rail testOutputRail2 = new Rail(1, 0, null, null, null, null);
 		int x=0;
 		int y=0;
-		Product p = new Product("test");
 		Output outputTest = new Output(x, y, testOutputRail);
 		Output outputTestNull = new Output(1, 1, null);
 		
