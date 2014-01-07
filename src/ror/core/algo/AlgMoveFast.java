@@ -34,37 +34,36 @@ public class AlgMoveFast implements IAlgMove {
 		robot = getBestRobot(robots);
 		robot.setSpeed(Robot.SPEED_3);
 
+		robot.lock.lock();
 		ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
-		int freeSpace = robot.getLastActionSpaceAvailability();
+		int freeSpace = robot.getLastActionSpaceAvailabilityUnsynchronized();
 
 		while (freeSpace > 0 && newDestockActions.size() > 0) {
 		    destockingActionToAffect.add(newDestockActions.get(0));
 		    newDestockActions.remove(newDestockActions.get(0));
 		    freeSpace--;
 		}
-		// ajout des actions de mouvements et de destockage au robot
-		ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
-		for (Action action : actionMoveAndDestock) {
-		    robot.addAction(action);
-		}
 
-		Rail start = robot.getLastActionRail();
+		// ajout des actions de mouvements et de destockage au robot
+		ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRailUnsynchronized());
+		robot.getActions().addAll(actionMoveAndDestock);
+
+		Rail start = robot.getLastActionRailUnsynchronized();
 		Rail end = map.getOutput().getAccess();
 
 		// ajout des actions des mouvements jusqu'a l'output au robot
 		ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
-		for (MoveAction move : movesToOutput) {
-		    robot.addAction(move);
-		}
+		robot.getActions().addAll(movesToOutput);
 
 		// ajout des actions d'output
 		for (Action action : destockingActionToAffect) {
 		    DestockingAction destockingAction = (DestockingAction) action;
 		    OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
 		    outputAction.setProduct(destockingAction.getProduct());
-		    robot.addAction(outputAction);
+		    robot.getActions().add(outputAction);
 		}
 
+		robot.lock.unlock();
 	    }
 	}
 	// si des actions input ou store sont disponibles
@@ -73,7 +72,7 @@ public class AlgMoveFast implements IAlgMove {
 
 		Robot robot = getBestRobot(robots);
 		robot.setSpeed(Robot.SPEED_3);
-
+		robot.lock.lock();
 		ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 		for (StoreAction storeAction : newStoreActions) {
 		    InputAction inputaction = new InputAction(1000, null, map.getInput());
@@ -81,20 +80,18 @@ public class AlgMoveFast implements IAlgMove {
 		    inputActions.add(inputaction);
 		}
 
-		Rail start = robot.getLastActionRail();
+		Rail start = robot.getLastActionRailUnsynchronized();
 		Rail end = map.getInput().getAccess();
 
 		ArrayList<MoveAction> movesToInput = railsToMoveActions(map.getPath(start, end));
-		for (MoveAction move : movesToInput) {
-		    robot.addAction(move);
-		}
+		robot.getActions().addAll(movesToInput);
 
 		ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
 
 		// ajout des inputs actions au robot
-		while (robot.getLastActionSpaceAvailability() > 0 && inputActions.size() > 0) {
+		while (robot.getLastActionSpaceAvailabilityUnsynchronized() > 0 && inputActions.size() > 0) {
 		    affectedInputAction.add(inputActions.get(0));
-		    robot.addAction(inputActions.get(0));
+		    robot.getActions().add(inputActions.get(0));
 		    inputActions.remove(inputActions.get(0));
 		}
 
@@ -112,9 +109,8 @@ public class AlgMoveFast implements IAlgMove {
 
 		// ajout des actions de mouvements et de stockage au robot
 		ArrayList<Action> actionMoveAndStore = sortActionsAndMoves(storeActionsToAffect, map, map.getInput().getAccess());
-		for (Action action : actionMoveAndStore) {
-		    robot.addAction(action);
-		}
+		robot.getActions().addAll(actionMoveAndStore);
+		robot.lock.unlock();
 	    }
 	}
 
@@ -206,6 +202,7 @@ public class AlgMoveFast implements IAlgMove {
 
     /**
      * Search the robot that has the less actions number.
+     * 
      * @param robots
      * @param map
      * @param destination
@@ -214,8 +211,10 @@ public class AlgMoveFast implements IAlgMove {
     public Robot getBestRobot(ArrayList<Robot> robots) {
 	Robot bestRobot = robots.get(0);
 	for (Robot r : robots) {
+	    r.lock.lock();
 	    if (r.getActions().size() < bestRobot.getActions().size())
 		bestRobot = r;
+	    r.lock.unlock();
 	}
 
 	return bestRobot;
@@ -240,6 +239,7 @@ public class AlgMoveFast implements IAlgMove {
 
     /**
      * Generate a copy of an ArrayList of Rails without copying references
+     * 
      * @param rails
      * @return an ArrayList of Rail
      */

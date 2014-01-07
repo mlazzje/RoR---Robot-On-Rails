@@ -106,20 +106,31 @@ public class UIController implements Observer {
 
 		// Proposition d'export
 		int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
-		if (n == 0) {
+		if (n == JOptionPane.YES_OPTION) {
+		    System.out.println("filechooser");
 		    JFileChooser fc = new JFileChooser();
-		    int ret = fc.showSaveDialog(this.rorFrame);
-
+		    int ret = fc.showSaveDialog(UIController.this.rorFrame);
+		    System.out.println("filechooser-2");
 		    if (ret == JFileChooser.APPROVE_OPTION) {
+			    System.out.println("filechooser-3");
+
 			File file = fc.getSelectedFile();
 			new GraphicExport(this.simulationManager, file);
 			System.out.println(file);
 		    }
 		}
+		System.out.println("filechooser-4");
+
+		try {
+		    this.thread.join();
+		} catch (InterruptedException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+		System.out.println("toto");
 		this.thread = null;
 		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
 		logModel.clear();
-
 		rorFrame.getAlgDestockingComboBox().setEnabled(true);
 		rorFrame.getAlgStoreComboBox().setEnabled(true);
 		rorFrame.getAlgMoveComboBox().setEnabled(true);
@@ -130,6 +141,7 @@ public class UIController implements Observer {
 
 		return;
 	    }
+	    this.rorFrame.setEnabled(true);
 	}
 
 	// Input
@@ -424,8 +436,10 @@ public class UIController implements Observer {
      * End simulation
      */
     public void setEndSimulation() {
+	this.startSimulation();
 	this.progressBox = new ProgressBox(this.rorFrame);
 	simulationManager.setEndSimulation();
+
     }
 
     /**
@@ -465,13 +479,6 @@ public class UIController implements Observer {
      */
     public void stopSimulation() {
 	simulationManager.setStop();
-	try {
-	    this.thread.join();
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	this.update(null, null);
     }
 
     /**
@@ -491,6 +498,7 @@ public class UIController implements Observer {
 	this.rorFrame.getStartButton().setIcon(icon);
 	if (thread == null) {
 	    this.thread = new Thread(this.simulationManager);
+	    this.thread.setName("#SIMULATION#");
 	    this.thread.start();
 	} else
 	    this.simulationManager.setPlay();

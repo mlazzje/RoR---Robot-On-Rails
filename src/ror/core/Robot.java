@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.locks.ReentrantLock;
+
 import ror.core.actions.Action;
 import ror.core.actions.DestockingAction;
 import ror.core.actions.InputAction;
@@ -41,6 +43,10 @@ public class Robot extends Observable implements Runnable {
     public static final float SPEED_3 = 0.25f;
 
     /**
+     * use to lock when make changes to list of actions
+     */
+    public ReentrantLock lock;
+    /**
      * Traveled distance
      */
     private Integer traveledDistance = 0;
@@ -60,10 +66,7 @@ public class Robot extends Observable implements Runnable {
      * Speed default
      */
     private Float speed = SPEED_1;
-    /**
-     * Working or not (false by default)
-     */
-    private Boolean working = false;
+
     /**
      * Order in progress
      */
@@ -109,19 +112,17 @@ public class Robot extends Observable implements Runnable {
     public Robot(Rail initRail, Integer num, SimulationManager simulationManager) {
 	number = num;
 	actions = new ArrayList<Action>();
-	rail = initRail;
-	rail.setRobot(this);
+	if (initRail != null) {
+	    rail = initRail;
+	    rail.setRobot(this);
+	}
 	products = new ArrayList<Product>();
 	this.consumption = 0;
 	this.simulationManager = simulationManager;
-	timer = new Timer();
+	timer = null;
+	lock = new ReentrantLock();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
 	return "Robot #" + getNumber();
@@ -150,7 +151,7 @@ public class Robot extends Observable implements Runnable {
      */
     private void waitForTimer(int duration) {
 
-	timer = new Timer();
+	timer = new Timer("#TIMER#" + this);
 	timerTask = new TimerTask() {
 	    public void run() {
 		synchronized (Robot.this) {
@@ -205,6 +206,7 @@ public class Robot extends Observable implements Runnable {
 	    this.setOrderInProgress(null);
 	    this.rail.setRobot(null);
 	    this.rail.lock.unlock();
+
 	    if (((MoveAction) action).getNext() != null)
 		Robot.this.rail = ((MoveAction) action).getNext();
 	    Robot.this.rail.setRobot(Robot.this);
@@ -301,23 +303,12 @@ public class Robot extends Observable implements Runnable {
      * @return current action
      */
     private Action getCurrentAction() {
-	synchronized (this.actions) {
 
-	    if (actions != null && actions.size() > 0)
-		return actions.get(0);
-	    else
-		return null;
-	}
-    }
+	if (actions != null && actions.size() > 0)
+	    return actions.get(0);
+	else
+	    return null;
 
-    /**
-     * Remove current action
-     */
-    public void removeCurrentAction() {
-	synchronized (this.actions) {
-	    if (actions != null && actions.size() > 0)
-		this.actions.remove(0);
-	}
     }
 
     /**
@@ -349,19 +340,6 @@ public class Robot extends Observable implements Runnable {
     }
 
     /**
-     * Add an action passed in parameter
-     * 
-     * @param action
-     */
-    public void addAction(Action action) {
-
-	synchronized (this.actions) {
-
-	    actions.add(action);
-	}
-    }
-
-    /**
      * @return Traveled distance
      */
     public Integer getTraveledDistance() {
@@ -390,13 +368,6 @@ public class Robot extends Observable implements Runnable {
     }
 
     /**
-     * @return Working state
-     */
-    public Boolean getWorking() {
-	return working;
-    }
-
-    /**
      * @return robot status
      */
     public Integer getStatus() {
@@ -415,22 +386,18 @@ public class Robot extends Observable implements Runnable {
      * 
      * @param orderInProgress
      */
-    public void setOrderInProgress(Order orderInProgress) {
+    private void setOrderInProgress(Order orderInProgress) {
 	this.orderInProgress = orderInProgress;
     }
 
     /**
      * @return Last action rail
      */
-    public Rail getLastActionRail() {
+    public Rail getLastActionRailUnsynchronized() {
 	Action lastAction;
-	ArrayList<Action> copyActions;
-	synchronized (this.actions) {
-	    copyActions = new ArrayList<Action>(this.actions);
-	}
 
-	if (copyActions.size() > 0) {
-	    lastAction = copyActions.get(copyActions.size() - 1);
+	if (this.actions.size() > 0) {
+	    lastAction = this.actions.get(this.actions.size() - 1);
 
 	    if (lastAction instanceof MoveAction) {
 		return ((MoveAction) lastAction).getNext();
@@ -452,26 +419,24 @@ public class Robot extends Observable implements Runnable {
     /**
      * @return Number of products that robot can transport
      */
-    public Integer getLastActionSpaceAvailability() {
+    public Integer getLastActionSpaceAvailabilityUnsynchronized() {
 	int count = this.products.size();
 
-	synchronized (this.actions) {
+	for (Action action : actions) {
 
-	    for (Action action : actions) {
-
-		if (action instanceof StoreAction) {
-		    count--;
-		} else if (action instanceof DestockingAction) {
-		    count++;
-		} else if (action instanceof OutputAction) {
-		    count--;
-		} else if (action instanceof InputAction) {
-		    count++;
-		}
+	    if (action instanceof StoreAction) {
+		count--;
+	    } else if (action instanceof DestockingAction) {
+		count++;
+	    } else if (action instanceof OutputAction) {
+		count--;
+	    } else if (action instanceof InputAction) {
+		count++;
 	    }
-
-	    return 10 - count;
 	}
+
+	return 10 - count;
+
     }
 
     /**
@@ -483,13 +448,9 @@ public class Robot extends Observable implements Runnable {
 	Rail intersectionRail = null;
 	MoveAction lastAction = null;
 
-	ArrayList<Action> copyActions;
-	synchronized (this.actions) {
-	    copyActions = new ArrayList<Action>(this.actions);
-	}
 	// Parcours des actions
 
-	for (Action action : copyActions) {
+	for (Action action : this.actions) {
 	    if (action instanceof MoveAction) {
 		intersectionRail = ((MoveAction) action).getNext();
 
@@ -530,16 +491,19 @@ public class Robot extends Observable implements Runnable {
      */
     private void moveBlockingRobot(Robot blockingRobot) {
 
-	// System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
-
+	System.out.println(this + " bloqué par " + blockingRobot + " qui a le status : " + blockingRobot.getStatus() + " et " + blockingRobot.getActions().size() + " actions");
+	
 	// si le robot qui bloque n'a pas prévu d'avancer
+	blockingRobot.lock.lock();
+
 	if (blockingRobot.willMove() == false) {
-
 	    // on fait avancer le robot jusqu'à la prochaine intersection ou jusqu'au rail suivant
-	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(blockingRobot.getLastActionRail(), this.getOpositeRailAtNextIntersection()));
+	    ArrayList<MoveAction> movesBlockingRobot = this.simulationManager.getiAlgMove().railsToMoveActions(simulationManager.getMap().getPath(blockingRobot.getLastActionRailUnsynchronized(), this.getOpositeRailAtNextIntersection()));
+	    if (movesBlockingRobot.size() == 0)
+		System.out.println("erreur 1000");
 	    blockingRobot.getActions().addAll(movesBlockingRobot);
-
 	}
+	blockingRobot.lock.unlock();
 	// si le robot dort on le reveille
 	synchronized (blockingRobot.status) {
 
@@ -557,13 +521,12 @@ public class Robot extends Observable implements Runnable {
      * @return true if the robot has a MoveAction in his actions's list else return false
      */
     public boolean willMove() {
-	synchronized (this.actions) {
-	    for (Action a : this.actions) {
-		if (a instanceof MoveAction) {
-		    return true;
-		}
+	for (Action a : this.actions) {
+	    if (a instanceof MoveAction) {
+		return true;
 	    }
 	}
+
 	return false;
     }
 
@@ -578,8 +541,9 @@ public class Robot extends Observable implements Runnable {
 	    }
 
 	    // mise en veille si plus d'actions ou si simulation en pause ou arrêtée
+	    this.lock.lock();
 	    if (this.getCurrentAction() == null || simulationStatus == SimulationManager.PAUSED) {
-
+		this.lock.unlock();
 		// maj du status si pas d'actions
 		synchronized (this.status) {
 		    this.status = Robot.STATUS_SLEEPING;
@@ -598,41 +562,42 @@ public class Robot extends Observable implements Runnable {
 		    this.status = Robot.STATUS_RUNNING;
 		}
 	    } else {
+
 		if (this.actions.get(0) instanceof MoveAction) {
-		    
+
 		    MoveAction move = (MoveAction) this.actions.get(0);
 		    Rail r = move.getNext();
-		    if(this.getRail()==move.getNext()) //erreur
+		    if (this.getRail() == move.getNext()) // erreur
 		    {
-			synchronized (this.actions) {
-			    this.actions.remove(0);
-			}
+			this.actions.remove(0);
 			continue;
 		    }
-		    if (r.lock.tryLock() == false) {
+		    this.lock.unlock();
+		    while (r.lock.tryLock() == false) {
 			// on a pas le lock donc c'est un autre robot qui l'a
 			Robot blockingRobot = this.simulationManager.checkNextAction(this, move);
 
 			if (blockingRobot != null) {
 			    this.moveBlockingRobot(blockingRobot);
+			    r.lock.lock();
+			    break;
 			}
-			r.lock.lock();
 		    }
+		    this.lock.lock();
 		}
 		// execution de la prochaine action
-		Action a;
-		synchronized (this.actions) {
-		    a = this.actions.get(0);
-		}
+		Action a = this.actions.get(0);
+		this.lock.unlock();
 		a.setDuration((int) (1000 / this.simulationManager.getSpeed()));
 
 		this.executeAction(a);
 
 		this.setChanged();
 		this.notifyObservers();
-		synchronized (this.actions) {
-		    this.actions.remove(0);
-		}
+
+		this.lock.lock();
+		this.actions.remove(0);
+		this.lock.unlock();
 
 	    }
 
@@ -645,22 +610,6 @@ public class Robot extends Observable implements Runnable {
 	    System.out.println("robot unlock son rail et termine son thread");
 	}
 
-    }
-
-    public Timer getTimer() {
-	return timer;
-    }
-
-    public void setTimer(Timer timer) {
-	this.timer = timer;
-    }
-
-    public TimerTask getTimerTask() {
-	return timerTask;
-    }
-
-    public void setTimerTask(TimerTask timerTask) {
-	this.timerTask = timerTask;
     }
 
     /**

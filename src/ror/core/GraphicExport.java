@@ -39,6 +39,8 @@ public class GraphicExport {
 	/*
 	 * Activity Chart
 	 */
+	if(simulationManager==null || file==null)
+	    return;
 	ArrayList<HashMap<Long, Integer>> dataActivityChart = simulationManager.getDataRobotActivity();
 	XYSeriesCollection activityResult = new XYSeriesCollection();
 	int cptRobot = 0;

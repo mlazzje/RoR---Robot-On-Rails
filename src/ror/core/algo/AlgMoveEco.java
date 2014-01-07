@@ -36,9 +36,13 @@ public class AlgMoveEco implements IAlgMove {
 		robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
 
 		if (robot != null) {
+		    System.out.println("Essaie de prendre les actions");
+
+		    robot.lock.lock();
+		    System.out.println("A pris les actions");
 
 		    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
-		    int freeSpace = robot.getLastActionSpaceAvailability();
+		    int freeSpace = robot.getLastActionSpaceAvailabilityUnsynchronized();
 
 		    while (freeSpace > 0 && newDestockActions.size() > 0) {
 			destockingActionToAffect.add(newDestockActions.get(0));
@@ -47,29 +51,28 @@ public class AlgMoveEco implements IAlgMove {
 		    }
 
 		    // ajout des actions de mouvements et de destockage au robot
-		    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRail());
-		    for (Action action : actionMoveAndDestock) {
-			robot.addAction(action);
-		    }
+		    ArrayList<Action> actionMoveAndDestock = sortActionsAndMoves(destockingActionToAffect, map, robot.getLastActionRailUnsynchronized());
+		    robot.getActions().addAll(actionMoveAndDestock);
 
-		    Rail start = robot.getLastActionRail();
+		    Rail start = robot.getLastActionRailUnsynchronized();
 		    Rail end = map.getOutput().getAccess();
 
 		    // ajout des actions des mouvements jusqu'a l'output au robot
 		    ArrayList<MoveAction> movesToOutput = railsToMoveActions(map.getPath(start, end));
-		    for (MoveAction move : movesToOutput) {
-			robot.addAction(move);
-		    }
+		    robot.getActions().addAll(movesToOutput);
 
 		    // ajout des actions d'output
 		    for (Action action : destockingActionToAffect) {
 			DestockingAction destockingAction = (DestockingAction) action;
 			OutputAction outputAction = new OutputAction(1000, robot, map.getOutput());
 			outputAction.setProduct(destockingAction.getProduct());
-			robot.addAction(outputAction);
+			robot.getActions().add(outputAction);
 		    }
+		    robot.lock.unlock();
+
 		}
 
+		System.out.println("rend les actions");
 	    }
 	}
 
@@ -79,7 +82,11 @@ public class AlgMoveEco implements IAlgMove {
 	    while (newStoreActions.size() > 0) {
 
 		Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
+		System.out.println("essaie de prendre les actions 2");
 
+		robot.lock.lock();
+
+		System.out.println("a les actions 2");
 		ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 		for (StoreAction storeAction : newStoreActions) {
 		    InputAction inputaction = new InputAction(1000, null, map.getInput());
@@ -87,20 +94,18 @@ public class AlgMoveEco implements IAlgMove {
 		    inputActions.add(inputaction);
 		}
 
-		Rail start = robot.getLastActionRail();
+		Rail start = robot.getLastActionRailUnsynchronized();
 		Rail end = map.getInput().getAccess();
 
 		ArrayList<MoveAction> movesToInput = railsToMoveActions(map.getPath(start, end));
-		for (MoveAction move : movesToInput) {
-		    robot.addAction(move);
-		}
+		robot.getActions().addAll(movesToInput);
 
 		ArrayList<InputAction> affectedInputAction = new ArrayList<InputAction>();
 
 		// ajout des inputs actions au robot
-		while (robot.getLastActionSpaceAvailability() > 0 && inputActions.size() > 0) {
+		while (robot.getLastActionSpaceAvailabilityUnsynchronized() > 0 && inputActions.size() > 0) {
 		    affectedInputAction.add(inputActions.get(0));
-		    robot.addAction(inputActions.get(0));
+		    robot.getActions().add(inputActions.get(0));
 		    inputActions.remove(inputActions.get(0));
 		}
 
@@ -118,9 +123,10 @@ public class AlgMoveEco implements IAlgMove {
 
 		// ajout des actions de mouvements et de stockage au robot
 		ArrayList<Action> actionMoveAndStore = sortActionsAndMoves(storeActionsToAffect, map, map.getInput().getAccess());
-		for (Action action : actionMoveAndStore) {
-		    robot.addAction(action);
-		}
+		robot.getActions().addAll(actionMoveAndStore);
+
+		robot.lock.unlock();
+		System.out.println("rend les actions 2");
 	    }
 	}
 
@@ -203,6 +209,7 @@ public class AlgMoveEco implements IAlgMove {
 
     /**
      * Search the robot that has the shortest way to the destination Rail after it realised his current actions.
+     * 
      * @param robots
      * @param map
      * @param destination
@@ -217,7 +224,12 @@ public class AlgMoveEco implements IAlgMove {
 	for (Robot robot : robots) {
 	    ArrayList<Rail> copyRails = this.getCloneRail(map.getRails());
 	    for (Robot robot2 : robots) {
-		Rail railRobotBloquant = robot2.getLastActionRail();
+		Rail railRobotBloquant;
+		robot2.lock.lock();
+
+		railRobotBloquant = robot2.getLastActionRailUnsynchronized();
+
+		robot2.lock.unlock();
 		if (robot2 == robot)
 		    continue;
 		else {
@@ -238,11 +250,15 @@ public class AlgMoveEco implements IAlgMove {
 
 	    }
 	    Dijkstra dijkstra = new Dijkstra(copyRails);
-	    ArrayList<Rail> path = (ArrayList<Rail>) dijkstra.getPath(this.getRail(copyRails, robot.getLastActionRail().getX(), robot.getLastActionRail().getY()), this.getRail(copyRails, destination.getX(), destination.getY()));
+	    robot.lock.lock();
+	    ArrayList<Rail> path = (ArrayList<Rail>) dijkstra.getPath(this.getRail(copyRails, robot.getLastActionRailUnsynchronized().getX(), robot.getLastActionRailUnsynchronized().getY()), this.getRail(copyRails, destination.getX(), destination.getY()));
 	    if (path == null) {
+		robot.lock.unlock();
+
 		// chemin impossible
 		continue;
 	    }
+	    robot.lock.unlock();
 
 	    if (minRailCount != null) {
 		if (railsToMoveActions(path).size() < minRailCount) {

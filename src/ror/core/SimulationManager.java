@@ -218,6 +218,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		dataRobotActivity.add(new HashMap<Long, Integer>());
 		dataRobotConsumption.add(new HashMap<Long, Integer>());
 		Thread t = new Thread(r);
+		t.setName("#"+r+"#");
 		t.start();
 		robotThreads.add(t);
 	    }
@@ -317,8 +318,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		try {
 		    long dureeTour = 1000; // 1seconde
 		    long pause = (long) ((long) (dureeTour - (System.currentTimeMillis() - startTime)) / speed);
-
-		    Thread.sleep(pause);
+		    if (pause > 0)
+			Thread.sleep(pause);
 
 		    uptime += dureeTour;
 
@@ -364,7 +365,7 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     private void stopSimulation() {
 
-	Thread thread = new Thread() {
+	Thread thread = new Thread("#THREADSTOP#") {
 	    public void run() {
 		// on arrête les threads des robots
 		for (Robot r : SimulationManager.this.robots) {
@@ -376,7 +377,8 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		    // et on attend que le thread du robots soient tous terminés.
 		    synchronized (SimulationManager.this.robotThread(r)) {
 			try {
-			    SimulationManager.this.robotThread(r).join();
+			    if (SimulationManager.this.robotThread(r).isAlive())
+				SimulationManager.this.robotThread(r).join();
 			} catch (InterruptedException e) {
 			    e.printStackTrace();
 			}
@@ -399,16 +401,12 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 		}
 
 		Order.resetLastId();
-
+		SimulationManager.this.setChanged();
+		SimulationManager.this.notifyObservers();
 	    }
 	};
 	thread.start();
-	try {
-	    thread.join();
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+	
     }
 
     /**
