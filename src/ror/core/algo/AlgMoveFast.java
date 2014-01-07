@@ -31,7 +31,7 @@ public class AlgMoveFast implements IAlgMove {
 	    while (newDestockActions.size() > 0) {
 		Robot robot;
 
-		robot = getBestRobot(robots);
+		robot = getBestRobot(robots, map, newDestockActions.get(0).getDrawer().getColumn().getAccess());
 		robot.setSpeed(Robot.SPEED_3);
 
 		robot.lock.lock();
@@ -70,7 +70,7 @@ public class AlgMoveFast implements IAlgMove {
 	if (newStoreActions != null) {
 	    while (newStoreActions.size() > 0) {
 
-		Robot robot = getBestRobot(robots);
+		Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
 		robot.setSpeed(Robot.SPEED_3);
 		robot.lock.lock();
 		ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
@@ -208,16 +208,23 @@ public class AlgMoveFast implements IAlgMove {
      * @param destination
      * @return a Robot
      */
-    public Robot getBestRobot(ArrayList<Robot> robots) {
+    public Robot getBestRobot(ArrayList<Robot> robots, Map map, Rail destination) {
+
 	Robot bestRobot = robots.get(0);
+
 	for (Robot r : robots) {
 	    r.lock.lock();
-	    if (r.getActions().size() < bestRobot.getActions().size())
+	    if (r.getActions().size() < bestRobot.getActions().size()) {
 		bestRobot = r;
+	    } else if (r.getActions().size() == bestRobot.getActions().size()) {
+		if (map.getPath(r.getRail(), destination).size() < map.getPath(r.getRail(), destination).size())
+		    bestRobot = r;
+	    }
 	    r.lock.unlock();
 	}
 
 	return bestRobot;
+
     }
 
     /**

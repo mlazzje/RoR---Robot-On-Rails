@@ -267,7 +267,7 @@ public class AlgMoveEco implements IAlgMove {
 	// si pas de best robot on prende celui qui a le moins d'actions
 	if (bestRobot == null) {
 	    AlgMoveFast alg = new AlgMoveFast();
-	    bestRobot = alg.getBestRobot(robots);
+	    bestRobot = alg.getBestRobot(robots,map,destination);
 	}
 	return bestRobot;
 
