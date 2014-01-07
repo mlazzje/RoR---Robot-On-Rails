@@ -130,7 +130,6 @@ public class UIController implements Observer {
 		rorFrame.getImportButton().setEnabled(true);
 		rorFrame.getRandomCheckBox().setSelected(true);
 		this.thread = null;
-		System.out.println(this.thread);
 
 		this.rorFrame.setEnabled(true);
 		return;
@@ -485,12 +484,9 @@ public class UIController implements Observer {
      * Start simulation
      */
     public void startSimulation() {
-	System.out.println("play");
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	if (thread == null) {
-	    System.out.println("new thread");
-
 	    this.thread = new Thread(this.simulationManager);
 	    this.thread.setName("#SIMULATION#");
 	    this.thread.start();
