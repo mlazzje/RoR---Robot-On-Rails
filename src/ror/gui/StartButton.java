@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import ror.core.SimulationManager;
+
 /**
  * StartButton class
  * Represent the Start Button
@@ -29,7 +31,7 @@ public class StartButton extends JButton implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
-			if (frame.getUiController().getSimulationManager().getStatus() == 1) {
+			if (frame.getUiController().getSimulationManager().getStatus() == SimulationManager.RUNNING ) {
 				frame.getUiController().pauseSimulation();
 				ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 				this.setIcon(icon);
