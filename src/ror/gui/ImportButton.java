@@ -8,6 +8,8 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  * ImportButton class Represent the import Button
@@ -41,9 +43,13 @@ public class ImportButton extends JButton implements MouseListener {
 	    if (filename != null) {
 		File f = fd.getFiles()[0];
 
-		frame.getUiController().setFile(f);
-		frame.getRandomCheckBox().setSelected(false);
-		frame.getAcceleratedButton().setEnabled(true);
+		try {
+		    frame.getUiController().setFile(f);
+		    frame.getRandomCheckBox().setSelected(false);
+		    frame.getAcceleratedButton().setEnabled(true);
+		} catch (Exception e1) {
+		    JOptionPane.showMessageDialog(frame, "Impossible d'ouvrir le fichier");
+		}
 	    }
 	} else {
 	    System.err.println("Can't get parent RoRFrame");
