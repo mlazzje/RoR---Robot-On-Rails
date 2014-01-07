@@ -8,9 +8,6 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-
-import ror.core.GraphicExport;
 
 /**
  * ImportButton class Represent the import Button

@@ -36,10 +36,8 @@ public class AlgMoveEco implements IAlgMove {
 		robot = getBestRobot(robots, map, newDestockActions.get(0).getProduct().getDrawer().getColumn().getAccess());
 
 		if (robot != null) {
-		    System.out.println("Essaie de prendre les actions");
 
 		    robot.lock.lock();
-		    System.out.println("A pris les actions");
 
 		    ArrayList<Action> destockingActionToAffect = new ArrayList<Action>();
 		    int freeSpace = robot.getLastActionSpaceAvailabilityUnsynchronized();
@@ -72,7 +70,6 @@ public class AlgMoveEco implements IAlgMove {
 
 		}
 
-		System.out.println("rend les actions");
 	    }
 	}
 
@@ -82,11 +79,9 @@ public class AlgMoveEco implements IAlgMove {
 	    while (newStoreActions.size() > 0) {
 
 		Robot robot = getBestRobot(robots, map, map.getInput().getAccess());
-		System.out.println("essaie de prendre les actions 2");
 
 		robot.lock.lock();
 
-		System.out.println("a les actions 2");
 		ArrayList<InputAction> inputActions = new ArrayList<InputAction>();
 		for (StoreAction storeAction : newStoreActions) {
 		    InputAction inputaction = new InputAction(1000, null, map.getInput());
@@ -126,7 +121,6 @@ public class AlgMoveEco implements IAlgMove {
 		robot.getActions().addAll(actionMoveAndStore);
 
 		robot.lock.unlock();
-		System.out.println("rend les actions 2");
 	    }
 	}
 
