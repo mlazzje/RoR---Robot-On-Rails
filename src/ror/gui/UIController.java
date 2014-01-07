@@ -1,5 +1,6 @@
 package ror.gui;
 
+import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -12,7 +13,6 @@ import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -97,31 +97,29 @@ public class UIController implements Observer {
 	}
 
 	// Mise à jour de la zone d'informations
-	
+
 	synchronized (this.thread) {
 
 	    if (this.simulationManager.getStatus() == SimulationManager.STOPPED && this.thread != null) {
 		ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/start.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 		this.rorFrame.getStartButton().setIcon(icon);
 
-		// Proposition d'export
-		int n = JOptionPane.showConfirmDialog(this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
+		int n = JOptionPane.showConfirmDialog(UIController.this.rorFrame, "Voulez-vous exporter les résultats de la simulation?", "Export", JOptionPane.YES_NO_OPTION);
 		if (n == JOptionPane.YES_OPTION) {
-		    System.out.println("filechooser");
-		    JFileChooser fc = new JFileChooser();
-		    int ret = fc.showSaveDialog(UIController.this.rorFrame);
-		    System.out.println("filechooser-2");
-		    if (ret == JFileChooser.APPROVE_OPTION) {
-			    System.out.println("filechooser-3");
 
-			File file = fc.getSelectedFile();
-			new GraphicExport(this.simulationManager, file);
-			System.out.println(file);
+		    FileDialog fd = new FileDialog(UIController.this.rorFrame, "Exporter sous", FileDialog.SAVE);
+
+		    fd.setVisible(true);
+		    String filename = fd.getFile();
+
+		    if (filename != null) {
+			File f = fd.getFiles()[0];
+
+			new GraphicExport(UIController.this.simulationManager, f);
 		    }
 		}
-		System.out.println("filechooser-4");
 
-		
+
 		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
 		logModel.clear();
 		rorFrame.getAlgDestockingComboBox().setEnabled(true);
@@ -131,7 +129,7 @@ public class UIController implements Observer {
 		rorFrame.getRandomCheckBox().setEnabled(true);
 		rorFrame.getImportButton().setEnabled(true);
 		rorFrame.getRandomCheckBox().setSelected(true);
-		this.thread=null;
+		this.thread = null;
 		System.out.println(this.thread);
 
 		this.rorFrame.setEnabled(true);
@@ -491,7 +489,7 @@ public class UIController implements Observer {
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	if (thread == null) {
-		System.out.println("new thread");
+	    System.out.println("new thread");
 
 	    this.thread = new Thread(this.simulationManager);
 	    this.thread.setName("#SIMULATION#");
