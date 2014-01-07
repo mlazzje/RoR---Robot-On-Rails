@@ -365,47 +365,42 @@ public class SimulationManager extends Observable implements Observer, Runnable 
 
     private void stopSimulation() {
 
-	Thread thread = new Thread("#THREADSTOP#") {
-	    public void run() {
-		// on arrête les threads des robots
-		for (Robot r : SimulationManager.this.robots) {
-		    // on cancel le timer en cours
-		    synchronized (r) {
-			// on notifie le robot pour qu'il fasse un tour de boucle
-			r.notify();
-		    }
-		    // et on attend que le thread du robots soient tous terminés.
-		    synchronized (SimulationManager.this.robotThread(r)) {
-			try {
-			    if (SimulationManager.this.robotThread(r).isAlive())
-				SimulationManager.this.robotThread(r).join();
-			} catch (InterruptedException e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-
-		SimulationManager.this.map.getInput().clearProducts();
-		SimulationManager.this.map.getOutput().clearProducts();
-		SimulationManager.this.setNewLogs(new ArrayList<String>());
-		SimulationManager.this.orderSource = new OrderSource();
-		SimulationManager.this.source = false;
-		SimulationManager.this.stockProducts = new ArrayList<Product>();
-
-		// suppression des produits dans les tiroirs
-		for (Column col : SimulationManager.this.map.getColumns()) {
-		    for (Drawer dra : col.getDrawerList()) {
-			dra.setProduct(null);
-			dra.setStatus(Drawer.FREE);
-		    }
-		}
-
-		Order.resetLastId();
-		SimulationManager.this.setChanged();
-		SimulationManager.this.notifyObservers();
+	// on arrête les threads des robots
+	for (Robot r : SimulationManager.this.robots) {
+	    // on cancel le timer en cours
+	    synchronized (r) {
+		// on notifie le robot pour qu'il fasse un tour de boucle
+		r.notify();
 	    }
-	};
-	thread.start();
+	    // et on attend que le thread du robots soient tous terminés.
+	    synchronized (SimulationManager.this.robotThread(r)) {
+		try {
+		    if (SimulationManager.this.robotThread(r).isAlive())
+			SimulationManager.this.robotThread(r).join();
+		} catch (InterruptedException e) {
+		    e.printStackTrace();
+		}
+	    }
+	}
+
+	SimulationManager.this.map.getInput().clearProducts();
+	SimulationManager.this.map.getOutput().clearProducts();
+	SimulationManager.this.setNewLogs(new ArrayList<String>());
+	SimulationManager.this.orderSource = new OrderSource();
+	SimulationManager.this.source = false;
+	SimulationManager.this.stockProducts = new ArrayList<Product>();
+
+	// suppression des produits dans les tiroirs
+	for (Column col : SimulationManager.this.map.getColumns()) {
+	    for (Drawer dra : col.getDrawerList()) {
+		dra.setProduct(null);
+		dra.setStatus(Drawer.FREE);
+	    }
+	}
+
+	Order.resetLastId();
+	SimulationManager.this.setChanged();
+	SimulationManager.this.notifyObservers();
 	
     }
 

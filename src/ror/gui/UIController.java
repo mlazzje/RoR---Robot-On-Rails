@@ -138,7 +138,7 @@ public class UIController implements Observer {
 		rorFrame.getRandomCheckBox().setEnabled(true);
 		rorFrame.getImportButton().setEnabled(true);
 		rorFrame.getRandomCheckBox().setSelected(true);
-
+		this.rorFrame.setEnabled(true);
 		return;
 	    }
 	    this.rorFrame.setEnabled(true);
