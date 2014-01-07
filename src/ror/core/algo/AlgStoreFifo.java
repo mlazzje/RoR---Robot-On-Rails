@@ -26,7 +26,6 @@ public class AlgStoreFifo implements IAlgStore {
 	ArrayList<StoreAction> actions = new ArrayList<StoreAction>();
 	if (inputProducts == null)
 	    return actions;
-	// TODO Eventuellement prioriser les colonnes dans le XML pour qu'elle soient triées selon les souhaits du client
 	Iterator<Product> itProduct = inputProducts.iterator();
 	Drawer drawer = null;
 	ArrayList<Drawer> bookedDrawers = new ArrayList<Drawer>();

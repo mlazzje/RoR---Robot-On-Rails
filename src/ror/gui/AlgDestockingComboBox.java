@@ -26,7 +26,6 @@ public class AlgDestockingComboBox extends JComboBox implements ActionListener {
 		this.setModel(algModel);
 		this.setSelectedIndex(0);
 		this.addActionListener(this);
-		// TODO Faire en reflexif
 	}
 
 	/**
@@ -35,7 +34,7 @@ public class AlgDestockingComboBox extends JComboBox implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
-			frame.getUiController().setAlgDestocking(this.getSelectedIndex()); // TODO Faire en reflexif
+			frame.getUiController().setAlgDestocking(this.getSelectedIndex());
 		} else {
 			System.err.println("Can't get parent RoRFrame");
 		}

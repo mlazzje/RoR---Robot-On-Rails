@@ -17,7 +17,7 @@ public class Column extends RoRElement implements Observer, Comparable<Column> {
 
     /**
      * 
-     * Number of drawers //TODO Pas inutile ? On ne le génère pas ?
+     * Number of drawers
      * 
      */
     private static final int drawerNumber = 10;

@@ -26,7 +26,6 @@ public class AlgMoveComboBox extends JComboBox implements ActionListener {
 		this.setModel(algModel);
 		this.setSelectedIndex(1);
 		this.addActionListener(this);
-		// TODO Faire en reflexif
 	}
 
 	/**
@@ -35,7 +34,7 @@ public class AlgMoveComboBox extends JComboBox implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (this.getParent().getParent().getParent().getParent() instanceof RoRFrame) {
 			RoRFrame frame = (RoRFrame) this.getParent().getParent().getParent().getParent();
-			frame.getUiController().setAlgMove(this.getSelectedIndex()); // TODO Faire en reflexif
+			frame.getUiController().setAlgMove(this.getSelectedIndex());
 		} else {
 			System.err.println("Can't get parent RoRFrame");
 		}

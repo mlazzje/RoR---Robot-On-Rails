@@ -14,7 +14,7 @@ public class Cabinet {
 
     /**
      * 
-     * Number of column by cabinet (//TODO encore utile ? On ne le génère pas ?)
+     * Number of column by cabinet
      * 
      */
     private static final int columnNumber = 40;

@@ -382,9 +382,6 @@ public class RoRFrame extends JFrame {
      * reColor
      */
     public void reColor() {
-	/*
-	 * for (Component jPanel : mapPanel.getComponents()) { //TODO Implementer Observable/Observer sur les cases pour gagner en perf' RoRElementPanel rorElementPanel = (RoRElementPanel) jPanel; rorElementPanel.reColor(); }
-	 */
     }
 
     /**

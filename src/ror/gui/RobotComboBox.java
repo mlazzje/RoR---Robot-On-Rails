@@ -29,7 +29,6 @@ public class RobotComboBox extends JComboBox implements ActionListener {
 		this.setModel(algModel);
 		this.setSelectedIndex(2);
 		this.addActionListener(this);
-		// TODO Faire en reflexif
 	}
 
 	/* (non-Javadoc)

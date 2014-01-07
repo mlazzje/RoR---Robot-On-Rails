@@ -104,16 +104,12 @@ public class SimulationManagerTest extends TestCase {
     public void testSetPause() {
 	simulationManager.setPause();
 	assertTrue(simulationManager.getStatus() == 2);
-	// TODO tester l'état du simulationManager avec la méthode getState de
-	// la classe Thread apres avoir attendu 1 seconde
     }
 
     @Test
     public void testSetPlay() {
 	simulationManager.setPlay();
 	assertTrue(simulationManager.getStatus() == 1);
-	// TODO tester l'état du simulationManager avec la méthode getState de
-	// la classe Thread apres avoir attendu 1 seconde
     }
 
     @Test
@@ -169,7 +165,6 @@ public class SimulationManagerTest extends TestCase {
 
     @Test
     public void testSetFile() {
-	// TODO tester avec un fichier ordersource
 	simulationManager.setFile(null);
     }
 
@@ -198,7 +193,6 @@ public class SimulationManagerTest extends TestCase {
     @Test
     public void testSetEndSimulation() {
 	simulationManager.setEndSimulation();
-	// TODO tester la fin de la simulation, si en mode aléatoire il n'y a de fin que quand l'utilisateur clique sur stop, sinon la fin de la simulation en mode importation de scenario est quand toutes les commandes immportées ont été expédiées
     }
 
     @Test

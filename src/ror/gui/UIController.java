@@ -365,7 +365,6 @@ public class UIController implements Observer {
 	label.setText(minutes + "mn" + seconds + "s");
 	this.rorFrame.setTotalTimeOrderLabel(label);
 
-	// TODO Mise à jours des indicateurs
 	this.rorFrame.reColor();
     }
 
@@ -447,7 +446,6 @@ public class UIController implements Observer {
     }
 
     /**
-     * //TODO What file ?
      * 
      * @param file
      */

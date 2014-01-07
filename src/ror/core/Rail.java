@@ -160,6 +160,4 @@ public class Rail extends RoRElement {
 
     // Methods
 
-    // TODO MoveAction
-
 }

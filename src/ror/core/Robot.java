@@ -210,7 +210,7 @@ public class Robot extends Observable implements Runnable {
 	    if (((MoveAction) action).getNext() != null)
 		Robot.this.rail = ((MoveAction) action).getNext();
 	    Robot.this.rail.setRobot(Robot.this);
-	    Robot.this.consumption += (int) (20 / speed); // TODO vérifier le calcul
+	    Robot.this.consumption += (int) (20 / speed);
 	    Robot.this.traveledDistance++;
 
 	} else if (action instanceof StoreAction) {
@@ -275,7 +275,6 @@ public class Robot extends Observable implements Runnable {
 
 	    Robot.this.removeProduct(outputAction.getProduct());
 	    outputAction.getOutput().addProduct(outputAction.getProduct());
-	    // TODO : check mise à jour état commande
 	    Order o = outputAction.getProduct().getOrder();
 
 	    synchronized (o.getProducts()) {
