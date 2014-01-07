@@ -217,7 +217,7 @@ public class AlgMoveFast implements IAlgMove {
 	    if (r.getActions().size() < bestRobot.getActions().size()) {
 		bestRobot = r;
 	    } else if (r.getActions().size() == bestRobot.getActions().size()) {
-		if (map.getPath(r.getRail(), destination).size() < map.getPath(r.getRail(), destination).size())
+		if (map.getPath(r.getRail(), destination).size() < map.getPath(bestRobot.getRail(), destination).size())
 		    bestRobot = r;
 	    }
 	    r.lock.unlock();
