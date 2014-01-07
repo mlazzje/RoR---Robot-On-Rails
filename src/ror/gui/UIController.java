@@ -121,14 +121,7 @@ public class UIController implements Observer {
 		}
 		System.out.println("filechooser-4");
 
-		try {
-		    this.thread.join();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		System.out.println("toto");
-		this.thread = null;
+		
 		LogListModel logModel = (LogListModel) this.rorFrame.getLogList().getModel();
 		logModel.clear();
 		rorFrame.getAlgDestockingComboBox().setEnabled(true);
@@ -138,10 +131,12 @@ public class UIController implements Observer {
 		rorFrame.getRandomCheckBox().setEnabled(true);
 		rorFrame.getImportButton().setEnabled(true);
 		rorFrame.getRandomCheckBox().setSelected(true);
+		this.thread=null;
+		System.out.println(this.thread);
+
 		this.rorFrame.setEnabled(true);
 		return;
 	    }
-	    this.rorFrame.setEnabled(true);
 	}
 
 	// Input
@@ -494,9 +489,12 @@ public class UIController implements Observer {
      * Start simulation
      */
     public void startSimulation() {
+	System.out.println("play");
 	ImageIcon icon = new ImageIcon(new ImageIcon(StartButton.class.getResource("/ressources/pause.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 	this.rorFrame.getStartButton().setIcon(icon);
 	if (thread == null) {
+		System.out.println("new thread");
+
 	    this.thread = new Thread(this.simulationManager);
 	    this.thread.setName("#SIMULATION#");
 	    this.thread.start();
