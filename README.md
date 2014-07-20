@@ -6,11 +6,18 @@ Logiciel de simulation de robots dans un entrepôt de gestion de stock
 Simulateur d'un entrepôt de marchandises avec différents produits, des commandes qui arrivent aléatoirement ou selon un scénario que l'on peut générer. 1 à X Robots avec différents algorithmes de déstockage, stockage et déplacement (paramètres paramétrable par l'utilisateur), vitesse variable par robot en temps réel, tout ceci avec des statistiques à l'instant t et en temps réel (sur la consommation, la vitesse de préparation des commandes...). Les robots doivent stocker dans des tiroirs appartenant à des armoires, et déstocker tout en utilisant les algorithmes présentés ci-dessus.
 L'entrepôt est aussi dynamique, on peut changer l'emplacement des rails, des armoires et des tiroirs.
 
-Objectif : 
+--
+
+Visual simulator warehouse goods with different products, orders arriving randomly or according to a scenario that can be generated. One to X Robots with different algorithms for storage, retrieval and move. Variable speed of the simulation, all with statistics in real time (on consumption, speed picking ...). The robots must be stored in the drawers belongs to a cabinet, and removed from storage while using the above algorithms. The warehouse is dynamic; you can change the location of the rails, cabinets and drawers.
+(Technologies used: Java and XML)
+
+Objectif
+========
 
 Trouver le meilleur compromis pour rendre les algorithmes les plus optimisés possible sachant que le client veut aussi pouvoir choisir entre 3 modes ( Rapidité / Economie d'énergie / Par commande ) qui présélectionnent les algorithmes automatiquement.
 
-Auteurs :
+Auteurs
+=======
 
 Benjamin Grima - Pierre-Jean Léger |
 Maxime Lesbros - Nicolas Parimeros
