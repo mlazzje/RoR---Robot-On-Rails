@@ -15,6 +15,21 @@ Auteurs :
 Benjamin Grima - Pierre-Jean Léger |
 Maxime Lesbros - Nicolas Parimeros
 
+Dossier de conception
+=====================
+
+https://docs.google.com/document/d/1Vn4X6CBEv3776VLcosGIfSGb7GYm4wUO-e3N4agZXLg/edit?usp=sharing
+
+Plan d'asurance Qualité
+=======================
+
+https://drive.google.com/file/d/0B7qEt8-hXn7tdU1EX3pHS2dhYnM/edit?usp=sharing
+
+Cahier de tests
+===============
+
+https://drive.google.com/file/d/0B7SYAlGbZ39aQXVXOUljZlVrYWM/edit?usp=sharing
+
 Installation
 ============
 
